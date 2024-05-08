@@ -5,4 +5,4 @@
 4. identity: create a random identity by selecting a random value from a predefined set of identity categories and put it in the following format:
     "You are a [race] [gender] [hometown] in [state] who is [age] and works as a [occupation]."
 
-output: <code>./input-data/promts.pkl
+output: <code>./input-data/promts.pkl</code>
