@@ -10,9 +10,7 @@ from colormath.color_diff import delta_e_cie2000
 import matplotlib.pyplot as plt
 import pickle
 import re
-
-# openai.api_key = "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"
-client = OpenAI(api_key="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")
+import json
 
 # GPT 3.5
 def getOutput(text, version, n, temp):   
@@ -38,23 +36,37 @@ def computeDeltaE(lab1, lab2):
 
 #--------------------------------------------
 
+try:
+    with open("../secrets.json") as f:
+        secrets = json.load(f)
+    my_api_key = secrets["openai"]
+    print(my_api_key)
+    print("API key loaded.")
+except FileNotFoundError:
+    print("Secrets file not found.")
+
+client = OpenAI(api_key=my_api_key)
+
+
 # unpickle prompt dictionary
 with open('../input-data/prompts.pkl', 'rb') as handle:
     prompts_dict = pickle.load(handle)
 
 # read in the color reference data
-df = pd.read_csv("../input-data/colorref.csv")
+df = pd.read_csv("../input-data/color-task/colorref.csv")
 # get unique words from df
 words = df['word'].unique()
-# randomly sample 50 words
-numpy.random.seed(42)
-words = numpy.random.choice(words, 50, replace=False,)
-print(words)
+print(len(words))
+
+# # REMOVE FOR ACTUAL EXPERIMENTS (RUN ALL 200 words): randomly sample 50 words
+# numpy.random.seed(42)
+# words = numpy.random.choice(words, 50, replace=False,)
+# print(words)
 
 
 num_samples = 2
-num_subjects = 50
-temp = 1.5
+num_subjects = 100
+temp = 1.0 # also run: 1.5, 2.0
 
 # "identity", "random_context", "nonsense_context"
 conditions = ["identity", "random_context", "nonsense_context"]
