@@ -1,4 +1,4 @@
-# 🐟 One fish, two fish, or the whole sea: Do LLM judgements capture population variability? 
+## 🐟 One fish, two fish, or the whole sea: Do LLM judgements capture population variability? 
 
 RQ: Is there a difference between simulating multiple unique individuals by: increasing temperature vs. prompting to elicit different distributions vs. using different models?
 - H1: One LLM = one individual
