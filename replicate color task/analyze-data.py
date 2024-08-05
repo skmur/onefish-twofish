@@ -1,17 +1,9 @@
 import pickle
-import csv
 import numpy as np
 import pandas as pd
-from collections import defaultdict
-from colormath.color_conversions import convert_color
-from colormath.color_objects import LabColor, LCHabColor, SpectralColor, sRGBColor, XYZColor, LCHuvColor, IPTColor, HSVColor
-from mpl_toolkits.mplot3d import axes3d, Axes3D
-from statistics import mean
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-import matplotlib.colors as colors
 import math
-import matplotlib
+from sklearn.linear_model import LinearRegression 
 
 def computeDeltaE(lab1, lab2):
     # compute delta L
@@ -110,27 +102,45 @@ def plotData(df, x_var, y_var, x_label, y_label, condition, temp):
     for i, txt in enumerate(df['word']):
         plt.annotate(txt, (df[x_var][i], df[y_var][i]))
     plt.tight_layout()
-    plt.savefig(f"./figures/{x_var}_vs_{y_var}_gpt3.5_{condition}_temp={temp}.png")
+    plt.gca().set_aspect('equal')
+    # plt.savefig("temp.png")
+    plt.savefig(f"./figures/{x_var}_vs_{y_var}_gpt3.5_{condition}_temp={temp}-square.png")
     plt.clf()
+
+def runRegression(df, x_label, y_label):
+    # use linear regression model
+    model = LinearRegression() 
+
+    X_train = np.array(df[x_label]).reshape(-1, 1)
+    
+    # fitting the data 
+    model.fit(X_train, df[y_label]) 
+    # predicting values 
+    y_pred = model.predict(X_train) 
+
+    df['regression_prediction'] = y_pred
+
+    # calculate RSS from regression line
+    print('residual sum of squares is: '+ str(np.sum(np.square(df['regression_prediction'] - df[y_label]))))
 
 
 
 #----------------------------------------------------------------------
 
-conditions = ["identity", "random_context", "nonsense_context"]
+conditions = ["none", "identity", "random_context", "nonsense_context"]
 num_subjs = 50
 temps = [1.0, 1.5]
 
-for condition in conditions:
-    for temp in temps:
-        print(condition)
+for temp in temps: 
+    for condition in conditions:
+        print("CONDITION: %s, TEMP=%.1f" % (condition, temp))
         # unpickle the data
         with open('./output-data/color-%s-temp=%.1f.pickle' % (condition, temp), 'rb') as handle:
             color_dict = pickle.load(handle)
         with open('../input-data/prompts.pkl', 'rb') as handle:
             prompt_dict = pickle.load(handle)
 
-        if temp == 1.0:
+        if temp == 1.0 and condition != "none":
             # REMOVE THIS ONCE GPT SCRIPT IS FIXED: FOR TEMP=1.0 run if condition == "random_context" remove first 6 entries for each key
             if condition == "random_context":
                 for key in color_dict:
@@ -147,6 +157,8 @@ for condition in conditions:
 
         df, words = processData(color_dict)
 
+        # print(df)
+
         # process the glasgow norms excel spreadsheet into pandas dataframe
         df_word_ratings = pd.read_csv("../input-data/color-task/compiled-variance-entropy-glasgowRatings.csv")
         # select rows in df_word_ratings that are in the words list
@@ -158,19 +170,20 @@ for condition in conditions:
         # internal delta e: get average of deltae between each participant's two color responses for each word
         df_internalDeltaE = computeStats(df, "internalDeltaE")
 
-        print(df_internalDeltaE)
-
         df_populationDeltaE = getPopulationDeltaE(df, words)
         df_populationDeltaE = computeStats(df_populationDeltaE, "populationDeltaE")
 
-        print(df_populationDeltaE)
-
         df_deltaE = pd.merge(df_internalDeltaE, df_populationDeltaE, on='word', how='inner').reset_index()
 
-        print(df_deltaE[:20])
+        # print(df_deltaE[:20])
 
-        plotData(df_deltaE, 'mean_populationDeltaE', 'mean_internalDeltaE', 'Average Population Delta E - GPT3.5', 'Average Internal Delta E - GPT3.5', condition, temp)
+        runRegression(df_deltaE, 'mean_internalDeltaE', 'mean_populationDeltaE')
 
+        # plotData(df_deltaE, 'mean_populationDeltaE', 'mean_internalDeltaE', 'Average Population Delta E - GPT3.5', 'Average Internal Delta E - GPT3.5', condition, temp)
+        
+        print("- - - - - - - -")
+
+    print("-----------------------------")
 
 
 # # plotData('variance', 'avg_internal_deltaE_gpt3.5', 'Variance in Human Judgements', 'Average Internal Delta E - GPT3.5')

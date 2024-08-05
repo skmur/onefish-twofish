@@ -58,18 +58,18 @@ df = pd.read_csv("../input-data/color-task/colorref.csv")
 words = df['word'].unique()
 print(len(words))
 
-# # REMOVE FOR ACTUAL EXPERIMENTS (RUN ALL 200 words): randomly sample 50 words
-# numpy.random.seed(42)
-# words = numpy.random.choice(words, 50, replace=False,)
-# print(words)
+# REMOVE FOR ACTUAL EXPERIMENTS (RUN ALL 200 words): randomly sample 50 words
+numpy.random.seed(42)
+words = numpy.random.choice(words, 50, replace=False,)
+print(words)
 
 
 num_samples = 2
-num_subjects = 100
-temp = 1.0 # also run: 1.5, 2.0
+num_subjects = 50
+temp = 1.5 # also run: 1.5, 2.0
 
 # "identity", "random_context", "nonsense_context"
-conditions = ["identity", "random_context", "nonsense_context"]
+conditions = ["none"]
 
 # iterate over the 3 conditions
 for condition in conditions:
@@ -81,11 +81,11 @@ for condition in conditions:
 
     # for each subject, get a context
     for j in range(num_subjects):
-        context = prompts_dict[j][condition]
-        # strip the context of newlines
-        context = context.replace("\n", " ")
+        # context = prompts_dict[j][condition]
+        # # strip the context of newlines
+        # context = context.replace("\n", " ")
 
-        print("%d) %s" % (j, context))
+        # print("%d) %s" % (j, context))
 
         # loop through all the words and get 2 color associations for each subject
         for word in words:
@@ -94,9 +94,11 @@ for condition in conditions:
             color_dict.setdefault(word_subject, []).append(condition)
             
             text = "What color do you most associate with the word " + word + "? Respond only with a single HEX code."
+            
+            if condition != "none":
+                text = context + "\n\n" + text
 
-            text = context + "\n\n" + text
-
+            print(text)
             for i in range(num_samples):
                 completion = getOutput(text, "gpt-3.5-turbo", 1, temp)
                 # print("%s, sample %d --> %s" % (word, i, completion))
@@ -124,13 +126,14 @@ for condition in conditions:
                 # if this is the second sample, compute deltae between color responses
                 # also ask model how much they expect another person to share their color association 
                 if i == 1:
-                    # probability that others share the same color association
-                    text = context + "\n\n" + "How strongly do you expect others to share your color association of " + completion +  " for " + word + "? Respond with a number between 0 (not at all - most people will have a different color association than I do) and 100 (very strongly - most people will have the same color association as I do)."
-                    prob = getOutput(text, "gpt-3.5-turbo", 1, temp)
-                    # validate that the response is a single number
-                    while not prob.isdigit() or int(prob) < 0 or int(prob) > 100:
-                        prob = getOutput(text, "gpt-3.5-turbo", 1, temp)
-                    color_dict.setdefault(word_subject, []).append(prob)
+                    # # probability that others share the same color association
+                    # text = context + "\n\n" + "How strongly do you expect others to share your color association of " + completion +  " for " + word + "? Respond with a number between 0 (not at all - most people will have a different color association than I do) and 100 (very strongly - most people will have the same color association as I do)."
+                    # prob = getOutput(text, "gpt-3.5-turbo", 1, temp)
+                    # # validate that the response is a single number
+                    # while not prob.isdigit() or int(prob) < 0 or int(prob) > 100:
+                    #     prob = getOutput(text, "gpt-3.5-turbo", 1, temp)
+
+                    color_dict.setdefault(word_subject, []).append(-1)
 
                     # deltae
                     deltae = computeDeltaE(color_dict[word_subject][1], color_dict[word_subject][3])
@@ -151,7 +154,7 @@ for condition in conditions:
     print(color_dict)
 
     # save the dictionary to a pickle file
-    with open('./output-data/color-%s-temp=%.1f.pickle' % (condition, temp), 'wb') as handle:
+    with open('./output-data/color-%s-50subjs-temp=%.1f.pickle' % (condition, temp), 'wb') as handle:
         pickle.dump(color_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
     
 
