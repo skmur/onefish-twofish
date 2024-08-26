@@ -9,7 +9,7 @@ from PIL import ImageColor
 from colormath.color_conversions import convert_color
 from colormath.color_objects import LabColor, LCHabColor, SpectralColor, sRGBColor, XYZColor, LCHuvColor, IPTColor, HSVColor
 from colormath.color_diff import delta_e_cie2000
-
+import sys
 
 # get the model's generation for the prompt in appropriate chat template format
 # returns: model's response
@@ -30,7 +30,10 @@ def getOutput(text, temp, tokenizer, model, device):
 # extract the hex code from the response and convert it to Lab space
 # returns: HEX, LAB, and RGB values
 def getSample(context, prompt, temp, tokenizer, model, device):
-    single_turn_prompt = "GPT4 Correct User: %s. %s<|end_of_turn|>GPT4 Correct Assistant:" % (context, prompt)
+    if context == "":
+        single_turn_prompt = "GPT4 Correct User: %s<|end_of_turn|>GPT4 Correct Assistant:" % prompt
+    else:
+        single_turn_prompt = "GPT4 Correct User: %s. %s<|end_of_turn|>GPT4 Correct Assistant:" % (context, prompt)
     
     output = getOutput(single_turn_prompt, temp, tokenizer, model, device)
 
@@ -71,27 +74,27 @@ def computeDeltaE(lab1, lab2):
 # store the data in a dictionary with format: ['word', 'subject_num', 'condition', 'task_version', 'hex1', 'lab1', 'rgb1', 'hex2', 'lab2', 'rgb2', 'deltaE']
 # returns: output_df
 def runTask(output_df, num_subjects, temp, condition, words, prompts_dict, tokenizer, model_name, model, device, task_version):
-    print(output_df.columns)
-    print("Running main task for condition: %s" % condition)
+    print("Running main task for condition: %s" % condition, flush=True)
     # print experiment parameters
-    print("--> Number of subjects: %d" % num_subjects)
-    print("--> Temperature: %s" % temp)
-    print("--> Number of words: %d" % len(words))
-    print("--> Task version: %s" % task_version)
+    print("--> Number of subjects: %d" % num_subjects, flush=True)
+    print("--> Temperature: %s" % temp, flush=True)
+    print("--> Number of words: %d" % len(words), flush=True)
+    print("--> Task version: %s" % task_version, flush=True)
 
     # for each subject, get a context
-    for subject in range(num_subjects):
+    for subject in range(70, num_subjects):
         if condition == "none":
             context = ""
         else: 
             context = prompts_dict[subject][condition]
+            print(context)
             # strip the context of newlines
             context = context.replace("\n", " ")
        
         # loop through all the words and get 2 color associations for each subject
         for word in words:
             if task_version == "response":
-                task_prompt = f"What is the HEX code of the color do you most associate with the word {word}?"
+                task_prompt = f"What is the HEX code of the color you most associate with the word {word}?"
             elif task_version == "completion":
                 task_prompt = f"The HEX code of the color I most associate with the word {word} is:"
 
@@ -102,7 +105,7 @@ def runTask(output_df, num_subjects, temp, condition, words, prompts_dict, token
             # deltae
             deltae = computeDeltaE(lab1, lab2)
 
-            print("Word: %s, Subject: %d, Task version: %s, HEX1: %s, HEX2: %s, DeltaE: %.2f" % (word, subject, task_version, hex1, hex2, deltae))
+            print("Word: %s, Subject: %d, Task version: %s, HEX1: %s, HEX2: %s, DeltaE: %.2f" % (word, subject, task_version, hex1, hex2, deltae), flush=True)
 
             # concatenate data for this word and subject to dataframe. use pd.concat to avoid modifying the original dataframe
             # FORMAT: ['model_name', 'temperature', 'word', 'subject_num', 'condition', 'task_version', 'hex1', 'lab1', 'rgb1', 'hex2', 'lab2', 'rgb2', 'deltaE']
@@ -110,11 +113,11 @@ def runTask(output_df, num_subjects, temp, condition, words, prompts_dict, token
 
 
         
-        print("...Done with subject %d\n" % subject)
+        print("...Done with subject %d\n" % subject, flush=True)
 
         # pickle the dictionary to a file every 20 people to avoid losing data
-        if subject % 20 == 0 and subject != 0:
-            with open('./output-data/%s-color-%s-subjects=%d-temp=%s.pickle' % (model_name, condition, subject, temp), 'wb') as handle:
+        if subject % 10 == 0:
+            with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s-remaining.pickle' % (model_name, condition, subject, temp), 'wb') as handle:
                 pickle.dump(output_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     return output_df
@@ -181,6 +184,8 @@ else:
 
 tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, cache_dir=lab_storage_dir)
 model = transformers.AutoModelForCausalLM.from_pretrained(model_path, cache_dir=lab_storage_dir).to(device)
+model.generation_config.cache_implementation = "static"
+model.forward = torch.compile(model.forward, mode="reduce-overhead", fullgraph=True)
 print(transformers.AutoConfig.from_pretrained(model_path))
 
 # scorer_model = scorer.IncrementalLMScorer('gpt2', 'cuda:0') # use model that is known to mimic human surprisal judgements (not super human performance)
@@ -201,7 +206,7 @@ print("Number of test words %d" % (len(words)))
 # set parameters
 num_subjects = 100
 temp = "default" # also run: 1.5, 2.0
-num_words = len(words)
+num_words = 50
 
 if num_words < len(words):
     version = "subsample"
@@ -213,28 +218,21 @@ if num_words < len(words):
 else:
     version = "all"
 
-conditions = ["none", "identity", "random_context", "nonsense_context"]
+# take in argument for condition
+if len(sys.argv) > 1:
+    condition = sys.argv[1]
 task_versions = ["response", "completion"]
 
 #--------------------------------------------------------
 # MAIN LOOP
+# create a dictionary to store the data for task versions (response and completion), for each prompt condition [condition], temperature
+output_df = pd.DataFrame(columns=['model_name', 'temperature', 'word', 'subject_num', 'condition', 'task_version', 'hex1', 'lab1', 'rgb1', 'hex2', 'lab2', 'rgb2', 'deltaE'])
 
-for condition in conditions:
-    # create a dictionary to store the data for task versions (response and completion), for each prompt condition [condition], temperature
-    output_df = pd.DataFrame(columns=['model_name', 'temperature', 'word', 'subject_num', 'condition', 'task_version', 'hex1', 'lab1', 'rgb1', 'hex2', 'lab2', 'rgb2', 'deltaE'])
+for task_version in task_versions:
+    output_df = runTask(output_df, num_subjects, temp, condition, words, prompts_dict, tokenizer, model_name, model, device, task_version)
 
-    for task_version in task_versions:
-        output_df = runTask(output_df, num_subjects, temp, condition, words, prompts_dict, tokenizer, model_name, model, device, task_version)
-
-        # save the dictionary to a pickle file
-        with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s.pickle' % (model_name, condition, num_subjects, temp), 'wb') as handle:
-            pickle.dump(output_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        
-    # # try unpickling the output_df
-    # with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s.pickle' % (model_name, condition, num_subjects, temp), 'rb') as handle:
-    #     output_df = pickle.load(handle)
-    # print("Unpickled output_df...")
-    # print(output_df)
-    # # print one row of the dataframe
-    # print(output_df.iloc[0])
+    # save the dictionary to a pickle file
+    with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s-remaining.pickle' % (model_name, condition, num_subjects, temp), 'wb') as handle:
+        pickle.dump(output_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    
 
