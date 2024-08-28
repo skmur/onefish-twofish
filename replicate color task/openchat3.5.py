@@ -16,7 +16,7 @@ import sys
 def getOutput(text, temp, tokenizer, model, device):
     input_ids = tokenizer.encode(text, return_tensors="pt")
     output = model.generate(input_ids.to(device), 
-                            max_length=100,
+                            max_length=200,
                             pad_token_id=tokenizer.pad_token_id,
                             eos_token_id=tokenizer.eos_token_id,
                             do_sample=True,

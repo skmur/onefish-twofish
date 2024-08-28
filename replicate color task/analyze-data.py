@@ -17,27 +17,23 @@ def computeDeltaE(lab1, lab2):
 
     return deltaE
 
-
-def processData(color_dict):
-    # convert dictionary to pandas dataframe
-    df = pd.DataFrame.from_dict(color_dict, orient='index', columns=['condition', 'lab1', 'rgb1', 'lab2', 'rgb2', 'prob', 'deltaE']).reset_index()
-    # rename the index column
-    df.rename(columns={'index': 'word_subject'}, inplace=True)
-
-    # split the word_subject column into word and subject columns
-    df[['word', 'subject']] = df['word_subject'].str.split('_', expand=True)
-    # drop the word_subject column
-    df.drop(columns=['word_subject'], inplace=True)
-    # reorder the columns
-    df = df[['word', 'subject', 'rgb1', 'rgb2', 'lab1', 'lab2', 'prob', 'deltaE']]
-
-    # # select the first 60 subjects
-    # df = df[df['subject'].astype(int) < 60]
-    # print(df)
+# unpickle model data at pickle_path, merge with glasgow word ratings for the words therein, and return final pandas dataframe
+def getDF(pickle_path):
+    # unpickle the data
+    with open(pickle_path, 'rb') as handle:
+        df = pickle.load(handle)
 
     words = df['word'].unique()
 
-    return df, words
+    # process the glasgow norms excel spreadsheet into pandas dataframe
+    df_word_ratings = pd.read_csv("../input-data/color-task/compiled-variance-entropy-glasgowRatings.csv")
+    # select rows in df_word_ratings that are in the words list
+    df_word_ratings = df_word_ratings[df_word_ratings['word'].isin(words)]
+
+    # merge the two dataframes on the word column
+    df = pd.merge(df, df_word_ratings, on='word', how='inner')
+
+    return df
 
 def computeStats(df, metric):
     stats = df.groupby('word')['deltaE'].agg(['mean', 'count', 'std'])
@@ -81,32 +77,6 @@ def getPopulationDeltaE(df, words):
     dict = {'word': words_list, 'deltaE': popdeltaE_list} 
     return pd.DataFrame(dict)
 
-
-def plotData(df, x_var, y_var, x_label, y_label, condition, temp):
-    plt.title("GPT 3.5 - %s" % condition)
-    plt.scatter(df[x_var], df[y_var])
-    plt.plot([0,100], [0,100], 'k--', alpha=0.5)
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
-    plt.ylim(0, 100)
-    plt.xlim(0, 100)
-    # plot error bars for each point based on the 95% confidence interval
-    for i, txt in enumerate(df['word']):
-        plt.errorbar(df[x_var][i], df[y_var][i], xerr=df['ci95_hi_populationDeltaE'][i]-df['ci95_lo_populationDeltaE'][i], yerr=df['ci95_hi_internalDeltaE'][i]-df['ci95_lo_internalDeltaE'][i], fmt='o', color='black', alpha=0.5)
-
-    # plot correlation line on the graph
-    corr = df[x_var].corr(df[y_var])
-    plt.text(10, 90, "internal vs. population deltaE r = %.2f" % corr)
-
-    # plot the words
-    for i, txt in enumerate(df['word']):
-        plt.annotate(txt, (df[x_var][i], df[y_var][i]))
-    plt.tight_layout()
-    plt.gca().set_aspect('equal')
-    # plt.savefig("temp.png")
-    plt.savefig(f"./figures/{x_var}_vs_{y_var}_gpt3.5_{condition}_temp={temp}-square.png")
-    plt.clf()
-
 def runRegression(df, x_label, y_label):
     # use linear regression model
     model = LinearRegression() 
@@ -121,51 +91,58 @@ def runRegression(df, x_label, y_label):
     df['regression_prediction'] = y_pred
 
     # calculate RSS from regression line
-    print('residual sum of squares is: '+ str(np.sum(np.square(df['regression_prediction'] - df[y_label]))))
+    rss = np.sum(np.square(df['regression_prediction'] - df[y_label]))
+    # round to whole number
+    rss = round(rss)
+
+    print('residual sum of squares is: '+ str(rss))
+
+    return rss
+
+def plotInternalVSPopulation(df, x_var, y_var, x_label, y_label, model_name, condition, temp, rss, figure_dir):
+
+    plt.title("Model=%s, prompt context=%s, temperature=%s \n RSS=%d" % (model_name, condition, temp, rss), fontsize=10)
+
+    plt.scatter(df[x_var], df[y_var])
+    plt.plot([0,100], [0,100], 'k--', alpha=0.5)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.ylim(0, 100)
+    plt.xlim(0, 100)
+
+    # plot error bars for each point based on the 95% confidence interval
+    for i, txt in enumerate(df['word']):
+        plt.errorbar(df[x_var][i], df[y_var][i], xerr=df['ci95_hi_populationDeltaE'][i]-df['ci95_lo_populationDeltaE'][i], yerr=df['ci95_hi_internalDeltaE'][i]-df['ci95_lo_internalDeltaE'][i], fmt='o', color='black', alpha=0.5)
+
+    # plot correlation line on the graph
+    corr = df[x_var].corr(df[y_var])
+    plt.text(10, 90, "internal vs. population deltaE r = %.2f" % corr)
+
+    # plot the words
+    for i, txt in enumerate(df['word']):
+        plt.annotate(txt, (df[x_var][i], df[y_var][i]))
+
+    plt.tight_layout()
+    plt.gca().set_aspect('equal')
+    # plt.savefig(f"./{figure_dir}/{model_name}-{x_var}_vs_{y_var}-prompt={condition}-temp={temp}.png")
+    plt.savefig(f"./{figure_dir}/{model_name}.png")
+    plt.clf()
 
 
 
 #----------------------------------------------------------------------
+model_names = ["starlingLM", "openchat"]
+conditions = ["none"]
+num_subjects = 100
+temp = "default"
+data_dir = "./output-data/50words-100subjs"
+figure_dir = "./figures/50words-100subjs"
 
-conditions = ["none", "identity", "random_context", "nonsense_context"]
-num_subjs = 50
-temps = [1.0, 1.5]
-
-for temp in temps: 
+for model in model_names:
     for condition in conditions:
-        print("CONDITION: %s, TEMP=%.1f" % (condition, temp))
-        # unpickle the data
-        with open('./output-data/color-%s-temp=%.1f.pickle' % (condition, temp), 'rb') as handle:
-            color_dict = pickle.load(handle)
-        with open('../input-data/prompts.pkl', 'rb') as handle:
-            prompt_dict = pickle.load(handle)
-
-        if temp == 1.0 and condition != "none":
-            # REMOVE THIS ONCE GPT SCRIPT IS FIXED: FOR TEMP=1.0 run if condition == "random_context" remove first 6 entries for each key
-            if condition == "random_context":
-                for key in color_dict:
-                    color_dict[key] = color_dict[key][6:]
-            if condition == "nonsense_context":
-                for key in color_dict:
-                    color_dict[key] = color_dict[key][12:]
-
-            # REMOVE THIS ONCE GPT SCRIPT IS FIXED: FOR TEMP=1.0 run compute deltaE for each entry in color_dict
-            for key in color_dict:
-                lab1 = color_dict[key][1]
-                lab2 = color_dict[key][3]
-                color_dict[key].append(computeDeltaE(lab1, lab2))
-
-        df, words = processData(color_dict)
-
-        # print(df)
-
-        # process the glasgow norms excel spreadsheet into pandas dataframe
-        df_word_ratings = pd.read_csv("../input-data/color-task/compiled-variance-entropy-glasgowRatings.csv")
-        # select rows in df_word_ratings that are in the words list
-        df_word_ratings = df_word_ratings[df_word_ratings['word'].isin(words)]
-
-        # merge the two dataframes on the word column
-        df = pd.merge(df, df_word_ratings, on='word', how='inner')
+        pickle_path = f"{data_dir}/{model}-color-prompt={condition}-subjects={num_subjects}-temp={temp}.pickle"
+        df = getDF(pickle_path)
+        words = df['word'].unique()
 
         # internal delta e: get average of deltae between each participant's two color responses for each word
         df_internalDeltaE = computeStats(df, "internalDeltaE")
@@ -175,19 +152,20 @@ for temp in temps:
 
         df_deltaE = pd.merge(df_internalDeltaE, df_populationDeltaE, on='word', how='inner').reset_index()
 
-        # print(df_deltaE[:20])
+        # print(df_deltaE)
+        # print(df_deltaE.columns)
 
-        runRegression(df_deltaE, 'mean_internalDeltaE', 'mean_populationDeltaE')
+        rss = runRegression(df_deltaE, 'mean_internalDeltaE', 'mean_populationDeltaE')
 
-        # plotData(df_deltaE, 'mean_populationDeltaE', 'mean_internalDeltaE', 'Average Population Delta E - GPT3.5', 'Average Internal Delta E - GPT3.5', condition, temp)
-        
-        print("- - - - - - - -")
+        plotInternalVSPopulation(df_deltaE, 'mean_populationDeltaE', 'mean_internalDeltaE', 'Average Population Delta E', 'Average Internal Delta E', model, condition, temp, rss, figure_dir)
 
-    print("-----------------------------")
+        # plot variance and entropy for human data vs. model data
+
+        # plot color bars for each word
 
 
-# # plotData('variance', 'avg_internal_deltaE_gpt3.5', 'Variance in Human Judgements', 'Average Internal Delta E - GPT3.5')
-# # plotData('entropy', 'avg_pop_deltaE_gpt3.5', 'Entropy in Human Judgements', 'Average Population Delta E - GPT3.5')
+# plotData('variance', 'avg_internal_deltaE_gpt3.5', 'Variance in Human Judgements', 'Average Internal Delta E - GPT3.5')
+# plotData('entropy', 'avg_pop_deltaE_gpt3.5', 'Entropy in Human Judgements', 'Average Population Delta E - GPT3.5')
 # # plotData("imageability", 'avg_internal_deltaE_gpt3.5', 'Imageability in Word Ratings', 'Average Internal Delta E - GPT3.5')
 # # plotData("concreteness", 'avg_internal_deltaE_gpt3.5', 'Concreteness in Word Ratings', 'Average Internal Delta E - GPT3.5')
 # # # plotData("variance", "prob", "Variance in Human Judgements", "Probability of agreement - GPT3.5")

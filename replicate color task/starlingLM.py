@@ -16,7 +16,7 @@ import sys
 def getOutput(text, temp, tokenizer, model, device):
     input_ids = tokenizer.encode(text, return_tensors="pt")
     output = model.generate(input_ids.to(device), 
-                            max_length=100,
+                            max_length=200,
                             pad_token_id=tokenizer.pad_token_id,
                             eos_token_id=tokenizer.eos_token_id,
                             do_sample=True,
@@ -82,7 +82,7 @@ def runTask(output_df, num_subjects, temp, condition, words, prompts_dict, token
     print("--> Task version: %s" % task_version, flush=True)
 
     # for each subject, get a context
-    for subject in range(70, num_subjects):
+    for subject in range(0, num_subjects):
         if condition == "none":
             context = ""
         else: 
@@ -111,13 +111,12 @@ def runTask(output_df, num_subjects, temp, condition, words, prompts_dict, token
             # FORMAT: ['model_name', 'temperature', 'word', 'subject_num', 'condition', 'task_version', 'hex1', 'lab1', 'rgb1', 'hex2', 'lab2', 'rgb2', 'deltaE']
             output_df = pd.concat([output_df, pd.DataFrame([[model_name, temp, word, subject, condition, task_version, hex1, lab1, rgb1, hex2, lab2, rgb2, deltae]], columns=output_df.columns)], ignore_index=True)
 
-
         
         print("...Done with subject %d\n" % subject, flush=True)
 
         # pickle the dictionary to a file every 20 people to avoid losing data
         if subject % 10 == 0:
-            with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s-remaining.pickle' % (model_name, condition, subject, temp), 'wb') as handle:
+            with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s.pickle' % (model_name, condition, subject, temp), 'wb') as handle:
                 pickle.dump(output_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     return output_df
@@ -221,6 +220,7 @@ else:
 # take in argument for condition
 if len(sys.argv) > 1:
     condition = sys.argv[1]
+
 task_versions = ["response", "completion"]
 
 #--------------------------------------------------------
@@ -232,7 +232,7 @@ for task_version in task_versions:
     output_df = runTask(output_df, num_subjects, temp, condition, words, prompts_dict, tokenizer, model_name, model, device, task_version)
 
     # save the dictionary to a pickle file
-    with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s-remaining.pickle' % (model_name, condition, num_subjects, temp), 'wb') as handle:
+    with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s.pickle' % (model_name, condition, num_subjects, temp), 'wb') as handle:
         pickle.dump(output_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
     
 

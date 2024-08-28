@@ -26,7 +26,7 @@ def getOutput(messages, temp, pipe):
 # place the simulated human's context and task prompt into model template to get the model's response.
 # extract the hex code from the response and convert it to Lab space
 # returns: HEX, LAB, and RGB values
-def getSample(context, prompt, temp, tokenizer, model, device):
+def getSample(context, prompt, temp, pipe):
     # We use the tokenizer's chat template to format each message - see https://huggingface.co/docs/transformers/main/en/chat_templating
     messages = [
         {
@@ -118,7 +118,7 @@ def runTask(output_df, num_subjects, temp, condition, words, prompts_dict, model
 
         # pickle the dictionary to a file every 20 people to avoid losing data
         if subject % 10 == 0:
-            with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s.pickle' % (model_name, condition, subject, temp), 'wb') as handle:
+            with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s-COMPLETION.pickle' % (model_name, condition, subject, temp), 'wb') as handle:
                 pickle.dump(output_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     return output_df
@@ -173,7 +173,7 @@ def scoreOutput(scorer_model, stimuli):
 #================================================================================================
 lab_storage_dir = "/n/holylabs/LABS/ullman_lab/Users/smurthy"
 
-model_name = "zephyr"
+model_name = "zephyrMistral"
 model_path = "HuggingFaceH4/zephyr-7b-beta"
 
 if torch.cuda.is_available():
@@ -183,7 +183,8 @@ else:
     device = "cpu"
     print("WARNING! Using CPU...")
 
-pipe = transformers.pipeline("text-generation", model=model_path, torch_dtype=torch.bfloat16, device_map="auto", cache_dir=lab_storage_dir)
+# model = transformers.AutoModelForCausalLM.from_pretrained(model_path, cache_dir=lab_storage_dir).to(device)
+pipe = transformers.pipeline("text-generation", model=model_path, torch_dtype=torch.bfloat16, device_map="auto")
 
 # scorer_model = scorer.IncrementalLMScorer('gpt2', 'cuda:0') # use model that is known to mimic human surprisal judgements (not super human performance)
 print("Model loaded...")
@@ -201,7 +202,7 @@ print("Number of test words %d" % (len(words)))
 
 #--------------------------------------------------------
 # set parameters
-num_subjects = 100
+num_subjects = 40
 temp = "default" # also run: 1.5, 2.0
 num_words = 50
 
@@ -218,7 +219,8 @@ else:
 # take in argument for condition
 if len(sys.argv) > 1:
     condition = sys.argv[1]
-task_versions = ["response", "completion"]
+
+task_versions = ["completion"]
 
 #--------------------------------------------------------
 # MAIN LOOP
@@ -230,7 +232,7 @@ for task_version in task_versions:
     output_df = runTask(output_df, num_subjects, temp, condition, words, prompts_dict, model_name, task_version, pipe)
 
     # save the dictionary to a pickle file
-    with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s.pickle' % (model_name, condition, num_subjects, temp), 'wb') as handle:
+    with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s-COMPLETION.pickle' % (model_name, condition, num_subjects, temp), 'wb') as handle:
         pickle.dump(output_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
     
 
