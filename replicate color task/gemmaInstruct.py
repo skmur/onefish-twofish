@@ -13,34 +13,32 @@ import sys
 
 # get the model's generation for the prompt in appropriate chat template format
 # returns: model's response
-def getOutput(messages, temp, pipe):
-    prompt = pipe.tokenizer.apply_chat_template(messages,
-                                                tokenize=False,
-                                                add_generation_prompt=True,
-                                                # temperature=temp
-                                                )
-    outputs = pipe(prompt, max_new_tokens=100, do_sample=True)
+def getOutput(text, temp, tokenizer, model, device):
+    inputs = tokenizer.encode(text, 
+                              add_special_tokens=False, 
+                              return_tensors="pt")
     
-    return outputs[0]["generated_text"]
+    outputs = model.generate(input_ids=inputs.to(device), 
+                             max_new_tokens=150)
+    
+    return tokenizer.decode(outputs[0])
 
 # place the simulated human's context and task prompt into model template to get the model's response.
 # extract the hex code from the response and convert it to Lab space
 # returns: HEX, LAB, and RGB values
-def getSample(context, prompt, temp, pipe):
+def getSample(context, prompt, temp, tokenizer, model, device):
     # We use the tokenizer's chat template to format each message - see https://huggingface.co/docs/transformers/main/en/chat_templating
     messages = [
-        {
-            "role": "system",
-            "content": context,
-        },
-        {"role": "user", "content": prompt},
+        {"role": "user", "content": context + prompt},
     ]
-    
-    output = getOutput(messages, temp, pipe)
+    prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    print(prompt)
+
+    output = getOutput(prompt, temp, tokenizer, model, device)
 
     # make sure there is a valid hex code in the response and extract it
     while not re.search(r'#[0-9a-fA-F]{6}', output):
-        output = getOutput(messages, temp, pipe)
+        output = getOutput(prompt, temp, tokenizer, model, device)
 
     hex_code = re.search(r'#[0-9a-fA-F]{6}', output).group()
 
@@ -74,7 +72,7 @@ def computeDeltaE(lab1, lab2):
 # retrieve the subject's context from prompts_dict based on the condition. loop through all the words and construct task prompt and get 2 color associations for each subject 
 # store the data in a dictionary with format: ['word', 'subject_num', 'condition', 'task_version', 'hex1', 'lab1', 'rgb1', 'hex2', 'lab2', 'rgb2', 'deltaE']
 # returns: output_df
-def runTask(output_df, num_subjects, temp, condition, words, prompts_dict, model_name, task_version, pipe):
+def runTask(output_df, num_subjects, temp, condition, words, prompts_dict, tokenizer, model_name,  model, device, task_version):
     print("Running main task for condition: %s" % condition, flush=True)
     # print experiment parameters
     print("--> Number of subjects: %d" % num_subjects, flush=True)
@@ -100,8 +98,8 @@ def runTask(output_df, num_subjects, temp, condition, words, prompts_dict, model
                 task_prompt = f"The HEX code of the color I most associate with the word {word} is:"
 
             # get 2 samples of color associations for each word
-            hex1, lab1, rgb1 = getSample(context, task_prompt, temp, pipe)
-            hex2, lab2, rgb2 = getSample(context, task_prompt, temp, pipe)
+            hex1, lab1, rgb1 = getSample(context, task_prompt, temp, tokenizer, model, device)
+            hex2, lab2, rgb2 = getSample(context, task_prompt, temp, tokenizer, model, device)
 
             # deltae
             deltae = computeDeltaE(lab1, lab2)
@@ -118,63 +116,17 @@ def runTask(output_df, num_subjects, temp, condition, words, prompts_dict, model
 
         # pickle the dictionary to a file every 20 people to avoid losing data
         if subject % 10 == 0:
-            with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s-COMPLETION.pickle' % (model_name, condition, subject, temp), 'wb') as handle:
+            with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s-%s.pickle' % (model_name, condition, subject, temp, task_version), 'wb') as handle:
                 pickle.dump(output_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     return output_df
 
-# def runMetacognitiveJudgement(output_df, num_subjects, temp, condition, words, prompts_dict, tokenizer, model, device, task_version):
-#     print("Running metacognitive judgement task for condition: %s" % condition)
-#     # print experiment parameters
-#     print("--> Number of subjects: %d" % num_subjects)
-#     print("--> Temperature: %s" % temp)
-#     print("--> Number of words: %d" % len(words))
-#     print("--> Task version: %s" % task_version)
-
-#     # iterate over output_df
-#     for index, row in output_df.iterrows():
-#         word = row['word']
-#         subject = row['subject_num']
-#         hex1 = row['hex1']
-#         hex2 = row['hex2']
-
-#         # get prompt for this subject and condition
-#         if condition == "none":
-#             context = ""
-#         else:
-#             context = prompts_dict[subject][condition]
-#             context = context.replace("\n", " ")
-
-#         if task_version == "response":
-#             metacog_prompt = f"What percent of other people do you expect will share your color association of {hex2} for {word}?"
-#         elif task_version == "completion":
-#             metacog_prompt = f"The percent of other people I expect will share my color association of {hex2} for {word} is:"
-
-#          # concatenate the context and prompt
-#         prompt = context + "" + metacog_prompt
-
-#         # get probability that others share the same color association
-#         prob = getOutput(prompt, temp, tokenizer, model, device)
-#         # validate that the response is a single number
-#         while not prob.isdigit() or int(prob) < 0 or int(prob) > 100:
-#             prob = getOutput(prompt, temp, tokenizer, model, device)
-
-#         # store in dictionary
-#         output_df.at[index, 'agreement_prob'] = prob
-
-#         print("Word: %s, Subject: %d, Task version: %s, HEX1: %s, HEX2: %s, Agreement Probability: %s" % (word, subject, task_version, hex1, hex2, prob))
-
-
-# take the output of the tested model and pass it to the scorer_model
-# https://github.com/kanishkamisra/minicons/blob/master/examples/succinct.md
-def scoreOutput(scorer_model, stimuli):
-    return scorer_model.token_score(stimuli, rank=True)
 
 #================================================================================================
 lab_storage_dir = "/n/holylabs/LABS/ullman_lab/Users/smurthy"
 
-model_name = "zephyrMistral"
-model_path = "HuggingFaceH4/zephyr-7b-beta"
+model_name = "gemmaInstruct"
+model_path = "google/gemma-7b-it"
 
 if torch.cuda.is_available():
     device = "cuda"
@@ -183,13 +135,13 @@ else:
     device = "cpu"
     print("WARNING! Using CPU...")
 
-# model = transformers.AutoModelForCausalLM.from_pretrained(model_path, cache_dir=lab_storage_dir).to(device)
-pipe = transformers.pipeline("text-generation", 
-                             model=model_path, 
-                             torch_dtype=torch.bfloat16, 
-                             device_map="auto")
+tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, cache_dir=lab_storage_dir)
+model = transformers.AutoModelForCausalLM.from_pretrained(model_path, 
+                                                          device_map="auto",
+                                                          torch_dtype=torch.bfloat16,
+                                                          cache_dir=lab_storage_dir
+                                                          )
 
-# scorer_model = scorer.IncrementalLMScorer('gpt2', 'cuda:0') # use model that is known to mimic human surprisal judgements (not super human performance)
 print("Model loaded...")
 
 # unpickle prompt dictionary
@@ -205,7 +157,7 @@ print("Number of test words %d" % (len(words)))
 
 #--------------------------------------------------------
 # set parameters
-num_subjects = 40
+num_subjects = 100
 temp = "default" # also run: 1.5, 2.0
 num_words = 50
 
@@ -223,19 +175,19 @@ else:
 if len(sys.argv) > 1:
     condition = sys.argv[1]
 
-task_versions = ["completion"]
+task_versions = ["response", "completion"]
 
 #--------------------------------------------------------
 # MAIN LOOP
 
-# create a dictionary to store the data for task versions (response and completion), for each prompt condition [condition], temperature
-output_df = pd.DataFrame(columns=['model_name', 'temperature', 'word', 'subject_num', 'condition', 'task_version', 'hex1', 'lab1', 'rgb1', 'hex2', 'lab2', 'rgb2', 'deltaE'])
-
 for task_version in task_versions:
-    output_df = runTask(output_df, num_subjects, temp, condition, words, prompts_dict, model_name, task_version, pipe)
+    # create a dictionary to store the data for task versions (response and completion), for each prompt condition [condition], temperature
+    output_df = pd.DataFrame(columns=['model_name', 'temperature', 'word', 'subject_num', 'condition', 'task_version', 'hex1', 'lab1', 'rgb1', 'hex2', 'lab2', 'rgb2', 'deltaE'])
+
+    output_df = runTask(output_df, num_subjects, temp, condition, words, prompts_dict, tokenizer, model_name,  model, device, task_version)
 
     # save the dictionary to a pickle file
-    with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s-COMPLETION.pickle' % (model_name, condition, num_subjects, temp), 'wb') as handle:
+    with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s-%s.pickle' % (model_name, condition, num_subjects, temp, task_version), 'wb') as handle:
         pickle.dump(output_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
     
 

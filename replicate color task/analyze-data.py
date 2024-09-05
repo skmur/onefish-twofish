@@ -18,7 +18,7 @@ def computeDeltaE(lab1, lab2):
     return deltaE
 
 # unpickle model data at pickle_path, merge with glasgow word ratings for the words therein, and return final pandas dataframe
-def getDF(pickle_path):
+def getDF(pickle_path, task_version):
     # unpickle the data
     with open(pickle_path, 'rb') as handle:
         df = pickle.load(handle)
@@ -32,6 +32,9 @@ def getDF(pickle_path):
 
     # merge the two dataframes on the word column
     df = pd.merge(df, df_word_ratings, on='word', how='inner')
+
+    # select rows in df that have the task_version
+    df = df[df['task_version'] == task_version]
 
     return df
 
@@ -99,7 +102,7 @@ def runRegression(df, x_label, y_label):
 
     return rss
 
-def plotInternalVSPopulation(df, x_var, y_var, x_label, y_label, model_name, condition, temp, rss, figure_dir):
+def plotInternalVSPopulation(df, x_var, y_var, x_label, y_label, model_name, condition, temp, task_version, rss, figure_dir):
 
     plt.title("Model=%s, prompt context=%s, temperature=%s \n RSS=%d" % (model_name, condition, temp, rss), fontsize=10)
 
@@ -125,13 +128,14 @@ def plotInternalVSPopulation(df, x_var, y_var, x_label, y_label, model_name, con
     plt.tight_layout()
     plt.gca().set_aspect('equal')
     # plt.savefig(f"./{figure_dir}/{model_name}-{x_var}_vs_{y_var}-prompt={condition}-temp={temp}.png")
-    plt.savefig(f"./{figure_dir}/{model_name}.png")
+    plt.savefig(f"./{figure_dir}/{model_name}-{task_version}.png")
     plt.clf()
 
 
 
 #----------------------------------------------------------------------
 model_names = ["starlingLM", "openchat"]
+task_versions = ["response", "completion"]
 conditions = ["none"]
 num_subjects = 100
 temp = "default"
@@ -141,27 +145,26 @@ figure_dir = "./figures/50words-100subjs"
 for model in model_names:
     for condition in conditions:
         pickle_path = f"{data_dir}/{model}-color-prompt={condition}-subjects={num_subjects}-temp={temp}.pickle"
-        df = getDF(pickle_path)
-        words = df['word'].unique()
+        for task_version in task_versions:
 
-        # internal delta e: get average of deltae between each participant's two color responses for each word
-        df_internalDeltaE = computeStats(df, "internalDeltaE")
+            df = getDF(pickle_path, task_version)
+            words = df['word'].unique()
 
-        df_populationDeltaE = getPopulationDeltaE(df, words)
-        df_populationDeltaE = computeStats(df_populationDeltaE, "populationDeltaE")
+            # internal delta e: get average of deltae between each participant's two color responses for each word
+            df_internalDeltaE = computeStats(df, "internalDeltaE")
 
-        df_deltaE = pd.merge(df_internalDeltaE, df_populationDeltaE, on='word', how='inner').reset_index()
+            df_populationDeltaE = getPopulationDeltaE(df, words)
+            df_populationDeltaE = computeStats(df_populationDeltaE, "populationDeltaE")
 
-        # print(df_deltaE)
-        # print(df_deltaE.columns)
+            df_deltaE = pd.merge(df_internalDeltaE, df_populationDeltaE, on='word', how='inner').reset_index()
 
-        rss = runRegression(df_deltaE, 'mean_internalDeltaE', 'mean_populationDeltaE')
+            rss = runRegression(df_deltaE, 'mean_internalDeltaE', 'mean_populationDeltaE')
 
-        plotInternalVSPopulation(df_deltaE, 'mean_populationDeltaE', 'mean_internalDeltaE', 'Average Population Delta E', 'Average Internal Delta E', model, condition, temp, rss, figure_dir)
+            plotInternalVSPopulation(df_deltaE, 'mean_populationDeltaE', 'mean_internalDeltaE', 'Average Population Delta E', 'Average Internal Delta E', model, condition, temp, task_version, rss, figure_dir)
 
-        # plot variance and entropy for human data vs. model data
+            # plot variance and entropy for human data vs. model data
 
-        # plot color bars for each word
+            # plot color bars for each word
 
 
 # plotData('variance', 'avg_internal_deltaE_gpt3.5', 'Variance in Human Judgements', 'Average Internal Delta E - GPT3.5')

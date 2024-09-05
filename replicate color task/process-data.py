@@ -11,50 +11,44 @@ def sanityCheck(df, num_subjects, num_words, num_task_versions):
         subj = df[df['subject_num'] == i]
        
         # make sure there are 50 unique words for each subject
-        assert len(subj['word'].unique()) == num_words
-
+        if len(subj['word'].unique()) != num_words:
+            print(i, subj['word'].unique())
+        
         # make sure there are 2 task versions for each subject
-        assert len(subj['task_version'].unique()) == num_task_versions
-
-    print("Sanity check passed")
-
-
-#----------------------------------------------------------------------
-zephyrGemma_40completion = "./output-data/zephyrGemma-color-prompt=none-subjects=40-temp=default.pickle"
-zephyrGemma_100response = "./output-data/zephyrGemma-color-prompt=none-subjects=100-temp=default.pickle"
-zephyrGemma_60completion = "TODO"
-
-# open each dataframe 
-with open(zephyrGemma_40completion, 'rb') as handle:
-    zephyrGemma_40completion_df = pickle.load(handle)
-
-# select the rows where task_version = completion
-zephyrGemma_40completion_df = zephyrGemma_40completion_df[zephyrGemma_40completion_df['task_version'] == 'completion']
-
-# open 100 response dataframe
-with open(zephyrGemma_100response, 'rb') as handle:
-    zephyrGemma_100response_df = pickle.load(handle)
-
-combine = pd.concat([zephyrGemma_40completion_df, zephyrGemma_100response_df])
-print(combine)
+        if len(subj['task_version'].unique()) != num_task_versions:
+            print (i, subj['task_version'].unique())
+    print("Sanity check complete")
 
 
 #----------------------------------------------------------------------
 
-zephyrMistral_60completion = "./output-data/zephyrMistral-color-prompt=none-subjects=60-temp=default.pickle"
-zephyrMistral_100response = "./output-data/zephyrMistral-color-prompt=none-subjects=100-temp=default.pickle"
-zephyrMistral_40completion = "TODO"
+# CHECK ALL MODELS
+models = ["gemmaWRONGTEMPLATE", "starlingLM", "openchat", "zephyrGemma", "zephyrMistral", "mistralInstruct", "llamaChatWRONGTEMPLATE"]
 
-# do the same for the Mistral model
-with open(zephyrMistral_60completion, 'rb') as handle:
-    zephyrMistral_60completion_df = pickle.load(handle)
+num_subjects = 100
+num_words = 50
+num_task_versions = 2
 
-# select the rows where task_version = completion
-zephyrMistral_60completion_df = zephyrMistral_60completion_df[zephyrMistral_60completion_df['task_version'] == 'completion']
+for model in models:
+    print("Checking model: ", model)
+    data = "./output-data/50words-100subjs/" + model + "-color-prompt=none-subjects=100-temp=default.pickle"
 
-# open 100 response dataframe
-with open(zephyrMistral_100response, 'rb') as handle:
-    zephyrMistral_100response_df = pickle.load(handle)
+    with open(data, 'rb') as f:
+        model_data = pickle.load(f)
+    
+    # reset index
+    print(model_data.columns)
+    
+    # print number of unique subjects 
+    print(model_data['subject_num'].nunique())
 
-combine = pd.concat([zephyrMistral_60completion_df, zephyrMistral_100response_df])
-print(combine)
+    # group by subject_num and task_version and print subject numbers where size is not 50
+    print(model_data.groupby(['subject_num', 'task_version']).size().reset_index(name='count').query('count < 50')['subject_num'].unique())
+        
+    #run sanity check
+    sanityCheck(model_data, num_subjects, num_words, num_task_versions)
+
+    print("---------------------------------------------------")
+    
+
+    
