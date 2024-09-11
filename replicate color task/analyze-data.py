@@ -3,7 +3,25 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
+import seaborn as sns
 from sklearn.linear_model import LinearRegression 
+from colormath.color_conversions import convert_color
+from colormath.color_objects import LabColor, LCHabColor, SpectralColor, sRGBColor, XYZColor, LCHuvColor, IPTColor, HSVColor
+from colormath.color_diff import delta_e_cie2000
+import sys
+import scipy.stats as stats
+
+def rgbToLab(rgb):
+    # convert to [0,1] scaled rgb values
+    scaled_rgb = (float(rgb[0])/255, float(rgb[1])/255, float(rgb[2])/255)
+    # create RGB object
+    rgbObject = sRGBColor(scaled_rgb[0], scaled_rgb[1], scaled_rgb[2])
+
+    # convert to Lab
+    labObject = convert_color(rgbObject, LabColor)
+    labTuple = labObject.get_value_tuple()
+
+    return labTuple
 
 def computeDeltaE(lab1, lab2):
     # compute delta L
@@ -17,14 +35,57 @@ def computeDeltaE(lab1, lab2):
 
     return deltaE
 
+def processHumanData():
+    # process human data
+    human_data = "../input-data/color-task/colorref.csv"
+    df_human = pd.read_csv(human_data)
+
+    # make new column with response_r, response_g, response_b combined into single column as a tuple
+    df_human['response_rgb'] = df_human[['response_r', 'response_g', 'response_b']].values.tolist()
+    # keep columns for 'participantID', 'word', 'response_rgb', condition
+    df_human = df_human[['participantID', 'word', 'response_rgb', 'condition']]
+
+    # apply rgbToLab to response_rgb value in each row and add as new column
+    df_human['response_lab'] = df_human['response_rgb'].apply(rgbToLab)
+
+    # pivot df on "condition"
+    df_human = df_human.pivot(index=['participantID', 'word'], columns='condition', values='response_rgb').reset_index()
+
+    # rename block1 and block2 columns to rgb1 and rgb2
+    df_human = df_human.rename(columns={'block1_target_trial': 'rgb1', 'block2_target_trial': 'rgb2'})
+
+    # apply rgbToLab to rgb1 and rgb2 columns and add as new columns lab1 and lab2
+    df_human['lab1'] = df_human['rgb1'].apply(rgbToLab)
+    df_human['lab2'] = df_human['rgb2'].apply(rgbToLab)
+
+    # compute deltaE for each row
+    df_human['deltaE'] = df_human.apply(lambda row: computeDeltaE(row['lab1'], row['lab2']), axis=1)
+
+    # fill in model_name, temperature, and condition columns for all rows
+
+    df_human['model_name'] = ["human"] * len(df_human)
+    df_human['temperature'] = ["default"] * len(df_human)
+    df_human['condition'] = ["na"] * len(df_human)
+
+
+    words = df_human['word'].unique()
+
+    return df_human, words
+
 # unpickle model data at pickle_path, merge with glasgow word ratings for the words therein, and return final pandas dataframe
 def getDF(pickle_path, task_version):
     # unpickle the data
     with open(pickle_path, 'rb') as handle:
         df = pickle.load(handle)
 
-    words = df['word'].unique()
+    if task_version == "both":
+        return df
+    else:
+        # select rows in df that have the task_version
+        df = df[df['task_version'] == task_version]
+        return df
 
+def mergeGlasgowRatings(df, words):
     # process the glasgow norms excel spreadsheet into pandas dataframe
     df_word_ratings = pd.read_csv("../input-data/color-task/compiled-variance-entropy-glasgowRatings.csv")
     # select rows in df_word_ratings that are in the words list
@@ -33,13 +94,11 @@ def getDF(pickle_path, task_version):
     # merge the two dataframes on the word column
     df = pd.merge(df, df_word_ratings, on='word', how='inner')
 
-    # select rows in df that have the task_version
-    df = df[df['task_version'] == task_version]
-
     return df
 
+
 def computeStats(df, metric):
-    stats = df.groupby('word')['deltaE'].agg(['mean', 'count', 'std'])
+    stats = df.groupby(['model_name', 'temperature', 'word', 'condition', 'variance', 'entropy', 'imageability', 'concreteness'])['deltaE'].agg(['mean', 'count', 'std'])
     
     ci95_hi = []
     ci95_lo = []    
@@ -57,13 +116,24 @@ def computeStats(df, metric):
 
 
 # population delta e: get average deltae between different participants' color response for each word (cross-block implementation)
-def getPopulationDeltaE(df, words):
-    words_list = []
-    popdeltaE_list = []
+def getPopulationDeltaE(df, words, model, temp, condition):
 
+    # words_list = []
+    # popdeltaE_list = []
+
+    # create df to store population deltaE for each word (and ['model_name', 'temperature', 'word', 'variance', 'entropy', 'imageability', 'concreteness'])
+    df_output = pd.DataFrame(columns=['model_name', 'temperature', 'word', 'condition', 'variance', 'entropy', 'imageability', 'concreteness', 'deltaE'])
+
+    # compute population deltaE for each word
     for word in words: 
         # select rows in df that have the word
         df_word = df[df['word'] == word]
+        # get variance, entropy, imageability, and concreteness values for this word
+        variance = df_word['variance'].iloc[0]
+        entropy = df_word['entropy'].iloc[0]
+        imageability = df_word['imageability'].iloc[0]
+        concreteness = df_word['concreteness'].iloc[0]
+        
         # get block 1 lab values
         lab1 = df_word['lab1'].tolist()
         # get block 2 lab values
@@ -74,20 +144,26 @@ def getPopulationDeltaE(df, words):
         # get deltaE for each pair
         popdeltaE = [computeDeltaE(pair[0], pair[1]) for pair in pairs]
 
-        words_list.extend([word]*len(popdeltaE))
-        popdeltaE_list.extend(popdeltaE)
+        # words_list.extend([word]*len(popdeltaE))
+        # popdeltaE_list.extend(popdeltaE)
 
-    dict = {'word': words_list, 'deltaE': popdeltaE_list} 
-    return pd.DataFrame(dict)
+        # add N=len(popdeltaE) rows of each word, variance, entropy, imageability, concreteness, to df_output
+        df_output = pd.concat([df_output, pd.DataFrame([[model, temp, word, condition, variance, entropy, imageability, concreteness, popdeltaE[i]] for i in range(len(popdeltaE))], columns=df_output.columns)], ignore_index=True)      
+                            
+    # dict = {'word': words_list, 'deltaE': popdeltaE_list} 
+
+    return df_output
 
 def runRegression(df, x_label, y_label):
-    # use linear regression model
-    model = LinearRegression() 
 
     X_train = np.array(df[x_label]).reshape(-1, 1)
-    
-    # fitting the data 
-    model.fit(X_train, df[y_label]) 
+
+    # use linear regression model
+    model = LinearRegression().fit(X_train, df[y_label]) 
+
+    intercept = model.intercept_
+    intercept = round(intercept, 2)
+
     # predicting values 
     y_pred = model.predict(X_train) 
 
@@ -98,77 +174,207 @@ def runRegression(df, x_label, y_label):
     # round to whole number
     rss = round(rss)
 
-    print('residual sum of squares is: '+ str(rss))
+    return rss, intercept
 
-    return rss
 
-def plotInternalVSPopulation(df, x_var, y_var, x_label, y_label, model_name, condition, temp, task_version, rss, figure_dir):
 
-    plt.title("Model=%s, prompt context=%s, temperature=%s \n RSS=%d" % (model_name, condition, temp, rss), fontsize=10)
 
-    plt.scatter(df[x_var], df[y_var])
-    plt.plot([0,100], [0,100], 'k--', alpha=0.5)
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
-    plt.ylim(0, 100)
-    plt.xlim(0, 100)
+
+def plotInternalVSPopulation(ax, df, x_var, y_var, x_label, y_label, rss, intercept):
+    ax.scatter(df[x_var], df[y_var])
+    ax.plot([0,100], [0,100], 'k--', alpha=0.5)
+    ax.set_ylim(0, 100)
+    ax.set_xlim(0, 100)
 
     # plot error bars for each point based on the 95% confidence interval
-    for i, txt in enumerate(df['word']):
-        plt.errorbar(df[x_var][i], df[y_var][i], xerr=df['ci95_hi_populationDeltaE'][i]-df['ci95_lo_populationDeltaE'][i], yerr=df['ci95_hi_internalDeltaE'][i]-df['ci95_lo_internalDeltaE'][i], fmt='o', color='black', alpha=0.5)
+    for i, txt in enumerate(df['word'].tolist()):
+        ax.errorbar(df[x_var][i], df[y_var][i], xerr=df['ci95_hi_populationDeltaE'][i]-df['ci95_lo_populationDeltaE'][i], yerr=df['ci95_hi_internalDeltaE'][i]-df['ci95_lo_internalDeltaE'][i], fmt='o', color='black', alpha=0.5)
 
     # plot correlation line on the graph
     corr = df[x_var].corr(df[y_var])
     plt.text(10, 90, "internal vs. population deltaE r = %.2f" % corr)
 
     # plot the words
-    for i, txt in enumerate(df['word']):
-        plt.annotate(txt, (df[x_var][i], df[y_var][i]))
+    for i, txt in enumerate(df['word'].tolist()):
+        ax.annotate(txt, (df[x_var][i], df[y_var][i]))
 
-    plt.tight_layout()
-    plt.gca().set_aspect('equal')
-    # plt.savefig(f"./{figure_dir}/{model_name}-{x_var}_vs_{y_var}-prompt={condition}-temp={temp}.png")
-    plt.savefig(f"./{figure_dir}/{model_name}-{task_version}.png")
-    plt.clf()
+    ax.set_title(f"{model}, RSS={rss}, intercept={intercept}")
+    ax.set_xlabel("Internal ΔE")
+    ax.set_ylabel("Population ΔE")
+    ax.set_aspect('equal')
+
+def plotModelVSHuman(ax, df, x_var, y_var, x_label, y_label):
+    ax.scatter(df[x_var], df[y_var])
+    ax.set_title(f"{model}")
+    ax.set_xlabel(x_label)
+    ax.set_ylabel("Population ΔE")
+    ax.set_ylim(0, 100)
+
+    if x_var == 'entropy':
+        ax.set_xlim(0, 7)
+    elif x_var == 'variance':
+        ax.set_xlim(0, 4000)
+
+    # plot error bars for each point based on the 95% confidence interval
+    for i, txt in enumerate(df['word']):
+        ax.errorbar(df[x_var][i], df[y_var][i], yerr=df['ci95_hi_internalDeltaE'][i]-df['ci95_lo_internalDeltaE'][i], fmt='o', color='black', alpha=0.5)
+
+    for i, txt in enumerate(df['word']):
+        ax.annotate(txt, (df[x_var][i], df[y_var][i]))
 
 
 
 #----------------------------------------------------------------------
-model_names = ["starlingLM", "openchat"]
-task_versions = ["response", "completion"]
-conditions = ["none"]
+model_names = ["human", "openchat", "starlingLM", "mistralInstruct", "zephyrMistral", "zephyrGemma", "llamaChat"]
+
+condition = "none"
 num_subjects = 100
+num_words = 50
 temp = "default"
 data_dir = "./output-data/50words-100subjs"
 figure_dir = "./figures/50words-100subjs"
+task_versions = ["response"]
 
-for model in model_names:
-    for condition in conditions:
+# save rss values for each model, condition, and task version
+df_rss = pd.DataFrame()
+all_deltae = pd.DataFrame()
+all_data = pd.DataFrame()
+
+for task_version in task_versions:
+    fig1, axs1 = plt.subplots(1, len(model_names), figsize=(5*len(model_names), 5))
+    fig1.suptitle(f"Internal vs. Population DeltaE for each model and task version={task_version}", fontsize=16)
+
+    fig2, axs2 = plt.subplots(1, len(model_names), figsize=(5*len(model_names), 5))
+    fig2.suptitle(f"Model Population DeltaE vs. Human Variance for each model and task version={task_version}", fontsize=16)
+
+    fig3, axs3 = plt.subplots(1, len(model_names), figsize=(5*len(model_names), 5))
+    fig3.suptitle(f"Model Population DeltaE vs. Human Entropy for each model and task version={task_version}", fontsize=16)
+
+    fig4, axs4 = plt.subplots(1, len(model_names), figsize=(5*len(model_names), 5))
+    fig4.suptitle(f"Model Population DeltaE vs. Imageability ratings for each model and task version={task_version}", fontsize=16)
+
+    fig5, axs5 = plt.subplots(1, len(model_names), figsize=(5*len(model_names), 5))
+    fig5.suptitle(f"Model Population DeltaE vs. Concreteness ratings for each model and task version={task_version}", fontsize=16)
+
+    for model in model_names:
         pickle_path = f"{data_dir}/{model}-color-prompt={condition}-subjects={num_subjects}-temp={temp}.pickle"
-        for task_version in task_versions:
+        # print model name, condition, and task version
+        print("MODEL: ", model)
+        print("CONDITION: ", condition)
+        print("TASK VERSION: ", task_version)
 
+        if model == "human":
+            df, words = processHumanData()
+            np.random.seed(42)
+            words = np.random.choice(words, num_words, replace=False)
+            df = df[df['word'].isin(words)]
+            # # group by participantID and word and count number of responses
+            # print(df.groupby(['word']).size().reset_index(name='count'))
+        else:
             df = getDF(pickle_path, task_version)
+            # remove rows where deltaE = -1 because model generation failed
+            df = df[df['deltaE'] != -1]
             words = df['word'].unique()
 
-            # internal delta e: get average of deltae between each participant's two color responses for each word
-            df_internalDeltaE = computeStats(df, "internalDeltaE")
+        print(len(words))
 
-            df_populationDeltaE = getPopulationDeltaE(df, words)
-            df_populationDeltaE = computeStats(df_populationDeltaE, "populationDeltaE")
+        all_data = pd.concat([all_data, df])
 
-            df_deltaE = pd.merge(df_internalDeltaE, df_populationDeltaE, on='word', how='inner').reset_index()
+        # merge with glasgow ratings
+        df = mergeGlasgowRatings(df, words)
 
-            rss = runRegression(df_deltaE, 'mean_internalDeltaE', 'mean_populationDeltaE')
+        #------------------------------------------------------------------
+        # internal delta e: get average of deltae between each participant's two color responses for each word
+        df_internalDeltaE = computeStats(df, "internalDeltaE")
 
-            plotInternalVSPopulation(df_deltaE, 'mean_populationDeltaE', 'mean_internalDeltaE', 'Average Population Delta E', 'Average Internal Delta E', model, condition, temp, task_version, rss, figure_dir)
+        df_populationDeltaE = getPopulationDeltaE(df, words, model, temp, condition)
+        df_populationDeltaE = computeStats(df_populationDeltaE, "populationDeltaE")
 
-            # plot variance and entropy for human data vs. model data
+        # note 9/10: for 
+        df_deltaE = pd.merge(df_internalDeltaE, df_populationDeltaE, on=['model_name', 'temperature', 'word', 'variance', 'entropy', 'imageability', 'concreteness'], how='inner').reset_index()
 
-            # plot color bars for each word
+        all_deltae = pd.concat([all_deltae, df_deltaE])
+
+        rss, intercept = runRegression(df_deltaE, 'mean_internalDeltaE', 'mean_populationDeltaE')
+        print('--> Residual sum of squares = '+ str(rss))
+        print('--> Intercept = '+ str(intercept))
+
+        # add rss to df_rss
+        df_rss = pd.concat([df_rss, pd.DataFrame([[model, condition, task_version, rss, intercept]], columns=['model_name', 'condition', 'task_version', 'rss', 'intercept'])])
+
+        # add a subplot for this model
+        ax = axs1[model_names.index(model)]
+        # plot internal vs. population deltaE
+        plotInternalVSPopulation(ax, df_deltaE, 'mean_populationDeltaE', 'mean_internalDeltaE',  'mean_populationDeltaE', 'mean_internalDeltaE', rss, intercept)
+
+        ax = axs2[model_names.index(model)]
+        # plot population deltaE vs. variance
+        plotModelVSHuman(ax, df_deltaE, 'variance', 'mean_populationDeltaE', 'variance', 'mean_populationDeltaE')
+
+        ax = axs3[model_names.index(model)]
+        # plot population deltaE vs. entropy
+        plotModelVSHuman(ax, df_deltaE, 'entropy', 'mean_populationDeltaE', 'entropy', 'mean_populationDeltaE')
+
+        
+    fig1.savefig(f"{figure_dir}/internalVSpopulationDeltaE-{task_version}.png")
+    fig2.savefig(f"{figure_dir}/populationDeltaEVSvariance-{task_version}.png")
+    fig3.savefig(f"{figure_dir}/populationDeltaEVSentropy-{task_version}.png")
+
+    plt.clf()
 
 
-# plotData('variance', 'avg_internal_deltaE_gpt3.5', 'Variance in Human Judgements', 'Average Internal Delta E - GPT3.5')
-# plotData('entropy', 'avg_pop_deltaE_gpt3.5', 'Entropy in Human Judgements', 'Average Population Delta E - GPT3.5')
-# # plotData("imageability", 'avg_internal_deltaE_gpt3.5', 'Imageability in Word Ratings', 'Average Internal Delta E - GPT3.5')
-# # plotData("concreteness", 'avg_internal_deltaE_gpt3.5', 'Concreteness in Word Ratings', 'Average Internal Delta E - GPT3.5')
-# # # plotData("variance", "prob", "Variance in Human Judgements", "Probability of agreement - GPT3.5")
+            
+    print("---------------------------------------------------")
+    # plot RSS values
+    sns.set_theme(style="whitegrid")
+    sns.barplot(x='model_name', y='rss', hue='task_version', data=df_rss[df_rss['task_version'] == task_version])
+    # rotate x-axis labels
+    plt.xticks(rotation=45)
+    plt.title(f"Model RSS values for color task")
+    plt.tight_layout()
+    plt.savefig(f"./{figure_dir}/RSS-task_version={task_version}-prompt={condition}.png")
+    plt.clf()
+
+
+
+    # save dfs
+    df_rss.to_pickle(f"{data_dir}/rss_values-task_version={task_version}-prompt={condition}.pickle")
+    all_deltae.to_pickle(f"{data_dir}/all_deltae-task_version={task_version}-prompt={condition}.pickle")
+    all_data.to_pickle(f"{data_dir}/all_data-task_version={task_version}-prompt={condition}.pickle")
+
+        
+
+
+
+# # load all_data
+# task_versions = ["response", "completion"]
+# condition = "none"
+
+# x_labels = ['mean_populationDeltaE', 'variance', 'entropy', 'imageability', 'concreteness']
+# y_labels = ['mean_internalDeltaE', 'mean_populationDeltaE', 'mean_populationDeltaE', 'mean_populationDeltaE', 'mean_populationDeltaE']
+
+# for task_version in task_versions:
+#     all_data = pd.read_pickle(f"{data_dir}/all_deltae-task_version={task_version}-prompt={condition}.pickle")
+
+#     metrics_fig, axs = plt.subplots(len(model_names), len(x_labels), figsize=(5*len(model_names), 5*len(x_labels)))
+#     metrics_fig.suptitle(f"RSS values for each model and task version={task_version}", fontsize=16)
+#     for i in range(len(model_names)):
+#         # select rows from all_data for this model
+#         df = all_data[all_data['model_name'] == model_names[i]]
+#         print(df.columns)
+
+#         for j in range(len(x_labels)):
+
+#             axis = axs[i, j]
+#             x_label = x_labels[j]
+#             y_label = y_labels[j]
+
+#             if x_label == 'mean_populationDeltaE':
+#                 plotInternalVSPopulation(axis, df, x_label, y_label, x_label, y_label)
+            
+#             else:
+#                 plotModelVSHuman(axis, df, x_label, y_label, x_label, y_label)
+
+
+# metrics_fig.tight_layout()
+# metrics_fig.savefig(f"{figure_dir}/allplots-{task_version}.png")
