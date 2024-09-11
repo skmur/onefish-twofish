@@ -19,25 +19,25 @@ def getOutput(messages, temp, tokenizer, pipe):
         do_sample=True,
         num_return_sequences=1,
         eos_token_id=tokenizer.eos_token_id,
-        max_length=150,
+        max_length=100,
     )
-    return output[0]['generated_text'][2]['content']
+    print(output)
+
+    return output[0]['generated_text']
 
 # place the simulated human's context and task prompt into model template to get the model's response.
 # extract the hex code from the response and convert it to Lab space
 # returns: HEX, LAB, and RGB values
 def getSample(context, prompt, temp, tokenizer, pipe):
-    # We use the tokenizer's chat template to format each message - see https://huggingface.co/docs/transformers/main/en/chat_templating
-    messages = [
-        {
-            "role": "system",
-            "content": context,
-        },
-        {"role": "user", "content": prompt},
-    ]
-
+    # https://llama.meta.com/docs/model-cards-and-prompt-formats/meta-llama-2/
+    # llama2-chat template
+    if context == "":
+        messages = "<s>[INST] {" + prompt + "} [/INST]"
+    else: 
+        messages = "<s>[INST] <<SYS>>\n {" +context + "}<</SYS>>\n\n{" + prompt + "} [/INST]"
+    
     output = getOutput(messages, temp, tokenizer, pipe)
-    print(output)
+
     counter = 0
     max_tries = 5
     # make sure there is a valid hex code in the response and extract it
@@ -82,7 +82,6 @@ def computeDeltaE(lab1, lab2):
 # store the data in a dictionary with format: ['word', 'subject_num', 'condition', 'task_version', 'hex1', 'lab1', 'rgb1', 'hex2', 'lab2', 'rgb2', 'deltaE']
 # returns: output_df
 def runTask(output_df, num_subjects, temp, condition, words, prompts_dict, model_name, task_version, tokenizer, pipe):
-
     print("Running main task for condition: %s" % condition, flush=True)
     # print experiment parameters
     print("--> Number of subjects: %d" % num_subjects, flush=True)
@@ -169,7 +168,7 @@ print("Number of test words %d" % (len(words)))
 
 #--------------------------------------------------------
 # set parameters
-num_subjects = 100
+num_subjects = 51
 temp = "default" # also run: 1.5, 2.0
 num_words = 50
 
@@ -187,7 +186,7 @@ else:
 if len(sys.argv) > 1:
     condition = sys.argv[1]
 
-task_versions = ["response", "completion"]
+task_versions = ["completion"]
 
 #--------------------------------------------------------
 # MAIN LOOP
