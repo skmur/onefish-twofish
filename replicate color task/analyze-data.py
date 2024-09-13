@@ -67,10 +67,7 @@ def processHumanData():
     df_human['temperature'] = ["default"] * len(df_human)
     df_human['condition'] = ["na"] * len(df_human)
 
-
-    words = df_human['word'].unique()
-
-    return df_human, words
+    return df_human
 
 # unpickle model data at pickle_path, merge with glasgow word ratings for the words therein, and return final pandas dataframe
 def getDF(pickle_path, task_version):
@@ -128,7 +125,7 @@ def getPopulationDeltaE(df, words, model, temp, condition):
     for word in words: 
         # select rows in df that have the word
         df_word = df[df['word'] == word]
-        # get variance, entropy, imageability, and concreteness values for this word
+        # get variance, entropy, imageability, and concreteness values for this word\
         variance = df_word['variance'].iloc[0]
         entropy = df_word['entropy'].iloc[0]
         imageability = df_word['imageability'].iloc[0]
@@ -214,6 +211,10 @@ def plotModelVSHuman(ax, df, x_var, y_var, x_label, y_label):
         ax.set_xlim(0, 7)
     elif x_var == 'variance':
         ax.set_xlim(0, 4000)
+    elif x_var == 'imageability':
+        ax.set_xlim(0, 8)
+    elif x_var == 'concreteness':
+        ax.set_xlim(0, 8)
 
     # plot error bars for each point based on the 95% confidence interval
     for i, txt in enumerate(df['word']):
@@ -233,7 +234,9 @@ num_words = 50
 temp = "default"
 data_dir = "./output-data/50words-100subjs"
 figure_dir = "./figures/50words-100subjs"
-task_versions = ["response"]
+task_versions = ["response", "completion"]
+words = ['suffering', 'optimism', 'clarity', 'butterfly', 'skin', 'hairdryer', 'regret', 'freedom', 'hate', 'crab', 'hammer', 'tendency', 'badger', 'fork', 'chaos', 'fame', 'discomfort', 'magazine', 'moose', 'insect', 'urge', 'grape', 'earphones', 'seat', 'anxiety', 'thoughtlessness', 'otter', 'playfulness', 'robin', 'beauty', 'nobility', 'needle', 'unicorn', 'obligation', 'wilderness', 'randomness', 'leg', 'stethoscope', 'bus', 'kangaroo', 'muscle', 'tarantula', 'romance', 'jealousy', 'disgust', 'relief', 'pain', 'defiance', 'friendliness', 'berry']
+
 
 # save rss values for each model, condition, and task version
 df_rss = pd.DataFrame()
@@ -264,19 +267,18 @@ for task_version in task_versions:
         print("TASK VERSION: ", task_version)
 
         if model == "human":
-            df, words = processHumanData()
-            np.random.seed(42)
-            words = np.random.choice(words, num_words, replace=False)
+            df = processHumanData()
             df = df[df['word'].isin(words)]
-            # # group by participantID and word and count number of responses
-            # print(df.groupby(['word']).size().reset_index(name='count'))
+            # group by participantID and word and count number of responses
+            print(df.groupby(['word']).size().reset_index(name='count'))
         else:
             df = getDF(pickle_path, task_version)
             # remove rows where deltaE = -1 because model generation failed
             df = df[df['deltaE'] != -1]
-            words = df['word'].unique()
 
-        print(len(words))
+
+        # if the set of words in this model's data is not the same as those in words list, set the smaller set as the new words list
+        words = list(set(words).intersection(set(df['word'].unique())))
 
         all_data = pd.concat([all_data, df])
 
@@ -315,66 +317,37 @@ for task_version in task_versions:
         # plot population deltaE vs. entropy
         plotModelVSHuman(ax, df_deltaE, 'entropy', 'mean_populationDeltaE', 'entropy', 'mean_populationDeltaE')
 
-        
+        ax = axs4[model_names.index(model)]
+        # plot population deltaE vs. imageability
+        plotModelVSHuman(ax, df_deltaE, 'imageability', 'mean_populationDeltaE', 'imageability', 'mean_populationDeltaE')
+
+        ax = axs5[model_names.index(model)]
+        # plot population deltaE vs. concreteness
+        plotModelVSHuman(ax, df_deltaE, 'concreteness', 'mean_populationDeltaE', 'concreteness', 'mean_populationDeltaE')
+
+
     fig1.savefig(f"{figure_dir}/internalVSpopulationDeltaE-{task_version}.png")
     fig2.savefig(f"{figure_dir}/populationDeltaEVSvariance-{task_version}.png")
     fig3.savefig(f"{figure_dir}/populationDeltaEVSentropy-{task_version}.png")
+    fig4.savefig(f"{figure_dir}/populationDeltaEVSimageability-{task_version}.png")
+    fig5.savefig(f"{figure_dir}/populationDeltaEVSconcreteness-{task_version}.png")
 
     plt.clf()
 
-
-            
     print("---------------------------------------------------")
-    # plot RSS values
-    sns.set_theme(style="whitegrid")
-    sns.barplot(x='model_name', y='rss', hue='task_version', data=df_rss[df_rss['task_version'] == task_version])
-    # rotate x-axis labels
-    plt.xticks(rotation=45)
-    plt.title(f"Model RSS values for color task")
-    plt.tight_layout()
-    plt.savefig(f"./{figure_dir}/RSS-task_version={task_version}-prompt={condition}.png")
-    plt.clf()
-
-
 
     # save dfs
     df_rss.to_pickle(f"{data_dir}/rss_values-task_version={task_version}-prompt={condition}.pickle")
     all_deltae.to_pickle(f"{data_dir}/all_deltae-task_version={task_version}-prompt={condition}.pickle")
     all_data.to_pickle(f"{data_dir}/all_data-task_version={task_version}-prompt={condition}.pickle")
 
-        
-
-
-
-# # load all_data
-# task_versions = ["response", "completion"]
-# condition = "none"
-
-# x_labels = ['mean_populationDeltaE', 'variance', 'entropy', 'imageability', 'concreteness']
-# y_labels = ['mean_internalDeltaE', 'mean_populationDeltaE', 'mean_populationDeltaE', 'mean_populationDeltaE', 'mean_populationDeltaE']
-
-# for task_version in task_versions:
-#     all_data = pd.read_pickle(f"{data_dir}/all_deltae-task_version={task_version}-prompt={condition}.pickle")
-
-#     metrics_fig, axs = plt.subplots(len(model_names), len(x_labels), figsize=(5*len(model_names), 5*len(x_labels)))
-#     metrics_fig.suptitle(f"RSS values for each model and task version={task_version}", fontsize=16)
-#     for i in range(len(model_names)):
-#         # select rows from all_data for this model
-#         df = all_data[all_data['model_name'] == model_names[i]]
-#         print(df.columns)
-
-#         for j in range(len(x_labels)):
-
-#             axis = axs[i, j]
-#             x_label = x_labels[j]
-#             y_label = y_labels[j]
-
-#             if x_label == 'mean_populationDeltaE':
-#                 plotInternalVSPopulation(axis, df, x_label, y_label, x_label, y_label)
-            
-#             else:
-#                 plotModelVSHuman(axis, df, x_label, y_label, x_label, y_label)
-
-
-# metrics_fig.tight_layout()
-# metrics_fig.savefig(f"{figure_dir}/allplots-{task_version}.png")
+    
+plt.figure(figsize=(10, 6))
+sns.set_theme(style="whitegrid")
+sns.barplot(x='model_name', y='rss', hue='task_version', data=df_rss)
+# rotate x-axis labels
+plt.xticks(rotation=45)
+plt.title(f"Model RSS values for color task")
+plt.tight_layout()
+plt.savefig(f"./{figure_dir}/RSS-prompt={condition}.png")
+plt.clf()
