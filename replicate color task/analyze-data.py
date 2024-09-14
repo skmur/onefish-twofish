@@ -201,7 +201,7 @@ def plotInternalVSPopulation(ax, df, x_var, y_var, x_label, y_label, rss, interc
     ax.set_aspect('equal')
 
 def plotModelVSHuman(ax, df, x_var, y_var, x_label, y_label):
-    ax.scatter(df[x_var], df[y_var])
+    sns.regplot(data=df, x=x_var, y=y_var, ax=ax)
     ax.set_title(f"{model}")
     ax.set_xlabel(x_label)
     ax.set_ylabel("Population ΔE")
@@ -218,7 +218,7 @@ def plotModelVSHuman(ax, df, x_var, y_var, x_label, y_label):
 
     # plot error bars for each point based on the 95% confidence interval
     for i, txt in enumerate(df['word']):
-        ax.errorbar(df[x_var][i], df[y_var][i], yerr=df['ci95_hi_internalDeltaE'][i]-df['ci95_lo_internalDeltaE'][i], fmt='o', color='black', alpha=0.5)
+        ax.errorbar(df[x_var][i], df[y_var][i], yerr=df['ci95_hi_internalDeltaE'][i]-df['ci95_lo_internalDeltaE'][i], color='y', alpha=0.5)
 
     for i, txt in enumerate(df['word']):
         ax.annotate(txt, (df[x_var][i], df[y_var][i]))
