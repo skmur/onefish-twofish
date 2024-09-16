@@ -11,6 +11,9 @@ from colormath.color_objects import LabColor, LCHabColor, SpectralColor, sRGBCol
 from colormath.color_diff import delta_e_cie2000
 import sys
 
+from torch.nn import DataParallel
+
+
 # get the model's generation for the prompt in appropriate chat template format
 # returns: model's response
 def getOutput(text, temp, tokenizer, model, device):
@@ -142,7 +145,18 @@ model = transformers.AutoModelForCausalLM.from_pretrained(model_path,
                                                           cache_dir=lab_storage_dir
                                                           )
 
-print("Model loaded...")
+# get available devices
+num_gpus = torch.cuda.device_count()
+print(f"Available devices: {num_gpus}")
+device_ids = list(range(num_gpus))
+print(f"Device IDs: {device_ids}")
+model = DataParallel(model, device_ids=device_ids)
+
+# Assuming `model` is your DataParallel model
+for name, param in model.module.named_parameters():
+    print(f"Parameter: {name}, Device: {param.device}")
+
+print("Model loaded and sharded...")
 
 # unpickle prompt dictionary
 with open('../input-data/prompts.pkl', 'rb') as handle:
@@ -177,17 +191,17 @@ if len(sys.argv) > 1:
 
 task_versions = ["response", "completion"]
 
-#--------------------------------------------------------
-# MAIN LOOP
+# #--------------------------------------------------------
+# # MAIN LOOP
 
-for task_version in task_versions:
-    # create a dictionary to store the data for task versions (response and completion), for each prompt condition [condition], temperature
-    output_df = pd.DataFrame(columns=['model_name', 'temperature', 'word', 'subject_num', 'condition', 'task_version', 'hex1', 'lab1', 'rgb1', 'hex2', 'lab2', 'rgb2', 'deltaE'])
+# for task_version in task_versions:
+#     # create a dictionary to store the data for task versions (response and completion), for each prompt condition [condition], temperature
+#     output_df = pd.DataFrame(columns=['model_name', 'temperature', 'word', 'subject_num', 'condition', 'task_version', 'hex1', 'lab1', 'rgb1', 'hex2', 'lab2', 'rgb2', 'deltaE'])
 
-    output_df = runTask(output_df, num_subjects, temp, condition, words, prompts_dict, tokenizer, model_name,  model, device, task_version)
+#     output_df = runTask(output_df, num_subjects, temp, condition, words, prompts_dict, tokenizer, model_name,  model, device, task_version)
 
-    # save the dictionary to a pickle file
-    with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s-%s.pickle' % (model_name, condition, num_subjects, temp, task_version), 'wb') as handle:
-        pickle.dump(output_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
+#     # save the dictionary to a pickle file
+#     with open('./output-data/%s-color-prompt=%s-subjects=%d-temp=%s-%s.pickle' % (model_name, condition, num_subjects, temp, task_version), 'wb') as handle:
+#         pickle.dump(output_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
     
 
