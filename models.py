@@ -1,13 +1,19 @@
 import torch
 import transformers
+from huggingface_hub import login
 
 class Model:
-    def __init__(self, cache_dir):
+    def __init__(self, cache_dir, hf_token):
         self.cache_dir = cache_dir
         self.tokenizer = None
         self.model = None
         self.pipeline = None
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.hf_token = hf_token
+
+        self.max_batch_size = 32
+
+        login(token=self.hf_token)
 
     def initialize_model(self, model_name, model_path):
         if model_name.lower() == "openchat":
@@ -75,6 +81,20 @@ class Model:
                                               torch_dtype=torch.bfloat16, 
                                               device_map="auto")
     
+    def shard_model(self):
+        if self.model is not None:
+            num_gpus = torch.cuda.device_count()
+            device_ids = list(range(num_gpus))
+            self.model = torch.nn.DataParallel(self.model, 
+                                               device_ids=device_ids)
+        elif self.pipeline is not None:
+            num_gpus = torch.cuda.device_count()
+            device_ids = list(range(num_gpus))
+            self.pipeline.model = torch.nn.DataParallel(self.pipeline.model, 
+                                                        device_ids=device_ids)
+        else:
+            raise ValueError("Model not initialized")
+        
     def format_prompt(self, model_name, context, prompt):
         if model_name.lower() == "openchat":
             return self._format_openchat_prompt(context, prompt)
@@ -137,6 +157,15 @@ class Model:
                                                 # temperature=temp
                                                 )
 
+    
+    def generate_batch(self, prompts, temperature):
+        outputs = []
+        for i in range(0, len(prompts), self.batch_size):
+            batch = prompts[i:i+self.batch_size]
+            batch_outputs = self.model.generate(batch, temperature=temperature)
+            outputs.extend(batch_outputs)
+        return outputs
+    
     def generate(self, model_name, messages, temp):
         if model_name.lower() == "openchat":
             return self._generate_openchat(messages, temp)
@@ -168,12 +197,18 @@ class Model:
         return output[0]['generated_text']
     
     def _generate_gemma(self, messages, temp):
-        inputs = self.tokenizer.encode(messages, 
-                              add_special_tokens=False, 
-                              return_tensors="pt")
-        outputs = self.model.generate(input_ids=inputs.to(self.device),
-                                      temperature=float(temp) if temp != "default" else None,max_new_tokens=150)
-        return self.tokenizer.decode(outputs[0])
+        # inputs = self.tokenizer.encode(messages, 
+        #                       add_special_tokens=False, 
+        #                       return_tensors="pt")
+        # outputs = self.model.module.generate(input_ids=inputs.to(self.device),
+        #                               temperature=float(temp) if temp != "default" else None,max_new_tokens=150)
+        # return self.tokenizer.decode(outputs[0])
+
+        inputs = self.tokenizer(messages, add_special_tokens=False, return_tensors="pt", padding=True, truncation=True).to(self.device)
+        outputs = self.model.module.generate(**inputs,
+                                             temperature=float(temp) if temp != "default" else None,
+                                             max_new_tokens=150)
+        return self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
     
     def _generate_zephyr(self, messages, temp):
         outputs = self.pipeline(messages,
