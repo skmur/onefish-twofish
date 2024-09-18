@@ -3,56 +3,64 @@ import random
 import pickle
 import pandas as pd
 
-wiki = load_dataset("wikipedia", "20220301.en", split='train')
+# wiki = load_dataset("wikipedia", "20220301.en", split='train')
 
-# filter out people and articles where first sentence is too short
-def filterWikipediaText(dataset, prompt_length):
-    filtered = {}
-    num_valid_articles = 0
+# # filter out people and articles where first sentence is too short
+# def filterWikipediaText(dataset, prompt_length):
+#     filtered = {}
+#     num_valid_articles = 0
 
-    for i in range(len(dataset)):
-        text = dataset[i]["text"]
-        text = text.split(".")[0]
-        # filter out people
-        if ("he" in text) or ("she" in text) or ("born" in text):
-            # print("--> Person found, getting new article...")
-            continue
+#     for i in range(len(dataset)):
+#         text = dataset[i]["text"]
+#         text = text.split(".")[0]
+#         # filter out people
+#         if ("he" in text) or ("she" in text) or ("born" in text):
+#             # print("--> Person found, getting new article...")
+#             continue
         
-        # make sure the first sentence is some minimum length
-        if len(text.split()) < prompt_length:
-            # print("--> Text too short, getting new article...")
-            continue
+#         # make sure the first sentence is some minimum length
+#         if len(text.split()) < prompt_length:
+#             # print("--> Text too short, getting new article...")
+#             continue
 
-        # if there are dates in the text, get a new article
-        if any(char.isdigit() for char in text):
-            # print("--> Date found, getting new article...")
-            continue
+#         # if there are dates in the text, get a new article
+#         if any(char.isdigit() for char in text):
+#             # print("--> Date found, getting new article...")
+#             continue
         
-        # remove disambiguation pages
-        if "may refer to" in text:
-            # print("--> Disambiguation page found, getting new article...")
-            continue
+#         # remove disambiguation pages
+#         if "refers to" in text:
+#             # print("--> Disambiguation page found, getting new article...")
+#             continue
+
+#         if "refer to" in text:
+#             # print("--> Disambiguation page found, getting new article...")
+#             continue
         
-        print("found an article!")
-        print(num_valid_articles, text)
-        filtered[num_valid_articles] = dataset[i]
-        num_valid_articles+=1
+#         print("found an article!")
+#         print(num_valid_articles, text)
+#         filtered[num_valid_articles] = dataset[i]
+#         num_valid_articles+=1
 
-    print("dataset length after processing: %s" % len(filtered))
+#     print("dataset length after processing: %s" % len(filtered))
 
-    return filtered
+#     return filtered
 
-#--------------------------------------------
+# #--------------------------------------------
 
 prompt_dict = {}
 prompt_length = 25
-num_subjects = 100
+num_subjects = 150
 
-wiki_filtered = filterWikipediaText(wiki, prompt_length)
+# wiki_filtered = filterWikipediaText(wiki, prompt_length)
 
 # # save filtered wikipedia
 # with open('./filtered-wiki.pkl', 'wb') as f:
 #     pickle.dump(wiki_filtered, f)
+
+# load filtered wikipedia
+with open('./filtered-wiki.pkl', 'rb') as f:
+    wiki_filtered = pickle.load(f)
 
 # Identity categories
 identities = {
@@ -73,28 +81,27 @@ for i in range(num_subjects):
     words =  random_context.split()
     nonsense_context = random.sample(words, len(words))
     nonsense_context = " ".join(nonsense_context)
+    # sentence case the nonsense context
+    nonsense_context = nonsense_context[0].upper() + nonsense_context[1:]
 
+    # add a period at the end of the nonsense and random context
+    if random_context[-1] != ".":
+        random_context = random_context + "."
+    if nonsense_context[-1] != ".":
+        nonsense_context = nonsense_context + "."
+
+    
     # create a random identity by selecting a random value from each identity category and put it in the following format:
     # "You are a [race] [gender] [hometown] in [state] who is [age] and works as a [occupation]."
     identity = "You are " + random.choice(identities["race"]) + " " + random.choice(identities["gender"]) + " " + random.choice(identities["hometown"]) + " in " + random.choice(identities["state"]) + " who is " + random.choice(identities["age"]) + " and works as " + random.choice(identities["occupation"]) + "."
 
     # add to dictionary
     prompt_dict[i] = {
-        "random_context": random_context,
-        "nonsense_context": nonsense_context,
+        "random": random_context,
+        "nonsense": nonsense_context,
         "identity": identity
     }
 
-    print("Random context: ", random_context)
-    print("Nonsense context: ", nonsense_context)
-    print("Identity: ", identity)
-
-    # print lengths of the prompts
-    print("Identity length: ", len(identity.split()))
-    print("Random context length: ", len(words))
-    print("Nonsense context length: ", len(nonsense_context.split()))
-
-    print("------------------")
 
 # pickle the dictionary
 with open('./prompts.pkl', 'wb') as f:
@@ -105,13 +112,19 @@ df = pd.DataFrame.from_dict(prompt_dict, orient='index')
 df.to_csv('./prompts.csv', index=False)
 
 
-# # --------------------------------------------
-# # uncomment to just unpickle and inspect the prompts
+# --------------------------------------------
+# uncomment to just unpickle and inspect the prompts
 
-# with open('./prompts.pkl', 'rb') as f:
-#     prompts = pickle.load(f)
+with open('./prompts.pkl', 'rb') as f:
+    prompts = pickle.load(f)
 
-# print(prompts)
+for key in prompts:
+    print("Subject: ", key)
+    print("-->" + prompts[key]['random'])
+    print("-->" + prompts[key]['nonsense'])
+    print("-->" + prompts[key]['identity'])
+    print("---------------------------------------------------")
+
 
 # # convert to df and save as csv
 # df = pd.DataFrame.from_dict(prompts, orient='index')

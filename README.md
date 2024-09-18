@@ -35,5 +35,6 @@ To reproduce, run files in this order:
         3. Running model: `./replicate concept task/Chinese Restaurant Model/Main.py` takes in formatted response data from previous step and runs CRP (using Model.py)
         - Outputs main clustering results in format ["Concept", "Iteration", "S_Chao1", "NumberOfPeople", "NumberOfTrials", "Prior", "Tables", "Alpha", "Posterior", "Chain", "ProbabilityOfSameTable"] to `./replicate concept task/Chinese Restaurant Model/`
         - Outputs each participant's MAP Table (for use in TSNE visualization) in format ["ID", "Table", "Concept"] to `./replicate concept task/Chinese Restaurant Model/`
+        4. Analysis: `./replicate concept task/human-concepts-replication.Rmd`
 
 
