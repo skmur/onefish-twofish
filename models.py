@@ -1,17 +1,19 @@
 import torch
 import transformers
 from huggingface_hub import login
+from datasets import Dataset
+from transformers.pipelines.pt_utils import KeyDataset
+from tqdm import tqdm
 
 class Model:
-    def __init__(self, cache_dir, hf_token):
+    def __init__(self, cache_dir, hf_token, batch_size):
         self.cache_dir = cache_dir
         self.tokenizer = None
         self.model = None
         self.pipeline = None
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.hf_token = hf_token
-
-        self.max_batch_size = 32
+        self.batch_size = batch_size
 
         login(token=self.hf_token)
 
@@ -22,15 +24,13 @@ class Model:
             self._initialize_starling(model_path)
         elif model_name.lower() == "mistral-instruct":
             self._initialize_mistral(model_path)
-        elif model_name.lower() == "zephyr-mistral":
+        elif model_name.lower() in ["zephyr-mistral", "zephyr-gemma"]:
             self._initialize_zephyr(model_path)
         # ADD ANOTHER RLHF MODEL HERE
         elif model_name.lower() == "llama-chat":
             self._initialize_llama(model_path)
         elif model_name.lower() == "gemma-instruct":
             self._initialize_gemma(model_path)
-        elif model_name.lower() == "zephyr-gemma":
-            self._initialize_zephyr(model_path)
         else:
             raise ValueError(f"Unknown model type: {model_name}")
 
@@ -73,13 +73,15 @@ class Model:
         self.pipeline = transformers.pipeline("text-generation", 
                              model=model_path, 
                              torch_dtype=torch.bfloat16, 
-                             device_map="auto")
+                             device_map="auto", 
+                             batch_size=self.batch_size)
         
     def _initialize_zephyr(self, model_path):
         self.pipeline = transformers.pipeline("text-generation",
                                               model=model_path, 
                                               torch_dtype=torch.bfloat16, 
-                                              device_map="auto")
+                                              device_map="auto", 
+                                              batch_size=self.batch_size)
     
     def shard_model(self):
         if self.model is not None:
@@ -88,10 +90,7 @@ class Model:
             self.model = torch.nn.DataParallel(self.model, 
                                                device_ids=device_ids)
         elif self.pipeline is not None:
-            num_gpus = torch.cuda.device_count()
-            device_ids = list(range(num_gpus))
-            self.pipeline.model = torch.nn.DataParallel(self.pipeline.model, 
-                                                        device_ids=device_ids)
+            pass
         else:
             raise ValueError("Model not initialized")
         
@@ -102,15 +101,13 @@ class Model:
             return self._format_starling_prompt(context, prompt)
         elif model_name.lower() == "mistral-instruct":
             return self._format_mistral_prompt(context, prompt)
-        elif model_name.lower() == "zephyr-mistral":
+        elif model_name.lower() in ["zephyr-mistral", "zephyr-gemma"]:
             return self._format_zephyr_prompt(context, prompt)
         # ADD ANOTHER RLHF MODEL HERE
         elif model_name.lower() == "llama-chat":
             return self._format_llama_prompt(context, prompt)
         elif model_name.lower() == "gemma-instruct":
             return self._format_gemma_prompt(context, prompt)
-        elif model_name.lower() == "zephyr-gemma":
-            return self._format_zephyr_prompt(context, prompt)
         else:
             raise ValueError(f"Unknown model type: {model_name}")
         
@@ -154,17 +151,7 @@ class Model:
         return self.pipeline.tokenizer.apply_chat_template(messages,
                                                 tokenize=False,
                                                 add_generation_prompt=True,
-                                                # temperature=temp
                                                 )
-
-    
-    def generate_batch(self, prompts, temperature):
-        outputs = []
-        for i in range(0, len(prompts), self.batch_size):
-            batch = prompts[i:i+self.batch_size]
-            batch_outputs = self.model.generate(batch, temperature=temperature)
-            outputs.extend(batch_outputs)
-        return outputs
     
     def generate(self, model_name, messages, temp):
         if model_name.lower() == "openchat":
@@ -173,28 +160,31 @@ class Model:
             return self._generate_starling(messages, temp)
         elif model_name.lower() == "mistral-instruct":
             return self._generate_mistral(messages, temp)
-        elif model_name.lower() == "zephyr-mistral":
+        elif model_name.lower() in ["zephyr-mistral", "zephyr-gemma"]:
             return self._generate_zephyr(messages, temp)
         # ADD ANOTHER RLHF MODEL HERE
         elif model_name.lower() == "llama-chat":
             return self._generate_llama(messages, temp)
         elif model_name.lower() == "gemma-instruct":
             return self._generate_gemma(messages, temp)
-        elif model_name.lower() == "zephyr-gemma":
-            return self._generate_zephyr(messages, temp)
         else:
             raise ValueError(f"Unknown model type: {model_name}")
     
     def _generate_llama(self, messages, temp):
-        output = self.pipeline(
-            messages,
-            do_sample=True,
-            max_length=100,
-            num_return_sequences=1,
-            eos_token_id=self.tokenizer.eos_token_id,
-            temperature=float(temp) if temp != "default" else None,
-        )
-        return output[0]['generated_text']
+        dataset = Dataset.from_dict({"prompt": messages})
+        key_dataset = KeyDataset(dataset, "prompt")
+        outputs = []
+        for out in tqdm(self.pipeline(key_dataset,
+                                      do_sample=True,
+                                      max_length=100,
+                                      num_return_sequences=1,
+                                      eos_token_id=self.tokenizer.eos_token_id,
+                                      temperature=float(temp) if temp != "default" else None,
+                                      batch_size=self.batch_size), 
+                        total=len(dataset)):
+            outputs.extend([item['generated_text'] for item in out])
+        
+        return outputs
     
     def _generate_gemma(self, messages, temp):
         # inputs = self.tokenizer.encode(messages, 
@@ -211,15 +201,23 @@ class Model:
         return self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
     
     def _generate_zephyr(self, messages, temp):
-        outputs = self.pipeline(messages,
-                                do_sample=True,
-                                max_new_tokens=100,
-                                temperature=float(temp) if temp != "default" else None,
-                                )
-        return outputs[0]["generated_text"]
+        dataset = Dataset.from_dict({"prompt": messages})
+        key_dataset = KeyDataset(dataset, "prompt")
+        # Process batches using the pipeline
+        outputs = []
+        for out in tqdm(self.pipeline(key_dataset, 
+                                      batch_size=self.batch_size,
+                                      do_sample=True,
+                                      max_new_tokens=100,
+                                      temperature=float(temp) if temp != "default" else None), 
+                        total=len(dataset)):
+            outputs.extend([item['generated_text'] for item in out])
+
+        print(outputs)
+        return outputs
     
     def _generate_mistral(self, messages, temp):
-        generated_ids = self.model.generate(messages.to(self.device), 
+        generated_ids = self.model.module.generate(messages.to(self.device), 
                                             do_sample=True,
                                             max_new_tokens=150, 
                                             pad_token_id=self.tokenizer.eos_token_id,
@@ -230,7 +228,7 @@ class Model:
     
     def _generate_openchat(self, messages, temp):
         inputs = self.tokenizer.encode(messages, return_tensors="pt")
-        output = self.model.generate(inputs.to(self.device), 
+        output = self.model.module.generate(inputs.to(self.device), 
                             max_length=200,
                             pad_token_id=self.tokenizer.pad_token_id,
                             eos_token_id=self.tokenizer.eos_token_id,

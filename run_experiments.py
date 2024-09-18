@@ -9,6 +9,8 @@ from PIL import ImageColor
 from colormath.color_objects import LabColor, sRGBColor
 from colormath.color_conversions import convert_color
 from colormath.color_diff import delta_e_cie2000
+from datasets import Dataset
+
 
 from models import Model
 
@@ -117,19 +119,22 @@ def run_color_task(output_df, args, words, prompts_dict, model):
             all_prompts.extend([model.format_prompt(args.model_name, context, task_prompt)] * 2)
             prompt_metadata.extend([(subject, word)] * 2)
 
-    # check that all prompts are strings
-    print(all(isinstance(prompt, str) for prompt in all_prompts))
+    # print number of prompts
+    print(f"Number of prompts: {len(all_prompts)}")
 
-    # batch the prompts to prevent CUDA out of memory erros and concatenate outputs into all outputs
-    all_outputs = []
+    # for models that use Huggingface pipelines wrap in Dataset and allow pipeline call to handle batching
+    if hasattr(model, 'pipeline'):
+        all_outputs = model.generate(args.model_name, all_prompts, args.temperature)
+    # otherwise, manually batch the prompts
+    else:
+        all_outputs = []
+        for i in range(0, len(all_prompts), args.batch_size):
+            batch_outputs = model.generate(args.model_name, all_prompts[i:i+args.batch_size], args.temperature)
+            all_outputs.extend(batch_outputs)
+            print(batch_outputs)
 
-    for i in range(0, len(all_prompts), args.batch_size):
-        batch_outputs = model.generate(args.model_name, all_prompts[i:i+10], args.temperature)
-        all_outputs.extend(batch_outputs)
-        print(batch_outputs)
-
-    # # Batch generate all prompts
-    # batch_outputs = model.generate(args.model_name, all_prompts, args.temperature)
+    # print number of outputs
+    print(f"Number of outputs: {len(all_outputs)}")
 
     # Process outputs
     for i in range(0, len(all_outputs), 2):
@@ -142,8 +147,8 @@ def run_color_task(output_df, args, words, prompts_dict, model):
         print(f"Word: {word}, Subject: {subject}, HEX1: {hex1}, HEX2: {hex2}, DeltaE: {delta_e:.2f}")
 
         new_row = pd.DataFrame([[args.model_name, args.temperature, word,
-                                 subject, args.prompt_condition, 
-                                 hex1, lab1, rgb1, hex2, lab2, rgb2, delta_e]], 
+                                 subject, args.prompt_condition, all_outputs[i],
+                                 hex1, lab1, rgb1, all_outputs[i+1], hex2, lab2, rgb2, delta_e]], 
                                  columns=output_df.columns)
         output_df = pd.concat([output_df, new_row], ignore_index=True)
 
@@ -164,7 +169,7 @@ def setup_color_task(args, model, prompts_dict):
         words = np.random.choice(words, args.num_words, replace=False)
         print("Subsampled words:", words)
 
-    output_df = pd.DataFrame(columns=['model_name', 'temperature', 'word', 'subject_num', 'condition', 'hex1', 'lab1', 'rgb1', 'hex2', 'lab2', 'rgb2', 'deltaE'])
+    output_df = pd.DataFrame(columns=['model_name', 'temperature', 'word', 'subject_num', 'condition', 'generation1', 'hex1', 'lab1', 'rgb1', 'generation2', 'hex2', 'lab2', 'rgb2', 'deltaE'])
 
     output_df = run_color_task(output_df, args, words, prompts_dict, model)
 
@@ -356,10 +361,13 @@ def parse_args():
 def main():
     args = parse_args()
 
-    model = Model(args.lab_storage_dir, args.hf_token)
+    model = Model(args.lab_storage_dir, args.hf_token, args.batch_size)
     model.initialize_model(args.model_name, args.model_path)
     model.shard_model()
 
+    # print model name and path
+    print(f"Model name: {args.model_name}")
+    print(f"Model path: {args.model_path}")
     print("Model loaded and sharded...")
 
     with open('./input-data/prompts.pkl', 'rb') as handle:
