@@ -14,6 +14,7 @@ class Model:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.hf_token = hf_token
         self.batch_size = batch_size
+        self.max_new_tokens = 300
 
         login(token=self.hf_token)
 
@@ -27,14 +28,15 @@ class Model:
         elif model_name.lower() in ["zephyr-mistral", "zephyr-gemma"]:
             self._initialize_zephyr(model_path)
         # ADD ANOTHER RLHF MODEL HERE
-        elif model_name.lower() == "llama-chat":
+        elif model_name.lower() in ["llama2", "llama2-chat"]:
             self._initialize_llama(model_path)
         elif model_name.lower() == "gemma-instruct":
             self._initialize_gemma(model_path)
         else:
-            raise ValueError(f"Unknown model type: {model_name}")
+            raise ValueError(f"initialize_model() received unknown model type: {model_name}")
 
     def _initialize_openchat(self, model_path):
+        torch.set_float32_matmul_precision('high')
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_path,
                                                                     cache_dir=self.cache_dir)
         self.model = transformers.AutoModelForCausalLM.from_pretrained(model_path,
@@ -45,14 +47,9 @@ class Model:
                                            fullgraph=True)
 
     def _initialize_starling(self, model_path):
-        self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_path,
-                                                                    cache_dir=self.cache_dir)
-        self.model = transformers.AutoModelForCausalLM.from_pretrained(model_path,
-                                                                       cache_dir=self.cache_dir)
-        self.model.generation_config.cache_implementation = "static"
-        self.model.forward = torch.compile(self.model.forward,
-                                           mode="reduce-overhead",
-                                           fullgraph=True)
+        #same as openchat
+        return self._initialize_openchat(model_path)
+
 
     def _initialize_mistral(self, model_path):
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_path,
@@ -66,7 +63,14 @@ class Model:
                                                           device_map="auto",
                                                           torch_dtype=torch.bfloat16,
                                                           cache_dir=self.cache_dir)
-
+        
+    def _initialize_zephyr(self, model_path):
+        self.pipeline = transformers.pipeline("text-generation",
+                                              model=model_path, 
+                                              torch_dtype=torch.bfloat16, 
+                                              device_map="auto", 
+                                              batch_size=self.batch_size)
+    
     def _initialize_llama(self, model_path):
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_path,
                                                                cache_dir=self.cache_dir)
@@ -75,13 +79,6 @@ class Model:
                              torch_dtype=torch.bfloat16, 
                              device_map="auto", 
                              batch_size=self.batch_size)
-        
-    def _initialize_zephyr(self, model_path):
-        self.pipeline = transformers.pipeline("text-generation",
-                                              model=model_path, 
-                                              torch_dtype=torch.bfloat16, 
-                                              device_map="auto", 
-                                              batch_size=self.batch_size)
     
     def shard_model(self):
         if self.model is not None:
@@ -101,51 +98,97 @@ class Model:
             return self._format_starling_prompt(context, prompt)
         elif model_name.lower() == "mistral-instruct":
             return self._format_mistral_prompt(context, prompt)
-        elif model_name.lower() in ["zephyr-mistral", "zephyr-gemma"]:
-            return self._format_zephyr_prompt(context, prompt)
+        elif model_name.lower() == "zephyr-mistral":
+            return self._format_zephyrMistral_prompt(context, prompt)
+        elif model_name.lower() == "zephyr-gemma":
+            return self._format_zephyrGemma_prompt(context, prompt)
         # ADD ANOTHER RLHF MODEL HERE
-        elif model_name.lower() == "llama-chat":
+        elif model_name.lower() == "llama2":
             return self._format_llama_prompt(context, prompt)
+        elif model_name.lower() == "llama2-chat":
+            return self._format_llamaChat_prompt(context, prompt)
         elif model_name.lower() == "gemma-instruct":
             return self._format_gemma_prompt(context, prompt)
         else:
-            raise ValueError(f"Unknown model type: {model_name}")
+            raise ValueError(f"format_prompt() received unknown model type: {model_name}")
         
     def _format_openchat_prompt(self, context, prompt):
         if context == "":
-            return f"GPT4 Correct User: {prompt}.<|end_of_turn|>GPT4 Correct Assistant:"
+            messages = [
+                {"role": "user", "content": prompt},
+            ]
         else:
-            return f"GPT4 Correct User: {context}. {prompt}<|end_of_turn|>GPT4 Correct Assistant:"
+            messages = [
+                {"role": "user", "content": context + " " + prompt},
+            ]
+
+        return self.tokenizer.apply_chat_template(messages, 
+                                                  tokenize=False,
+                                                  add_generation_prompt=True)
     
     def _format_starling_prompt(self, context, prompt):
         # same as openchat
         return self._format_openchat_prompt(context, prompt)
 
     def _format_llama_prompt(self, context, prompt):
+        # https://llama.meta.com/docs/model-cards-and-prompt-formats/meta-llama-2/
         if context == "":
-            return f"<s>[INST] {{{prompt}}} [/INST]"
+            return f"<s>{prompt}"
         else:
-            return f"<s>[INST] <<SYS>>\n {{{context}}}<</SYS>>\n\n{{{prompt}}} [/INST]"
+            return f"<s>{context} {prompt}"
+
+    def _format_llamaChat_prompt(self, context, prompt):
+        # https://llama.meta.com/docs/model-cards-and-prompt-formats/meta-llama-2/
+        if context == "":
+            return f"<s>[INST] {prompt} [/INST]"
+        else:
+            return f"<s>[INST] <<SYS>>\n {context}<</SYS>>\n\n{prompt} [/INST]"
 
     def _format_gemma_prompt(self, context, prompt):
-        messages = [
-            {"role": "user", "content": context + prompt},
-        ]
+        if context == "":
+            messages = [
+                {"role": "user", "content": prompt},
+            ]
+        else:
+            messages = [
+                {"role": "user", "content": context + " " + prompt},
+            ]
+
         return self.tokenizer.apply_chat_template(messages, 
                                                   tokenize=False,
                                                   add_generation_prompt=True)
     
     def _format_mistral_prompt(self, context, prompt):
-        messages = [
-            {"role": "user", "content": context + prompt}
+        if context == "":
+            messages = [
+                {"role": "user", "content": prompt},
+            ]
+        else:
+            messages = [
+                {"role": "system", "content": context},
+                {"role": "user", "content": prompt},
             ]
         
-        return self.tokenizer.apply_chat_template(messages, return_tensors="pt")
+        return self.tokenizer.apply_chat_template(messages, tokenize=False)
     
-    def _format_zephyr_prompt(self, context, prompt):
+    def _format_zephyrMistral_prompt(self, context, prompt):
         messages = [
             {"role": "system", "content": context},
             {"role": "user", "content": prompt},
+            ]
+
+        return self.pipeline.tokenizer.apply_chat_template(messages,
+                                                tokenize=False,
+                                                add_generation_prompt=True,
+                                                )
+    
+    def _format_zephyrGemma_prompt(self, context, prompt):
+        # according to model card, zephyrGemma doesn't support the system role, 
+        # so add context to the user role
+        context_prompt = context + " " + prompt
+        messages = [
+            {"role": "system", "content": ""}, 
+            {"role": "user", "content": context_prompt},
             ]
 
         return self.pipeline.tokenizer.apply_chat_template(messages,
@@ -160,23 +203,27 @@ class Model:
             return self._generate_starling(messages, temp)
         elif model_name.lower() == "mistral-instruct":
             return self._generate_mistral(messages, temp)
-        elif model_name.lower() in ["zephyr-mistral", "zephyr-gemma"]:
-            return self._generate_zephyr(messages, temp)
+        elif model_name.lower() == "zephyr-mistral":
+            return self._generate_zephyrMistral(messages, temp)
+        elif model_name.lower() == "zephyr-gemma":
+            return self._generate_zephyrGemma(messages, temp)
         # ADD ANOTHER RLHF MODEL HERE
-        elif model_name.lower() == "llama-chat":
+        elif model_name.lower() in ["llama2", "llama2-chat"]:
             return self._generate_llama(messages, temp)
         elif model_name.lower() == "gemma-instruct":
             return self._generate_gemma(messages, temp)
         else:
-            raise ValueError(f"Unknown model type: {model_name}")
+            raise ValueError(f"generate() received unknown model type: {model_name}")
     
+    # HANDLES BATCHING
     def _generate_llama(self, messages, temp):
         dataset = Dataset.from_dict({"prompt": messages})
         key_dataset = KeyDataset(dataset, "prompt")
         outputs = []
+        self.pipeline.tokenizer.pad_token_id = self.pipeline.model.config.eos_token_id
         for out in tqdm(self.pipeline(key_dataset,
                                       do_sample=True,
-                                      max_length=100,
+                                      max_length=self.max_new_tokens,
                                       num_return_sequences=1,
                                       eos_token_id=self.tokenizer.eos_token_id,
                                       temperature=float(temp) if temp != "default" else None,
@@ -186,21 +233,26 @@ class Model:
         
         return outputs
     
+    # HANDLES BATCHING
     def _generate_gemma(self, messages, temp):
-        # inputs = self.tokenizer.encode(messages, 
-        #                       add_special_tokens=False, 
-        #                       return_tensors="pt")
-        # outputs = self.model.module.generate(input_ids=inputs.to(self.device),
-        #                               temperature=float(temp) if temp != "default" else None,max_new_tokens=150)
-        # return self.tokenizer.decode(outputs[0])
-
-        inputs = self.tokenizer(messages, add_special_tokens=False, return_tensors="pt", padding=True, truncation=True).to(self.device)
-        outputs = self.model.module.generate(**inputs,
-                                             temperature=float(temp) if temp != "default" else None,
-                                             max_new_tokens=150)
-        return self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
+        all_outputs = []
+        for i in tqdm(range(0, len(messages), self.batch_size)):
+            batch = messages[i:i+self.batch_size]
+            inputs = self.tokenizer(batch,
+                                    add_special_tokens=False,
+                                    return_tensors="pt",
+                                    padding=True, 
+                                    truncation=True).to(self.device)
+            outputs = self.model.module.generate(**inputs,
+                                                temperature=float(temp) if temp != "default" else None,
+                                                max_new_tokens=self.max_new_tokens)
+            decoded_outputs = self.tokenizer.batch_decode(outputs,
+                                                          skip_special_tokens=True)
+            all_outputs.extend(decoded_outputs)
+        return all_outputs
     
-    def _generate_zephyr(self, messages, temp):
+    # HANDLES BATCHING
+    def _generate_zephyrGemma(self, messages, temp):
         dataset = Dataset.from_dict({"prompt": messages})
         key_dataset = KeyDataset(dataset, "prompt")
         # Process batches using the pipeline
@@ -208,36 +260,76 @@ class Model:
         for out in tqdm(self.pipeline(key_dataset, 
                                       batch_size=self.batch_size,
                                       do_sample=True,
-                                      max_new_tokens=100,
-                                      temperature=float(temp) if temp != "default" else None), 
+                                      max_new_tokens=self.max_new_tokens,
+                                      temperature=float(temp) if temp != "default" else None),
+                                      stop_sequence="<|im_end|>",
                         total=len(dataset)):
             outputs.extend([item['generated_text'] for item in out])
 
         print(outputs)
         return outputs
     
-    def _generate_mistral(self, messages, temp):
-        generated_ids = self.model.module.generate(messages.to(self.device), 
-                                            do_sample=True,
-                                            max_new_tokens=150, 
-                                            pad_token_id=self.tokenizer.eos_token_id,
-                                            temperature=float(temp) if temp != "default" else None)
-        
-        outputs = self.tokenizer.batch_decode(generated_ids)
-        return outputs[0]
-    
-    def _generate_openchat(self, messages, temp):
-        inputs = self.tokenizer.encode(messages, return_tensors="pt")
-        output = self.model.module.generate(inputs.to(self.device), 
-                            max_length=200,
-                            pad_token_id=self.tokenizer.pad_token_id,
-                            eos_token_id=self.tokenizer.eos_token_id,
-                            do_sample=True,
-                            temperature=float(temp) if temp != "default" else None)
-        output = self.tokenizer.decode(output[0], skip_special_tokens=True)
+    # HANDLES BATCHING
+    def _generate_zephyrMistral(self, messages, temp):
+        dataset = Dataset.from_dict({"prompt": messages})
+        key_dataset = KeyDataset(dataset, "prompt")
+        # Process batches using the pipeline
+        outputs = []
+        for out in tqdm(self.pipeline(key_dataset, 
+                                      batch_size=self.batch_size,
+                                      do_sample=True,
+                                      max_new_tokens=self.max_new_tokens,
+                                      temperature=float(temp) if temp != "default" else None),
+                        total=len(dataset)):
+            outputs.extend([item['generated_text'] for item in out])
 
-        return output
+        print(outputs)
+        return outputs
+
+    # HANDLES BATCHING
+    def _generate_mistral(self, messages, temp):
+        self.tokenizer.pad_token = self.tokenizer.eos_token
+
+        all_outputs = []
+        for i in tqdm(range(0, len(messages), self.batch_size)):
+            batch = messages[i:i+self.batch_size]
+            inputs = self.tokenizer(batch, 
+                                    return_tensors="pt",
+                                    padding=True,
+                                    truncation=True).to(self.device)
+            outputs = self.model.module.generate(**inputs,
+                                            do_sample=True,
+                                            max_new_tokens=self.max_new_tokens, 
+                                            temperature=float(temp) if temp != "default" else None,
+                                            pad_token_id=self.tokenizer.eos_token_id,
+                                            )
+            decoded_outputs = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
+            
+            all_outputs.extend(decoded_outputs)
+        return all_outputs
+
+    # HANDLES BATCHING
+    def _generate_openchat(self, messages, temp):
+        self.tokenizer.pad_token = self.tokenizer.eos_token
+
+        all_outputs = []
+        for i in tqdm(range(0, len(messages), self.batch_size)):
+            batch = messages[i:i+self.batch_size]
+            print(batch[:2])
+            inputs = self.tokenizer(batch, 
+                                    return_tensors="pt",
+                                    padding=True,
+                                    truncation=True).to(self.device)
+            outputs = self.model.module.generate(**inputs, 
+                                                 max_length=self.max_new_tokens,
+                                                 do_sample=True,
+                                                 temperature=float(temp) if temp != "default" else None)
+            outputs = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
+            print(outputs[:2])
+            all_outputs.extend(outputs)
+        return all_outputs
     
+    # HANDLES BATCHING
     def _generate_starling(self, messages, temp):
         # same as openchat
         return self._generate_openchat(messages, temp)
