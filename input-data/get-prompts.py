@@ -50,7 +50,7 @@ import pandas as pd
 
 prompt_dict = {}
 prompt_length = 25
-num_subjects = 150
+num_subjects = 1800
 
 # wiki_filtered = filterWikipediaText(wiki, prompt_length)
 
@@ -104,18 +104,18 @@ for i in range(num_subjects):
 
 
 # pickle the dictionary
-with open('./prompts.pkl', 'wb') as f:
+with open('./prompts_concept_task.pkl', 'wb') as f:
     pickle.dump(prompt_dict, f)
 
 # convert to df and save as csv
 df = pd.DataFrame.from_dict(prompt_dict, orient='index')
-df.to_csv('./prompts.csv', index=False)
+df.to_csv('./prompts_concept_task.csv', index=False)
 
 
 # --------------------------------------------
 # uncomment to just unpickle and inspect the prompts
 
-with open('./prompts.pkl', 'rb') as f:
+with open('./prompts_concept_task.pkl', 'rb') as f:
     prompts = pickle.load(f)
 
 for key in prompts:
