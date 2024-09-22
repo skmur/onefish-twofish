@@ -8,6 +8,7 @@ from tqdm import tqdm
 class Model:
     def __init__(self, cache_dir, hf_token, batch_size):
         self.cache_dir = cache_dir
+        print(self.cache_dir)
         self.tokenizer = None
         self.model = None
         self.pipeline = None
@@ -185,10 +186,13 @@ class Model:
     def _format_zephyrGemma_prompt(self, context, prompt):
         # according to model card, zephyrGemma doesn't support the system role, 
         # so add context to the user role
-        context_prompt = context + " " + prompt
-        messages = [
-            {"role": "system", "content": ""}, 
-            {"role": "user", "content": context_prompt},
+        if context == "":
+            messages = [
+                {"role": "user", "content": prompt},
+            ]
+        else:
+            messages = [
+                {"role": "user", "content": context + " " + prompt},
             ]
 
         return self.pipeline.tokenizer.apply_chat_template(messages,
@@ -255,14 +259,15 @@ class Model:
     def _generate_zephyrGemma(self, messages, temp):
         dataset = Dataset.from_dict({"prompt": messages})
         key_dataset = KeyDataset(dataset, "prompt")
+        print(self.batch_size)
         # Process batches using the pipeline
         outputs = []
         for out in tqdm(self.pipeline(key_dataset, 
                                       batch_size=self.batch_size,
                                       do_sample=True,
                                       max_new_tokens=self.max_new_tokens,
-                                      temperature=float(temp) if temp != "default" else None),
-                                      stop_sequence="<|im_end|>",
+                                      temperature=float(temp) if temp != "default" else None,
+                                      stop_sequence="<|im_end|>"),
                         total=len(dataset)):
             outputs.extend([item['generated_text'] for item in out])
 
