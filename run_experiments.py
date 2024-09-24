@@ -13,9 +13,9 @@ from tqdm import tqdm
 
 from models import Model
 
-#================================================================================================
+#=====================================================================================
 # Functions for color task
-#================================================================================================
+#=====================================================================================
 
 def process_color_output(output):
     """Process a single color output from the model."""
@@ -59,6 +59,8 @@ def run_color_task(output_df, args, words, prompts_dict, model):
         
         for word in words:
             task_prompt = f"Question: What is the HEX code of the color you most associate with the word {word}? You must respond with a guess, even if you're unsure. Make sure your response contains a valid 6-digit HEX code."
+
+            # task_prompt = f"Question: What is the HEX code of the color you most associate with the word {word}? Respond with a single, valid 6-digit HEX code. You must respond with a guess, even if you're unsure. "
             
             # Add two prompts for each word (we need two color samples)
             all_prompts.extend([model.format_prompt(args.model_name, context, task_prompt)] * 2)
@@ -93,11 +95,10 @@ def run_color_task(output_df, args, words, prompts_dict, model):
 
     return output_df
 
-
 def setup_color_task(args, model):
     """Setup the color task by loading the color reference data and running the task for a subset of words."""
 
-    with open('./input-data/prompts.pkl', 'rb') as handle:
+    with open('./input-data/color-task/prompts.pkl', 'rb') as handle:
         prompts_dict = pickle.load(handle)
     print("Unpickled prompts...")
 
@@ -116,9 +117,9 @@ def setup_color_task(args, model):
 
     save_output(output_df, args)
 
-#================================================================================================
+#=====================================================================================
 # Functions for concept task
-#================================================================================================
+#=====================================================================================
 
 def process_concept_output(output, choice1, choice2):
     """Process a single concept output from the model."""
@@ -139,6 +140,9 @@ def run_concept_task(output_df, args, model, concepts, prompts_dict):
     all_prompts = []
     prompt_metadata = []
 
+    # # select first 50 entries of prompts_dict for testing
+    # prompts_dict = {k: v for k, v in prompts_dict.items() if k < 50}
+
     print("Compiling prompts...")
     # for each subject, get a context and generate prompts for each target, choice1, choice2 triplet
     for subject_num in tqdm(range(len(prompts_dict))):
@@ -146,6 +150,7 @@ def run_concept_task(output_df, args, model, concepts, prompts_dict):
 
         # "Each participant was randomly assigned to a single target concept..."
         target = np.random.choice(concepts)
+        # target = concepts[0]  # for testing purposes
         filtered_concepts = [c for c in concepts if c != target]
         
         # "...and presented with 36 unique pairs of other concepts in the domain (drawing from the 10 concepts in each domain)"
@@ -182,15 +187,15 @@ def run_concept_task(output_df, args, model, concepts, prompts_dict):
 
         output_df = pd.concat([output_df, new_row], ignore_index=True)
 
-        if (i // 2) % (10 * len(concepts) * (len(concepts) - 1) * (len(concepts) - 2)) == 0:  # Save every 10 subjects
-            save_output(output_df, args, i // (2 * len(concepts) * (len(concepts) - 1) * (len(concepts) - 2)))
+        # if (i // 2) % (10 * len(concepts) * (len(concepts) - 1) * (len(concepts) - 2)) == 0:  # Save every 10 subjects
+        #     save_output(output_df, args, i // (2 * len(concepts) * (len(concepts) - 1) * (len(concepts) - 2)))
 
     return output_df
 
 def setup_concept_task(args, model):
     # concepts from https://direct.mit.edu/opmi/article/doi/10.1162/opmi_a_00072/114924/Latent-Diversity-in-Human-Concepts
 
-    with open('./input-data/prompts_concept_task.pkl', 'rb') as handle:
+    with open('./input-data/concept-task/prompts.pkl', 'rb') as handle:
         prompts_dict = pickle.load(handle)
     print("Unpickled prompts for concept task...")
 
@@ -210,14 +215,22 @@ def setup_concept_task(args, model):
 
     save_output(output_df, args)
 
-#================================================================================================
+#=====================================================================================
 # Functions for both tasks
-#================================================================================================
+#=====================================================================================
 def save_output(output_df, args, subject=None):
     """Save the output dataframe to a pickle file."""
-    subject_str = f"-subjects={subject}" if subject is not None else f"-subjects={args.num_subjects}"
-    filename = f"{args.task}-{args.model_name}-prompt={args.prompt_condition}{subject_str}-temp={args.temperature}-revisedtaskprompt.pickle"
-    output_path = Path(args.output) / filename
+
+    if args.task == "colors":
+        subject_str = f"-subjects={subject}" if subject is not None else f"-subjects={args.num_subjects}"
+        filename = f"{args.task}-{args.model_name}-prompt={args.prompt_condition}{subject_str}-temp={args.temperature}.pickle"
+        # add "color-task" folder to output path
+        output_path = Path(args.lab_storage_dir) / Path(args.output) / "color-task" / filename
+
+    elif args.task == "concepts":
+        filename = f"{args.task}-{args.model_name}-category={args.concept_category}-prompt={args.prompt_condition}-temp={args.temperature}.pickle"
+        output_path = Path(args.lab_storage_dir) / Path(args.output) / "concept-task" / filename
+
 
     with output_path.open('wb') as handle:
         pickle.dump(output_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
@@ -233,7 +246,7 @@ def parse_args():
                         default="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", type=str, 
                         help="Huggingface token.")
     parser.add_argument("--lab_storage_dir", type=str,
-                        default="/n/holylabs/LABS/ullman_lab/Users/smurthy/", 
+                        default="/n/holylabs/LABS/ullman_lab/Users/smurthy/onefish-twofish", 
                         help="Directory for lab storage")
 
     # model-related parameters
