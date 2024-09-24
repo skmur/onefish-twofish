@@ -8,8 +8,8 @@ from collections import defaultdict
 
 # Responsible for running a single Concept / Restaurant
 def parallel(parameters):
-    iterations = 500
-    burnIn = 100
+    iterations = 10 # originally 500
+    burnIn = 0
     maxTrials = 36
 
     uniformPrior = parameters[0]
@@ -183,7 +183,7 @@ class Restaurant:
         constant = 0.0
 
         if not(uniformPrior):
-            constant = (lgamma(1) + self.Ntables() * scipy.log(1)) - lgamma(self.Npeople() + 1)
+            constant = (lgamma(1) + self.Ntables() * np.log(1)) - lgamma(self.Npeople() + 1)
 
             for t in self.tables:
                 out += lgamma(len(t))
@@ -205,14 +205,14 @@ class Restaurant:
 
 # Contains people and their responses from a dataset
 class Data:
-    def __init__(self, numberOfTrials, maxNumberOfParticipants):
+    def __init__(self, numberOfTrials, maxNumberOfParticipants, filename):
         self.data = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: "UH OH")))
 
         self.people = defaultdict(lambda: [])
         self.numberOfTrials = numberOfTrials
 
         # Reads CSV file that contains responses from behavioral experiment
-        with open('../output-data/gpt3.5-politicians-for-CRP-model-100subjs.csv') as csvfile:
+        with open(filename) as csvfile:
             reader = csv.reader(csvfile, delimiter = ',')
 
             for i, row in enumerate(reader):
@@ -301,6 +301,7 @@ class Gibbs:
                 else:
                     x = tablesWithOne * (tablesWithOne - 1) / 2
 
+                # ecological estimator calculations (304-309)
                 chao1 = self.restaurants[0].Ntables() + ((self.numPeople - 1) / self.numPeople) * x
                 N = chao1
 
