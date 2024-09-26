@@ -15,7 +15,7 @@ class Model:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.hf_token = hf_token
         self.batch_size = batch_size
-        self.max_new_tokens = 300
+        self.max_new_tokens = 200
 
         login(token=self.hf_token)
 
@@ -41,11 +41,14 @@ class Model:
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_path,
                                                                     cache_dir=self.cache_dir)
         self.model = transformers.AutoModelForCausalLM.from_pretrained(model_path,
-                                                                       cache_dir=self.cache_dir)
-        self.model.generation_config.cache_implementation = "static"
-        self.model.forward = torch.compile(self.model.forward,
-                                           mode="reduce-overhead",
-                                           fullgraph=True)
+                                                                       cache_dir=self.cache_dir,
+                                                                       device_map="auto",
+                                                                       torch_dtype=torch.bfloat16)
+        
+        # self.model.generation_config.cache_implementation = "static"
+        # self.model.forward = torch.compile(self.model.forward,
+        #                                    mode="reduce-overhead",
+        #                                    fullgraph=True)
 
     def _initialize_starling(self, model_path):
         #same as openchat
@@ -56,7 +59,9 @@ class Model:
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_path,
                                                                     cache_dir=self.cache_dir)
         self.model = transformers.AutoModelForCausalLM.from_pretrained(model_path,
-                                                                       cache_dir=self.cache_dir, device_map="auto")
+                                                                       cache_dir=self.cache_dir,
+                                                                       device_map="auto",
+                                                                       torch_dtype=torch.bfloat16)
 
     def _initialize_gemma(self, model_path):
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, cache_dir=self.cache_dir)
@@ -227,7 +232,7 @@ class Model:
         self.pipeline.tokenizer.pad_token_id = self.pipeline.model.config.eos_token_id
         for out in tqdm(self.pipeline(key_dataset,
                                       do_sample=True,
-                                      max_length=self.max_new_tokens,
+                                      max_new_tokens=self.max_new_tokens,
                                       num_return_sequences=1,
                                       eos_token_id=self.tokenizer.eos_token_id,
                                       temperature=float(temp) if temp != "default" else None,
@@ -320,17 +325,15 @@ class Model:
         all_outputs = []
         for i in tqdm(range(0, len(messages), self.batch_size)):
             batch = messages[i:i+self.batch_size]
-            print(batch[:2])
             inputs = self.tokenizer(batch, 
                                     return_tensors="pt",
                                     padding=True,
                                     truncation=True).to(self.device)
             outputs = self.model.module.generate(**inputs, 
-                                                 max_length=self.max_new_tokens,
+                                                 max_new_tokens=self.max_new_tokens,
                                                  do_sample=True,
                                                  temperature=float(temp) if temp != "default" else None)
             outputs = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
-            print(outputs[:2])
             all_outputs.extend(outputs)
         return all_outputs
     
