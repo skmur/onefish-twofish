@@ -45,15 +45,9 @@ class Model:
                                                                        device_map="auto",
                                                                        torch_dtype=torch.bfloat16)
         
-        # self.model.generation_config.cache_implementation = "static"
-        # self.model.forward = torch.compile(self.model.forward,
-        #                                    mode="reduce-overhead",
-        #                                    fullgraph=True)
-
     def _initialize_starling(self, model_path):
         #same as openchat
         return self._initialize_openchat(model_path)
-
 
     def _initialize_mistral(self, model_path):
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_path,
@@ -71,20 +65,36 @@ class Model:
                                                           cache_dir=self.cache_dir)
         
     def _initialize_zephyr(self, model_path):
-        self.pipeline = transformers.pipeline("text-generation",
-                                              model=model_path, 
-                                              torch_dtype=torch.bfloat16, 
-                                              device_map="auto", 
-                                              batch_size=self.batch_size)
+        self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, 
+                                                                     cache_dir=self.cache_dir,
+                                                                     padding_side='left')
+        self.model = transformers.AutoModelForCausalLM.from_pretrained(model_path, 
+                                                          device_map="auto",
+                                                          torch_dtype=torch.bfloat16,
+                                                          cache_dir=self.cache_dir)
+        
+        # self.pipeline = transformers.pipeline("text-generation",
+        #                                       model=model_path, 
+        #                                       torch_dtype=torch.bfloat16, 
+        #                                       device_map="auto", 
+        #                                       batch_size=self.batch_size)
     
     def _initialize_llama(self, model_path):
-        self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_path,
-                                                               cache_dir=self.cache_dir)
-        self.pipeline = transformers.pipeline("text-generation", 
-                             model=model_path, 
-                             torch_dtype=torch.bfloat16, 
-                             device_map="auto", 
-                             batch_size=self.batch_size)
+        self.tokenizer = transformers.LlamaTokenizer.from_pretrained(model_path, 
+                                                                     cache_dir=self.cache_dir,
+                                                                     padding_side='left')
+        self.model = transformers.LlamaForCausalLM.from_pretrained(model_path, 
+                                                          device_map="auto",
+                                                          torch_dtype=torch.bfloat16,
+                                                          cache_dir=self.cache_dir)
+
+        # self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_path,
+        #                                                        cache_dir=self.cache_dir)
+        # self.pipeline = transformers.pipeline("text-generation", 
+        #                      model=model_path, 
+        #                      torch_dtype=torch.bfloat16, 
+        #                      device_map="auto", 
+        #                      batch_size=self.batch_size)
     
     def shard_model(self):
         if self.model is not None:
@@ -183,7 +193,7 @@ class Model:
             {"role": "user", "content": prompt},
             ]
 
-        return self.pipeline.tokenizer.apply_chat_template(messages,
+        return self.tokenizer.apply_chat_template(messages,
                                                 tokenize=False,
                                                 add_generation_prompt=True,
                                                 )
@@ -200,7 +210,7 @@ class Model:
                 {"role": "user", "content": context + " " + prompt},
             ]
 
-        return self.pipeline.tokenizer.apply_chat_template(messages,
+        return self.tokenizer.apply_chat_template(messages,
                                                 tokenize=False,
                                                 add_generation_prompt=True,
                                                 )
@@ -226,21 +236,32 @@ class Model:
     
     # HANDLES BATCHING
     def _generate_llama(self, messages, temp):
-        dataset = Dataset.from_dict({"prompt": messages})
-        key_dataset = KeyDataset(dataset, "prompt")
-        outputs = []
-        self.pipeline.tokenizer.pad_token_id = self.pipeline.model.config.eos_token_id
-        for out in tqdm(self.pipeline(key_dataset,
-                                      do_sample=True,
-                                      max_new_tokens=self.max_new_tokens,
-                                      num_return_sequences=1,
-                                      eos_token_id=self.tokenizer.eos_token_id,
-                                      temperature=float(temp) if temp != "default" else None,
-                                      batch_size=self.batch_size), 
-                        total=len(dataset)):
-            outputs.extend([item['generated_text'] for item in out])
-        
-        return outputs
+        self.tokenizer.pad_token = self.tokenizer.eos_token
+
+        all_outputs = []
+        for i in tqdm(range(0, len(messages), self.batch_size)):
+            batch = messages[i:i+self.batch_size]
+            inputs = self.tokenizer(batch, 
+                                    return_tensors="pt",
+                                    padding=True,
+                                    truncation=True).to(self.device)
+            
+            input_lengths = inputs.input_ids.shape[1]    
+
+            outputs = self.model.module.generate(**inputs,
+                                            do_sample=True,
+                                            max_new_tokens=self.max_new_tokens, 
+                                            temperature=float(temp) if temp != "default" else None,
+                                            pad_token_id=self.tokenizer.eos_token_id,
+                                            )
+            
+            # Slice off the input tokens
+            generated_tokens = outputs[:, input_lengths:]
+
+            decoded_outputs = self.tokenizer.batch_decode(generated_tokens,skip_special_tokens=True)
+            
+            all_outputs.extend(decoded_outputs)
+        return all_outputs
     
     # HANDLES BATCHING
     def _generate_gemma(self, messages, temp):
@@ -252,49 +273,79 @@ class Model:
                                     return_tensors="pt",
                                     padding=True, 
                                     truncation=True).to(self.device)
+            
+            input_lengths = inputs.input_ids.shape[1]
+
             outputs = self.model.module.generate(**inputs,
                                                 temperature=float(temp) if temp != "default" else None,
                                                 max_new_tokens=self.max_new_tokens)
-            decoded_outputs = self.tokenizer.batch_decode(outputs,
+            
+            # Slice off the input tokens
+            generated_tokens = outputs[:, input_lengths:]
+
+            decoded_outputs = self.tokenizer.batch_decode(generated_tokens,
                                                           skip_special_tokens=True)
+            
             all_outputs.extend(decoded_outputs)
         return all_outputs
     
     # HANDLES BATCHING
     def _generate_zephyrGemma(self, messages, temp):
-        dataset = Dataset.from_dict({"prompt": messages})
-        key_dataset = KeyDataset(dataset, "prompt")
-        print(self.batch_size)
-        # Process batches using the pipeline
-        outputs = []
-        for out in tqdm(self.pipeline(key_dataset, 
-                                      batch_size=self.batch_size,
-                                      do_sample=True,
-                                      max_new_tokens=self.max_new_tokens,
-                                      temperature=float(temp) if temp != "default" else None,
-                                      stop_sequence="<|im_end|>"),
-                        total=len(dataset)):
-            outputs.extend([item['generated_text'] for item in out])
+        self.tokenizer.pad_token = self.tokenizer.eos_token
 
-        print(outputs)
-        return outputs
+        all_outputs = []
+        for i in tqdm(range(0, len(messages), self.batch_size)):
+            batch = messages[i:i+self.batch_size]
+            inputs = self.tokenizer(batch, 
+                                    return_tensors="pt",
+                                    padding=True,
+                                    truncation=True).to(self.device)
+            
+            input_lengths = inputs.input_ids.shape[1]    
+
+            outputs = self.model.module.generate(**inputs,
+                                            do_sample=True,
+                                            max_new_tokens=self.max_new_tokens, 
+                                            temperature=float(temp) if temp != "default" else None,
+                                            pad_token_id=self.tokenizer.eos_token_id,
+                                            )
+            
+            # Slice off the input tokens
+            generated_tokens = outputs[:, input_lengths:]
+
+            decoded_outputs = self.tokenizer.batch_decode(generated_tokens,skip_special_tokens=True)
+            
+            all_outputs.extend(decoded_outputs)
+        return all_outputs
     
     # HANDLES BATCHING
     def _generate_zephyrMistral(self, messages, temp):
-        dataset = Dataset.from_dict({"prompt": messages})
-        key_dataset = KeyDataset(dataset, "prompt")
-        # Process batches using the pipeline
-        outputs = []
-        for out in tqdm(self.pipeline(key_dataset, 
-                                      batch_size=self.batch_size,
-                                      do_sample=True,
-                                      max_new_tokens=self.max_new_tokens,
-                                      temperature=float(temp) if temp != "default" else None),
-                        total=len(dataset)):
-            outputs.extend([item['generated_text'] for item in out])
+        self.tokenizer.pad_token = self.tokenizer.eos_token
 
-        print(outputs)
-        return outputs
+        all_outputs = []
+        for i in tqdm(range(0, len(messages), self.batch_size)):
+            batch = messages[i:i+self.batch_size]
+            inputs = self.tokenizer(batch, 
+                                    return_tensors="pt",
+                                    padding=True,
+                                    truncation=True).to(self.device)
+            
+            input_lengths = inputs.input_ids.shape[1]    
+
+            outputs = self.model.module.generate(**inputs,
+                                            do_sample=True,
+                                            max_new_tokens=self.max_new_tokens, 
+                                            temperature=float(temp) if temp != "default" else None,
+                                            pad_token_id=self.tokenizer.eos_token_id,
+                                            )
+            
+            # Slice off the input tokens
+            generated_tokens = outputs[:, input_lengths:]
+
+            decoded_outputs = self.tokenizer.batch_decode(generated_tokens,skip_special_tokens=True)
+            
+            all_outputs.extend(decoded_outputs)
+        return all_outputs
 
     # HANDLES BATCHING
     def _generate_mistral(self, messages, temp):
@@ -307,13 +358,20 @@ class Model:
                                     return_tensors="pt",
                                     padding=True,
                                     truncation=True).to(self.device)
+            
+            input_lengths = inputs.input_ids.shape[1]    
+
             outputs = self.model.module.generate(**inputs,
                                             do_sample=True,
                                             max_new_tokens=self.max_new_tokens, 
                                             temperature=float(temp) if temp != "default" else None,
                                             pad_token_id=self.tokenizer.eos_token_id,
                                             )
-            decoded_outputs = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
+            
+            # Slice off the input tokens
+            generated_tokens = outputs[:, input_lengths:]
+
+            decoded_outputs = self.tokenizer.batch_decode(generated_tokens,skip_special_tokens=True)
             
             all_outputs.extend(decoded_outputs)
         return all_outputs
@@ -329,12 +387,21 @@ class Model:
                                     return_tensors="pt",
                                     padding=True,
                                     truncation=True).to(self.device)
+            
+            input_lengths = inputs.input_ids.shape[1]
+
             outputs = self.model.module.generate(**inputs, 
                                                  max_new_tokens=self.max_new_tokens,
                                                  do_sample=True,
                                                  temperature=float(temp) if temp != "default" else None)
-            outputs = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
-            all_outputs.extend(outputs)
+            
+            # Slice off the input tokens
+            generated_tokens = outputs[:, input_lengths:]
+            
+            # Decode only the generated part
+            decoded_outputs = self.tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
+            # outputs = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
+            all_outputs.extend(decoded_outputs)
         return all_outputs
     
     # HANDLES BATCHING
