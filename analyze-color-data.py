@@ -35,6 +35,53 @@ def computeDeltaE(lab1, lab2):
 
     return deltaE
 
+def computeVariance(words, df):
+    """Fits a gaussian to the LAB values for each word to get per-word mean and variance estimates for each models' responses
+    
+    block_num = indicates whether to calculate variance for block1 or block2 responses
+    """
+    dfVariance = pd.DataFrame()
+
+    for block_num in [1, 2]:
+        all_means = np.empty([len(words), 3]) #store means
+        all_covariance = np.empty([len(words), 3, 3]) #store covariance matrices
+        all_variances = np.empty([len(words),]) # store variances
+        all_kl_divergences = np.empty([len(words),]) # store KL divergences
+
+        for index, word in enumerate(words):
+            # select rows in df that have the word
+            df_word = df[df['word'] == word]
+            # select block_num column
+            labTuples = df_word[f'lab{block_num}'].tolist()
+
+            # store each point in a numpy array of dimensions num_points x LAB
+            point_matrix = np.empty([len(labTuples),3])
+            for line_num, point in enumerate(labTuples):
+                point_matrix[line_num, 0] = labTuples[line_num][0]
+                point_matrix[line_num, 1] = labTuples[line_num][1]
+                point_matrix[line_num, 2] = labTuples[line_num][2]
+
+            # estimate parameters (mean and covariance) of the likelihood gaussian distribution
+            mean = np.mean(point_matrix, axis=0)
+            # store mean
+            all_means[index,:] = mean
+
+            product = np.matmul(np.transpose(point_matrix - mean), point_matrix - mean)
+            covariance = product/len(labTuples)
+            # store covariance matrix
+            all_covariance[index, :, :] = covariance
+
+            # STEP 2: Calculate variance of each word's Gaussian from its covariance matrix
+            variance = covariance.trace()
+            all_variances[index] = variance
+        
+        dfVariance['word'] = words
+        dfVariance[f'variance_block{block_num}'] = all_variances
+
+    print(dfVariance)
+
+
+
 def processHumanData(temperature):
     # process human data
     human_data = "./input-data/color-task/colorref.csv"
@@ -220,13 +267,14 @@ def plotModelVSHuman(ax, df, x_var, y_var, x_label, y_label):
 
 
 #----------------------------------------------------------------------
-model_names = ["human", "llama2", "llama2-chat"]
+model_names = ["human", "llama2", "llama2-chat", "mistral-instruct", "zephyr-mistral"]
 
 conditions = ["none"]
 num_subjects = 150
-temp = "1.5"
-data_dir = "./output-data"
-figure_dir = "./figures/allwords-150subjs"
+temp = "default"
+data_dir = "./output-data/color-task"
+output_dir = "./output-data/color-task/all"
+figure_dir = "./figures/color-task/allwords-150subjs"
 task = "colors"
 
 # get list of words from human data
@@ -255,7 +303,7 @@ for condition in conditions:
     fig5.suptitle(f"Model Population DeltaE vs. Concreteness ratings for each model prompting condition={condition}", fontsize=16)
 
     for model in model_names:
-        pickle_path = f"{data_dir}/{task}-{model}-prompt={condition}-subjects={num_subjects}-temp={temp}-revisedtaskprompt.pickle"
+        pickle_path = f"{data_dir}/{task}-{model}-prompt={condition}-subjects={num_subjects}-temp={temp}.pickle"
         # print model name, condition, and task version
         print("MODEL: ", model)
         print("CONDITION: ", condition)
@@ -279,69 +327,75 @@ for condition in conditions:
         # merge with glasgow ratings
         df = mergeGlasgowRatings(df, words)
 
-        #------------------------------------------------------------------
-        # internal delta e: get average of deltae between each participant's two color responses for each word
-        df_internalDeltaE = computeStats(df, "internalDeltaE")
+        # compute variance for each word
+        computeVariance(words, df)
 
-        df_populationDeltaE = getPopulationDeltaE(df, words, model, temp, condition)
-        df_populationDeltaE = computeStats(df_populationDeltaE, "populationDeltaE")
+        print("---------------")
 
-        # note 9/10: for 
-        df_deltaE = pd.merge(df_internalDeltaE, df_populationDeltaE, on=['model_name', 'temperature', 'word', 'variance', 'entropy', 'imageability', 'concreteness'], how='inner').reset_index()
+#         #------------------------------------------------------------------
+#         # internal delta e: get average of deltae between each participant's two color responses for each word
+#         df_internalDeltaE = computeStats(df, "internalDeltaE")
 
-        all_deltae = pd.concat([all_deltae, df_deltaE])
+#         df_populationDeltaE = getPopulationDeltaE(df, words, model, temp, condition)
+#         df_populationDeltaE = computeStats(df_populationDeltaE, "populationDeltaE")
 
-        rss, intercept = runRegression(df_deltaE, 'mean_internalDeltaE', 'mean_populationDeltaE')
-        print('--> Residual sum of squares = '+ str(rss))
-        print('--> Intercept = '+ str(intercept))
+#         # note 9/10: for 
+#         df_deltaE = pd.merge(df_internalDeltaE, df_populationDeltaE, on=['model_name', 'temperature', 'word', 'variance', 'entropy', 'imageability', 'concreteness'], how='inner').reset_index()
 
-        # add rss to df_rss
-        df_rss = pd.concat([df_rss, pd.DataFrame([[model, condition, rss, intercept]], columns=['model_name', 'condition', 'rss', 'intercept'])])
+#         all_deltae = pd.concat([all_deltae, df_deltaE])
 
-        # add a subplot for this model
-        ax = axs1[model_names.index(model)]
-        # plot internal vs. population deltaE
-        plotInternalVSPopulation(ax, df_deltaE, 'mean_populationDeltaE', 'mean_internalDeltaE',  'mean_populationDeltaE', 'mean_internalDeltaE', rss, intercept)
+#         rss, intercept = runRegression(df_deltaE, 'mean_internalDeltaE', 'mean_populationDeltaE')
+#         print('--> Residual sum of squares = '+ str(rss))
+#         print('--> Intercept = '+ str(intercept))
 
-        ax = axs2[model_names.index(model)]
-        # plot population deltaE vs. variance
-        plotModelVSHuman(ax, df_deltaE, 'variance', 'mean_populationDeltaE', 'variance', 'mean_populationDeltaE')
+#         # add rss to df_rss
+#         df_rss = pd.concat([df_rss, pd.DataFrame([[model, condition, rss, intercept]], columns=['model_name', 'condition', 'rss', 'intercept'])])
 
-        ax = axs3[model_names.index(model)]
-        # plot population deltaE vs. entropy
-        plotModelVSHuman(ax, df_deltaE, 'entropy', 'mean_populationDeltaE', 'entropy', 'mean_populationDeltaE')
+#         # add a subplot for this model
+#         ax = axs1[model_names.index(model)]
+#         # plot internal vs. population deltaE
+#         plotInternalVSPopulation(ax, df_deltaE, 'mean_populationDeltaE', 'mean_internalDeltaE',  'mean_populationDeltaE', 'mean_internalDeltaE', rss, intercept)
 
-        ax = axs4[model_names.index(model)]
-        # plot population deltaE vs. imageability
-        plotModelVSHuman(ax, df_deltaE, 'imageability', 'mean_populationDeltaE', 'imageability', 'mean_populationDeltaE')
+#         ax = axs2[model_names.index(model)]
+#         # plot population deltaE vs. variance
+#         plotModelVSHuman(ax, df_deltaE, 'variance', 'mean_populationDeltaE', 'variance', 'mean_populationDeltaE')
 
-        ax = axs5[model_names.index(model)]
-        # plot population deltaE vs. concreteness
-        plotModelVSHuman(ax, df_deltaE, 'concreteness', 'mean_populationDeltaE', 'concreteness', 'mean_populationDeltaE')
+#         ax = axs3[model_names.index(model)]
+#         # plot population deltaE vs. entropy
+#         plotModelVSHuman(ax, df_deltaE, 'entropy', 'mean_populationDeltaE', 'entropy', 'mean_populationDeltaE')
 
+#         ax = axs4[model_names.index(model)]
+#         # plot population deltaE vs. imageability
+#         plotModelVSHuman(ax, df_deltaE, 'imageability', 'mean_populationDeltaE', 'imageability', 'mean_populationDeltaE')
 
-    fig1.savefig(f"{figure_dir}/internalVSpopulationDeltaE-{temp}.png")
-    fig2.savefig(f"{figure_dir}/populationDeltaEVSvariance-{temp}.png")
-    fig3.savefig(f"{figure_dir}/populationDeltaEVSentropy-{temp}.png")
-    fig4.savefig(f"{figure_dir}/populationDeltaEVSimageability-{temp}.png")
-    fig5.savefig(f"{figure_dir}/populationDeltaEVSconcreteness-{temp}.png")
+#         ax = axs5[model_names.index(model)]
+#         # plot population deltaE vs. concreteness
+#         plotModelVSHuman(ax, df_deltaE, 'concreteness', 'mean_populationDeltaE', 'concreteness', 'mean_populationDeltaE')
 
-    plt.close()
+#     suffix = temp
 
-    print("---------------------------------------------------")
+#     fig1.savefig(f"{figure_dir}/internalVSpopulationDeltaE-{suffix}.png")
+#     fig2.savefig(f"{figure_dir}/populationDeltaEVSvariance-{suffix}.png")
+#     fig3.savefig(f"{figure_dir}/populationDeltaEVSentropy-{suffix}.png")
+#     fig4.savefig(f"{figure_dir}/populationDeltaEVSimageability-{suffix}.png")
+#     fig5.savefig(f"{figure_dir}/populationDeltaEVSconcreteness-{suffix}.png")
 
-    # # save dfs
-    # df_rss.to_pickle(f"{data_dir}/rss_values-task_version={condition}-prompt={condition}.pickle")
-    # all_deltae.to_pickle(f"{data_dir}/all_deltae-task_version={condition}-prompt={condition}.pickle")
-    # all_data.to_pickle(f"{data_dir}/all_data-task_version={condition}-prompt={condition}.pickle")
+#     plt.close()
+
+#     print("---------------------------------------------------")
+
+#     # save dfs
+#     df_rss.to_pickle(f"{output_dir}/rss_values-prompt={suffix}.pickle")
+#     all_deltae.to_pickle(f"{output_dir}/all_deltae-prompt={suffix}.pickle")
+#     all_data.to_pickle(f"{output_dir}/all_data-prompt={suffix}.pickle")
 
     
-plt.figure(figsize=(10, 6))
-sns.set_theme(style="whitegrid")
-sns.barplot(x='model_name', y='rss', data=df_rss)
-# rotate x-axis labels
-plt.xticks(rotation=45)
-plt.title(f"Model RSS values for color task")
-plt.tight_layout()
-plt.savefig(f"./{figure_dir}/RSS-prompt={temp}.png")
-plt.close()
+# plt.figure(figsize=(10, 6))
+# sns.set_theme(style="whitegrid")
+# sns.barplot(x='model_name', y='rss', hue="condition", data=df_rss)
+# # rotate x-axis labels
+# plt.xticks(rotation=45)
+# plt.title(f"Model RSS values for color task")
+# plt.tight_layout()
+# plt.savefig(f"./{figure_dir}/RSS-{suffix}.png")
+# plt.close()
