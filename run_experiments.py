@@ -111,7 +111,7 @@ def setup_color_task(args, model):
         words = np.random.choice(words, args.num_words, replace=False)
         print("Subsampled words:", words)
 
-    output_df = pd.DataFrame(columns=['model_name', 'temperature', 'word', 'subject_num', 'condition', 'generation1', 'hex1', 'lab1', 'rgb1', 'generation2', 'hex2', 'lab2', 'rgb2', 'deltaE'])
+    output_df = pd.DataFrame(columns=['model_name', 'temperature', 'word', 'subject_num', 'prompt', 'generation1', 'hex1', 'lab1', 'rgb1', 'generation2', 'hex2', 'lab2', 'rgb2', 'deltaE'])
 
     output_df = run_color_task(output_df, args, words, prompts_dict, model)
 
@@ -124,12 +124,18 @@ def setup_color_task(args, model):
 def process_concept_output(output, choice1, choice2):
     """Process a single concept output from the model."""
     output = output.lower().strip()
-    if output == choice1.lower().strip():
+
+    # regex search for choice1 and choice2
+    choice1_match = re.search(rf"\b{choice1.lower()}\b", output)
+    choice2_match = re.search(rf"\b{choice2.lower()}\b", output)
+
+    if choice1_match:
         return choice1
-    elif output == choice2.lower().strip():
+    elif choice2_match:
         return choice2
     else:
         return -1
+
 
 def run_concept_task(output_df, args, model, concepts, prompts_dict):
     """Runs the concept task by querying the model for two responses 
@@ -140,8 +146,8 @@ def run_concept_task(output_df, args, model, concepts, prompts_dict):
     all_prompts = []
     prompt_metadata = []
 
-    # # select first 50 entries of prompts_dict for testing
-    # prompts_dict = {k: v for k, v in prompts_dict.items() if k < 50}
+    # set seed for np.random.choice for reproducibility
+    np.random.seed(42)
 
     print("Compiling prompts...")
     # for each subject, get a context and generate prompts for each target, choice1, choice2 triplet
@@ -150,7 +156,6 @@ def run_concept_task(output_df, args, model, concepts, prompts_dict):
 
         # "Each participant was randomly assigned to a single target concept..."
         target = np.random.choice(concepts)
-        # target = concepts[0]  # for testing purposes
         filtered_concepts = [c for c in concepts if c != target]
         
         # "...and presented with 36 unique pairs of other concepts in the domain (drawing from the 10 concepts in each domain)"
@@ -179,16 +184,20 @@ def run_concept_task(output_df, args, model, concepts, prompts_dict):
 
     print("Processing outputs...")
     for i in tqdm(range(0, len(all_outputs), 2)):
+        print(all_prompts[i])
+        print("-->" + all_outputs[i])
+        print(all_prompts[i+1])
+        print("-->" + all_outputs[i+1])
+
         subject_num, target, choice1, choice2 = prompt_metadata[i]
         answer1 = process_concept_output(all_outputs[i], choice1, choice2)
         answer2 = process_concept_output(all_outputs[i+1], choice2, choice1)
 
-        new_row = pd.DataFrame([[args.model_name, args.temperature, subject_num, args.concept_category, target, choice1, choice2, answer1, answer2]],columns=output_df.columns)
+        print("----------------")
+
+        new_row = pd.DataFrame([[args.model_name, args.temperature, subject_num, args.concept_category, args.prompt_condition, target, choice1, choice2, all_outputs[i], answer1, all_outputs[i+1], answer2]],columns=output_df.columns)
 
         output_df = pd.concat([output_df, new_row], ignore_index=True)
-
-        # if (i // 2) % (10 * len(concepts) * (len(concepts) - 1) * (len(concepts) - 2)) == 0:  # Save every 10 subjects
-        #     save_output(output_df, args, i // (2 * len(concepts) * (len(concepts) - 1) * (len(concepts) - 2)))
 
     return output_df
 
@@ -208,8 +217,10 @@ def setup_concept_task(args, model):
         concepts = ["Abraham Lincoln", "Barack Obama", "Bernie Sanders", "Donald Trump", "Elizabeth Warren", "George W. Bush", "Hillary Clinton", "Joe Biden", "Richard Nixon", "Ronald Reagan"]
         # select subject ids 901-1800
         prompts_dict = {k: v for k, v in prompts_dict.items() if k >= 901 and k <= 1800}
+        # reset subject ids to start from 0
+        prompts_dict = {k-901: v for k, v in prompts_dict.items()}
 
-    output_df = pd.DataFrame(columns=['model_name', 'temperature', 'subject_num', 'concept_category', 'target', 'choice1', 'choice2', 'answer1', 'answer2'])
+    output_df = pd.DataFrame(columns=['model_name', 'temperature', 'subject_num', 'concept_category', 'prompt', 'target', 'choice1', 'choice2', 'generation1', 'answer1', 'generation2', 'answer2'])
 
     output_df = run_concept_task(output_df, args, model, concepts, prompts_dict)
 
@@ -231,6 +242,7 @@ def save_output(output_df, args, subject=None):
         filename = f"{args.task}-{args.model_name}-category={args.concept_category}-prompt={args.prompt_condition}-temp={args.temperature}.pickle"
         output_path = Path(args.lab_storage_dir) / Path(args.output) / "concept-task" / filename
 
+    print(output_df)
 
     with output_path.open('wb') as handle:
         pickle.dump(output_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
