@@ -59,8 +59,6 @@ def run_color_task(output_df, args, words, prompts_dict, model):
         
         for word in words:
             task_prompt = f"Question: What is the HEX code of the color you most associate with the word {word}? You must respond with a guess, even if you're unsure. Make sure your response contains a valid 6-digit HEX code."
-
-            # task_prompt = f"Question: What is the HEX code of the color you most associate with the word {word}? Respond with a single, valid 6-digit HEX code. You must respond with a guess, even if you're unsure. "
             
             # Add two prompts for each word (we need two color samples)
             all_prompts.extend([model.format_prompt(args.model_name, context, task_prompt)] * 2)
@@ -89,9 +87,6 @@ def run_color_task(output_df, args, words, prompts_dict, model):
                                  hex1, lab1, rgb1, all_outputs[i+1], hex2, lab2, rgb2, delta_e]], 
                                  columns=output_df.columns)
         output_df = pd.concat([output_df, new_row], ignore_index=True)
-
-        if (i // 2) % (50 * len(words)) == 0:  # Save every 50 subjects
-            save_output(output_df, args, i // (2 * len(words)))
 
     return output_df
 
