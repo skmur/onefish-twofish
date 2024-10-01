@@ -17,12 +17,11 @@ def process_task_data(models, lab_storage_dir, output_dir, task):
 
         print_summary(concat, num_files, model, task)
 
-        # Uncomment to save the concatenated dataframe
-        if not concat.empty:
-            with open(f"{output_dir}{task}-{model}.pickle", 'wb') as f:
-                pickle.dump(concat, f)
-                print(f"Saved to {output_dir}{task}-{model}.pickle")
-
+        # # Uncomment to save the concatenated dataframe
+        # if not concat.empty:
+        #     with open(f"{output_dir}{task}-{model}.pickle", 'wb') as f:
+        #         pickle.dump(concat, f)
+        #         print(f"Saved to {output_dir}{task}-{model}.pickle")
 
 def process_file(filename, model, task):
     return (
@@ -43,11 +42,14 @@ def load_and_process_file(lab_storage_dir, filename, task):
     
     print("-->", category, prompt, temperature, len(data))
 
-    if task == "color":
-        data = data.rename(columns={"condition": "prompt"})
-    elif task == "concept":
-        data['prompt'] = prompt
+    # # OLD: add and rename columns to deal with naming inconsistencies in run_experiment.py: 
+    # # FIXED in run_experiment.py and lab storage files 10/1
+    # if task == "color":
+    #     data = data.rename(columns={"condition": "prompt"})
+    # elif task == "concept":
+    #     data['prompt'] = prompt
 
+    # # save data with updated column names to lab storage
     # with open(os.path.join(lab_storage_dir, filename), 'wb') as f:
     #     pickle.dump(data, f)
 
@@ -70,6 +72,8 @@ def print_summary(concat, num_files, model, task):
         print(f"No data for model: {model}")
     else: 
         print(f"Total number of rows: {len(concat)}")
+        # for concept task should equal 2 concept_category * 6 combinations of prompt and temperature
+        # for color task should 6 combinations of prompt and temperature
         print(f"Total number of files: {num_files}")
         print(concat.columns)
         print(concat['prompt'].unique())
@@ -82,7 +86,7 @@ def print_summary(concat, num_files, model, task):
 
 def main():
     parser = argparse.ArgumentParser(description="Process task data")
-    parser.add_argument('--task', choices=['color', 'concept'], help='Task to process (color or concept)')
+    parser.add_argument('--task', type=str, choices=['color', 'concept'], help='Task to process (color or concept)')
     args = parser.parse_args()
 
     models = ["starling", "openchat", "gemma-instruct", "zephyr-gemma", "mistral-instruct", "zephyr-mistral", "llama2", "llama2-chat"]
