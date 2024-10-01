@@ -277,6 +277,7 @@ class Model:
             input_lengths = inputs.input_ids.shape[1]
 
             outputs = self.model.module.generate(**inputs,
+                                                do_sample=True,
                                                 temperature=float(temp) if temp != "default" else None,
                                                 max_new_tokens=self.max_new_tokens)
             
