@@ -4,7 +4,71 @@ import pandas as pd
 import os
 import argparse
 
-def process_task_data(models, lab_storage_dir, output_dir, task):
+from colormath.color_conversions import convert_color
+from colormath.color_objects import LabColor, sRGBColor
+
+def computeDeltaE(lab1, lab2):
+    # compute delta L
+    deltaL = lab1[0] - lab2[0]
+    # compute delta a
+    deltaA = lab1[1] - lab2[1]
+    # compute delta b
+    deltaB = lab1[2] - lab2[2]
+    # compute delta E
+    deltaE = np.sqrt(deltaL**2 + deltaA**2 + deltaB**2)
+
+    return deltaE
+
+def rgbToLab(rgb):
+    # convert to [0,1] scaled rgb values
+    scaled_rgb = (float(rgb[0])/255, float(rgb[1])/255, float(rgb[2])/255)
+    # create RGB object
+    rgbObject = sRGBColor(scaled_rgb[0], scaled_rgb[1], scaled_rgb[2])
+
+    # convert to Lab
+    labObject = convert_color(rgbObject, LabColor)
+    labTuple = labObject.get_value_tuple()
+
+    return labTuple
+
+def process_human_data():
+    # process human data
+    human_data = "./input-data/color-task/colorref.csv"
+    df_human = pd.read_csv(human_data)
+
+    # make new column with response_r, response_g, response_b combined into single column as a tuple
+    df_human['response_rgb'] = df_human[['response_r', 'response_g', 'response_b']].values.tolist()
+    # keep columns for 'participantID', 'word', 'response_rgb', condition
+    df_human = df_human[['participantID', 'word', 'response_rgb', 'condition']]
+
+    # apply rgbToLab to response_rgb value in each row and add as new column
+    df_human['response_lab'] = df_human['response_rgb'].apply(rgbToLab)
+
+    # pivot df on "condition"
+    df_human = df_human.pivot(index=['participantID', 'word'], columns='condition', values='response_rgb').reset_index()
+
+    # rename block1 and block2 columns to rgb1 and rgb2
+    df_human = df_human.rename(columns={'block1_target_trial': 'rgb1', 'block2_target_trial': 'rgb2'})
+
+    # apply rgbToLab to rgb1 and rgb2 columns and add as new columns lab1 and lab2
+    df_human['lab1'] = df_human['rgb1'].apply(rgbToLab)
+    df_human['lab2'] = df_human['rgb2'].apply(rgbToLab)
+
+    # compute deltaE for each row
+    df_human['deltaE'] = df_human.apply(lambda row: computeDeltaE(row['lab1'], row['lab2']), axis=1)
+
+    # fill in model_name, temperature, and condition columns for all rows
+
+    df_human['model_name'] = ["human"] * len(df_human)
+    df_human['temperature'] = ["na"] * len(df_human)
+    df_human['prompt'] = ["na"] * len(df_human)
+
+
+    print_summary(df_human, 1, "human", "color")
+
+    return df_human
+
+def process_model_data(models, lab_storage_dir, output_dir, task):
     for model in models:
         concat = pd.DataFrame()
         print(f"Processing model: {model}")
@@ -93,7 +157,15 @@ def main():
     lab_storage_dir = f"/n/holylabs/LABS/ullman_lab/Users/smurthy/onefish-twofish/output-data/{args.task}-task/"
     output_dir = f"./output-data/{args.task}-task/"
 
-    process_task_data(models, lab_storage_dir, output_dir, args.task)
+    process_model_data(models, lab_storage_dir, output_dir, args.task)
+
+    # additionally process human data for color task
+    if args.task == "color":
+        df_human = process_human_data()
+
+        with open(f"{output_dir}{args.task}-human.pickle", 'wb') as f:
+            pickle.dump(df_human, f)
+            print(f"Saved to {output_dir}color-human.pickle")
 
 if __name__ == "__main__":
     main()
