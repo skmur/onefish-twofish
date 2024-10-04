@@ -95,10 +95,6 @@ def calculate_population_deltae(group, metric):
         f'ci_upper_{metric}': mean + 1.96*std/math.sqrt(count)
     })
 
-def bootstrap_ci(data, statistic, n_bootstrap=1000, ci=0.95):
-    bootstrap_stats = np.array([statistic(np.random.choice(data, len(data), replace=True)) for _ in range(n_bootstrap)])
-    return np.percentile(bootstrap_stats, [(1-ci)/2 * 100, (1+ci)/2 * 100])
-
 def run_regression(group, x_label, y_label):
     X = np.array(group[x_label]).reshape(-1, 1)
     y = np.array(group[y_label])
@@ -108,75 +104,29 @@ def run_regression(group, x_label, y_label):
     
     intercept = round(model.intercept_, 2)
     slope = round(model.coef_[0], 2)
-    
-    # Calculate distances from y=x line (diagonal)
-    diagonal_distances = (y - X.flatten()) / np.sqrt(2)
-    
-    # Calculate RSS from diagonal line (y=x)
-    rss = round(np.sum(np.square(diagonal_distances)))
 
-    # Calculate MSE from diagonal line (y=x)
-    mse = round(np.mean(np.square(diagonal_distances)), 4)
-    
     # Calculate R-squared (this will still be based on the regression line)
     r_squared = round(model.score(X, y), 4)
-    
-    # Calculate confidence intervals for RSS and MSE
-    rss_ci = bootstrap_ci(diagonal_distances, lambda x: np.sum(np.square(x)))
-    mse_ci = bootstrap_ci(diagonal_distances, lambda x: np.mean(np.square(x)))
     
     return pd.Series({
         'intercept': intercept,
         'slope': slope,
-        'rss': rss,
-        'rss_lower': round(rss_ci[0]),
-        'rss_upper': round(rss_ci[1]),
-        'mse': mse,
-        'mse_lower': round(mse_ci[0], 4),
-        'mse_upper': round(mse_ci[1], 4),
         'r_squared': r_squared
     })
-    
-# def run_regression(group, x_label, y_label):
-#     X = np.array(group[x_label]).reshape(-1, 1)
-#     y = np.array(group[y_label])
-    
-#     # Use linear regression model
-#     model = LinearRegression().fit(X, y)
-    
-#     intercept = round(model.intercept_, 2)
-#     slope = round(model.coef_[0], 2)
-    
-#     # Predicting values
-#     y_pred = model.predict(X)
-    
-#     # # Calculate RSS from regression line
-#     # rss = round(np.sum(np.square(y_pred - y)))
-
-#     # # calculate MSE from residuals
-#     # mse = round(np.mean((y - y_pred)**2), 4)
-
-#     # Calculate distances from y=x line (diagonal)
-#     diagonal_distances = (y - X.flatten()) / np.sqrt(2)
-    
-#     # Calculate RSS from diagonal line (y=x)
-#     rss = round(np.sum(np.square(diagonal_distances)))
-
-#     # Calculate MSE from diagonal line (y=x)
-#     mse = round(np.mean(np.square(diagonal_distances)), 4)
-    
-#     # Calculate R-squared
-#     r_squared = round(model.score(X, y), 4)
-    
-#     return pd.Series({
-#         'intercept': intercept,
-#         'slope': slope,
-#         'rss': rss,
-#         'mse': mse,
-#         'r_squared': r_squared
-#     })
 
 
+def calculate_diagonal_distances(group, x_label, y_label):
+    X = np.array(group[x_label])
+    y = np.array(group[y_label])
+
+    # Calculate distances from y=x line (diagonal)
+    diagonal_distance = abs(y - X) / np.sqrt(2)
+    
+    return pd.Series({
+        f'dist_from_diagonal': diagonal_distance[0],
+    })
+
+    
 
 task = "color"
 models = ["human", "openchat", "starling", "mistral-instruct", "zephyr-mistral", "gemma-instruct", "zephyr-gemma", "llama2", "llama2-chat"]
@@ -185,23 +135,29 @@ output_dir = f"./output-data/{task}-task/all/"
 
 all_model_level_stats = pd.DataFrame()
 all_word_level_stats = pd.DataFrame()
-all_invalid_responses = pd.DataFrame()
+valid_response_counts = pd.DataFrame()
 
 for model in models: 
     filename = f"{data_dir}{task}-{model}.pickle"
     print(f"Processing {model}")
     data = load_data(filename)
 
+    # - - - - - - - - - - - - - - - - - - - - - -#
     # group by model_name, prompt, temperature, word and get counts for deltaE = -1
-    invalid_responses = data.groupby(['model_name', 'prompt', 'temperature']).apply(lambda x: len(x[x['deltaE'] == -1])).reset_index()
-    invalid_responses = invalid_responses.rename(columns={0: 'invalid_responses'})
-    print(invalid_responses)
+    valid_responses = data.groupby(['model_name', 'prompt', 'temperature']).apply(lambda x: len(x[x['deltaE'] != -1])).reset_index()
+    valid_responses = valid_responses.rename(columns={0: 'valid_responses'})
+    # add column for total responses
+    valid_responses['total_responses'] = data.groupby(['model_name', 'prompt', 'temperature']).size().values
+    # add column for invalid responses
+    valid_responses['invalid_responses'] = valid_responses['total_responses'] - valid_responses['valid_responses']
+    print(valid_responses)
 
-    all_invalid_responses = pd.concat([all_invalid_responses, invalid_responses])
+    valid_response_counts = pd.concat([valid_response_counts, valid_responses])
+    # - - - - - - - - - - - - - - - - - - - - - -#
 
     # remove rows where deltaE is -1
     data = data[data['deltaE'] != -1]
-
+    # - - - - - - - - - - - - - - - - - - - - - -#
     # compute mean and variance for block1 and block2 lab responses
     tqdm.pandas(desc="Calculating mean and variance for block1 data")
     mean_variance_block1 = data.groupby(['model_name', 'prompt', 'temperature', 'word']).progress_apply(fit_multivariate_gaussian, block_num="1", include_groups=False).reset_index()
@@ -211,27 +167,37 @@ for model in models:
     # remove rows where variances are None
     mean_variance_block1 = mean_variance_block1[mean_variance_block1['var_L1'].notnull()]
     mean_variance_block2 = mean_variance_block2[mean_variance_block2['var_L2'].notnull()]
+    # - - - - - - - - - - - - - - - - - - - - - -#
 
     # Calculate statistics on internal deltaE with 95% confidence intervals
     tqdm.pandas(desc="Calculating internal deltaE statistics")
     internal_deltaE = data.groupby(['model_name', 'temperature', 'word', 'prompt']).progress_apply(calculate_internal_deltaE, metric="internalDeltaE", include_groups=False).reset_index()
     tqdm.pandas(desc="Calculating population deltaE statistics")
     population_deltaE = data.groupby(['model_name', 'temperature', 'word', 'prompt']).progress_apply(calculate_population_deltae, metric="populationDeltaE", include_groups=False).reset_index()
-
+    
+    # - - - - - - - - - - - - - - - - - - - - - -#
     # Merge the dataframes
     summary = pd.merge(mean_variance_block1, mean_variance_block2, on=['model_name', 'prompt', 'temperature', 'word'])
     summary = pd.merge(summary, internal_deltaE, on=['model_name', 'temperature', 'word', 'prompt'])
     summary = pd.merge(summary, population_deltaE, on=['model_name', 'temperature', 'word', 'prompt'])
+    
+    # - - - - - - - - - - - - - - - - - - - - - -#
+
+    # calculate distances between internal and population deltaE values for each word and the diagonal line (y=x) to see how much the model responses deviate from a homogenous population
+    tqdm.pandas(desc="Calculating distances from diagonal line")
+    distances = summary.groupby(['model_name', 'temperature', 'word', 'prompt']).progress_apply(calculate_diagonal_distances, x_label='mean_populationDeltaE', y_label='mean_internalDeltaE', include_groups=False).reset_index()
+    # merge distances with summary
+    summary = pd.merge(summary, distances, on=['model_name', 'temperature', 'word', 'prompt'])
+    print(summary)
 
     all_word_level_stats = pd.concat([all_word_level_stats, summary])
+    # - - - - - - - - - - - - - - - - - - - - - -#
 
-    print(summary[summary['var_L1'] == None])
-
-    # run regression on mean internal deltaE and mean population deltaE
+    # run regression on mean internal deltaE and mean population deltaE to get slope, intercept and R-squared of best fit line to see whether it lies above or below the diagonal line
     tqdm.pandas(desc="Running regression...")
-    regression = summary.groupby(['model_name', 'temperature', 'prompt']).apply(run_regression, x_label='mean_populationDeltaE', y_label='mean_internalDeltaE', include_groups=False).reset_index()
-
+    regression = summary.groupby(['model_name', 'temperature', 'prompt']).progress_apply(run_regression, x_label='mean_populationDeltaE', y_label='mean_internalDeltaE', include_groups=False).reset_index()
     print(regression)
+
     all_model_level_stats = pd.concat([all_model_level_stats, regression])
 
     print("-" * 50)
@@ -239,7 +205,7 @@ for model in models:
 # pickle em!
 all_word_level_stats.to_pickle(f"{output_dir}word-stats.pickle")
 all_model_level_stats.to_pickle(f"{output_dir}model-stats.pickle")
-all_invalid_responses.to_pickle(f"{output_dir}invalid-responses.pickle")
+valid_response_counts.to_pickle(f"{output_dir}valid-response-counts.pickle")
 
 print("Done!")
 
