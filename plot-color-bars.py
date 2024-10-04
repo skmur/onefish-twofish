@@ -96,6 +96,52 @@ def plotSwatches(model_name, df, fig, axs, words):
     plt.savefig('./figures/50words-100subjs/colorbars-%s.png' % model_name ,bbox_inches='tight',dpi=300)
     plt.clf()
 
+def plotInternalVSPopulation(ax, df, x_var, y_var, x_label, y_label, rss, intercept):
+    ax.scatter(df[x_var], df[y_var])
+    ax.plot([0,100], [0,100], 'k--', alpha=0.5)
+    ax.set_ylim(0, 100)
+    ax.set_xlim(0, 100)
+
+    # plot error bars for each point based on the 95% confidence interval
+    for i, txt in enumerate(df['word'].tolist()):
+        ax.errorbar(df[x_var][i], df[y_var][i], xerr=df['ci95_hi_populationDeltaE'][i]-df['ci95_lo_populationDeltaE'][i], yerr=df['ci95_hi_internalDeltaE'][i]-df['ci95_lo_internalDeltaE'][i], fmt='o', color='black', alpha=0.5)
+
+    # plot correlation line on the graph
+    corr = df[x_var].corr(df[y_var])
+    plt.text(10, 90, "internal vs. population deltaE r = %.2f" % corr)
+
+    # plot the words
+    for i, txt in enumerate(df['word'].tolist()):
+        ax.annotate(txt, (df[x_var][i], df[y_var][i]))
+
+    ax.set_title(f"{model}, RSS={rss}, intercept={intercept}")
+    ax.set_xlabel("Internal ΔE")
+    ax.set_ylabel("Population ΔE")
+    ax.set_aspect('equal')
+
+def plotModelVSHuman(ax, df, x_var, y_var, x_label, y_label):
+    sns.regplot(data=df, x=x_var, y=y_var, ax=ax)
+    ax.set_title(f"{model}")
+    ax.set_xlabel(x_label)
+    ax.set_ylabel("Population ΔE")
+    ax.set_ylim(0, 100)
+
+    if x_var == 'entropy':
+        ax.set_xlim(0, 7)
+    elif x_var == 'variance':
+        ax.set_xlim(0, 4000)
+    elif x_var == 'imageability':
+        ax.set_xlim(0, 8)
+    elif x_var == 'concreteness':
+        ax.set_xlim(0, 8)
+
+    # plot error bars for each point based on the 95% confidence interval
+    for i, txt in enumerate(df['word']):
+        ax.errorbar(df[x_var][i], df[y_var][i], yerr=df['ci95_hi_internalDeltaE'][i]-df['ci95_lo_internalDeltaE'][i], color='y', alpha=0.5)
+
+    for i, txt in enumerate(df['word']):
+        ax.annotate(txt, (df[x_var][i], df[y_var][i]))
+
 #-------------------------------------------------------------------------------
 # CALL WITH BOTH WORD SETS
 
@@ -143,11 +189,7 @@ for prompt_condition in ["none", "random", "nonsense", "identity"]:
                 else:
                     rgb[i] = [float(x) for x in rgb[i]]
 
-            # # convert nested list to array
-            # rgb = np.array(rgb)
-
-            # # # step sort the non-greyscale colors
-            # # # rgb.sort(key=lambda(r,g,b): stepSort(r,g,b,8))
+            # step sort the non-greyscale colors
             rgb.sort(key=lambda rgb: stepSort(rgb[0], rgb[1], rgb[2], 8))
 
             #--------------------------------------------

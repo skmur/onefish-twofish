@@ -95,42 +95,95 @@ def calculate_population_deltae(group, metric):
         f'ci_upper_{metric}': mean + 1.96*std/math.sqrt(count)
     })
 
+def bootstrap_ci(data, statistic, n_bootstrap=1000, ci=0.95):
+    bootstrap_stats = np.array([statistic(np.random.choice(data, len(data), replace=True)) for _ in range(n_bootstrap)])
+    return np.percentile(bootstrap_stats, [(1-ci)/2 * 100, (1+ci)/2 * 100])
 
 def run_regression(group, x_label, y_label):
     X = np.array(group[x_label]).reshape(-1, 1)
     y = np.array(group[y_label])
     
-    # Use linear regression model
+    # Use linear regression model to get intercept
     model = LinearRegression().fit(X, y)
     
     intercept = round(model.intercept_, 2)
     slope = round(model.coef_[0], 2)
     
-    # Predicting values
-    y_pred = model.predict(X)
+    # Calculate distances from y=x line (diagonal)
+    diagonal_distances = (y - X.flatten()) / np.sqrt(2)
     
-    # Calculate RSS from regression line
-    rss = round(np.sum(np.square(y_pred - y)))
+    # Calculate RSS from diagonal line (y=x)
+    rss = round(np.sum(np.square(diagonal_distances)))
+
+    # Calculate MSE from diagonal line (y=x)
+    mse = round(np.mean(np.square(diagonal_distances)), 4)
     
-    # Calculate R-squared
+    # Calculate R-squared (this will still be based on the regression line)
     r_squared = round(model.score(X, y), 4)
+    
+    # Calculate confidence intervals for RSS and MSE
+    rss_ci = bootstrap_ci(diagonal_distances, lambda x: np.sum(np.square(x)))
+    mse_ci = bootstrap_ci(diagonal_distances, lambda x: np.mean(np.square(x)))
     
     return pd.Series({
         'intercept': intercept,
         'slope': slope,
         'rss': rss,
+        'rss_lower': round(rss_ci[0]),
+        'rss_upper': round(rss_ci[1]),
+        'mse': mse,
+        'mse_lower': round(mse_ci[0], 4),
+        'mse_upper': round(mse_ci[1], 4),
         'r_squared': r_squared
     })
+    
+# def run_regression(group, x_label, y_label):
+#     X = np.array(group[x_label]).reshape(-1, 1)
+#     y = np.array(group[y_label])
+    
+#     # Use linear regression model
+#     model = LinearRegression().fit(X, y)
+    
+#     intercept = round(model.intercept_, 2)
+#     slope = round(model.coef_[0], 2)
+    
+#     # Predicting values
+#     y_pred = model.predict(X)
+    
+#     # # Calculate RSS from regression line
+#     # rss = round(np.sum(np.square(y_pred - y)))
+
+#     # # calculate MSE from residuals
+#     # mse = round(np.mean((y - y_pred)**2), 4)
+
+#     # Calculate distances from y=x line (diagonal)
+#     diagonal_distances = (y - X.flatten()) / np.sqrt(2)
+    
+#     # Calculate RSS from diagonal line (y=x)
+#     rss = round(np.sum(np.square(diagonal_distances)))
+
+#     # Calculate MSE from diagonal line (y=x)
+#     mse = round(np.mean(np.square(diagonal_distances)), 4)
+    
+#     # Calculate R-squared
+#     r_squared = round(model.score(X, y), 4)
+    
+#     return pd.Series({
+#         'intercept': intercept,
+#         'slope': slope,
+#         'rss': rss,
+#         'mse': mse,
+#         'r_squared': r_squared
+#     })
 
 
 
 task = "color"
 models = ["human", "openchat", "starling", "mistral-instruct", "zephyr-mistral", "gemma-instruct", "zephyr-gemma", "llama2", "llama2-chat"]
-# models = ["gemma-instruct"]
 data_dir = f"./output-data/{task}-task/"
 output_dir = f"./output-data/{task}-task/all/"
 
-all_model_rss = pd.DataFrame()
+all_model_level_stats = pd.DataFrame()
 all_word_level_stats = pd.DataFrame()
 all_invalid_responses = pd.DataFrame()
 
@@ -178,13 +231,14 @@ for model in models:
     tqdm.pandas(desc="Running regression...")
     regression = summary.groupby(['model_name', 'temperature', 'prompt']).apply(run_regression, x_label='mean_populationDeltaE', y_label='mean_internalDeltaE', include_groups=False).reset_index()
 
-    all_model_rss = pd.concat([all_model_rss, regression])
+    print(regression)
+    all_model_level_stats = pd.concat([all_model_level_stats, regression])
 
     print("-" * 50)
 
 # pickle em!
-all_word_level_stats.to_pickle(f"{output_dir}word-level-stats.pickle")
-all_model_rss.to_pickle(f"{output_dir}rss.pickle")
+all_word_level_stats.to_pickle(f"{output_dir}word-stats.pickle")
+all_model_level_stats.to_pickle(f"{output_dir}model-stats.pickle")
 all_invalid_responses.to_pickle(f"{output_dir}invalid-responses.pickle")
 
 print("Done!")
