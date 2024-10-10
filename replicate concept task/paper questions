@@ -1,3 +1,0 @@
-- The model builds in a prior preference for fewer clusters (assumed: "simplicity" condition) but we also present results with no such prior (uniform)
-- Why isn't MAPTables file being written to? --> only works when there are at least 80 subjects
-- Where is the code for the Ecological Estimator? 
