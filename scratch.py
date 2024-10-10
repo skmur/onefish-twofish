@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import argparse
 import os
+from tqdm import tqdm
 
 from scipy.stats import multivariate_normal
 from scipy.spatial.distance import jensenshannon
@@ -17,37 +18,40 @@ def load_data(filename):
         data = pickle.load(f)
     return data
 
-def plot_by_prompt(df, metric, plot_type):
+def plot_by_prompt(df, metric, plot_type, manipulation):
+    df = df[df['model_name'] != 'llama2'] # remove llama2 for both plots
+
     # get human value for metric from df
     human_metric = df[df['model_name'] == 'human'][metric].values[0]
     # remove human data from df for plotting
     df = df[df['model_name'] != 'human']
-    
-    if plot_type == "point":
-        df = df[df['model_name'] != 'llama2'] # remove llama2 for pointplot
 
     # combine the prompt and temperature columns
     df['combined'] = df['prompt'] + "-" + df['temperature'].astype(str)
 
-    model_order = ["openchat", "starling", "gemma-instruct", "zephyr-gemma", "mistral-instruct", "zephyr-mistral", "llama2", "llama2-chat"]
-    colors = ['#006400', '#66CDAA', '#003366', '#66B2FF', '#8B0000', '#FF7F7F', '#914900', '#ffa554']    
+    model_order = ["openchat", "starling", "gemma-instruct", "zephyr-gemma", "mistral-instruct", "zephyr-mistral", "llama2-chat"]
+    colors = ['#006400', '#66CDAA', '#003366', '#66B2FF', '#8B0000', '#FF7F7F', '#ffa554']    
 
-    prompt_order = ['none-default', 'none-1.5', 'none-2.0', 'identity-default', 'random-default', 'nonsense-default']
+    if manipulation == "prompt":
+        order = ['none', 'identity', 'random', 'nonsense']
+    elif manipulation == "temperature":
+        order = ['default', '1.5', '2.0']
+
     # map model names to colors
     palette = dict(zip(model_order, colors))
 
     sns.set_theme(style="whitegrid")
     if plot_type == "point":
         plt.figure(figsize=(6, 6))
-        sns.pointplot(x='combined', y=metric, hue="model_name", hue_order=model_order, palette=palette, data=df,  alpha=0.8, order=prompt_order)
+        sns.pointplot(x=manipulation, y=metric, hue="model_name", hue_order=model_order, palette=palette, data=df,  alpha=0.8, order=order)
            
     elif plot_type == "bar":
         plt.figure(figsize=(10, 6))
-        sns.barplot(x='combined', y=metric, hue="model_name", hue_order=model_order, palette=palette, data=df, errorbar=None, order=prompt_order)
+        sns.barplot(x=manipulation, y=metric, hue="model_name", hue_order=model_order, palette=palette, data=df, errorbar=None, order=order)
 
     plt.axhline(y=human_metric, color='k', linestyle='--')
     # annotate human baseline
-    plt.text(5.5, human_metric, "human", fontsize=8, ha='right')
+    plt.text(1, human_metric, "human", fontsize=8, ha='right')
 
     # rotate x-axis labels
     plt.xticks(rotation=45)
@@ -58,7 +62,7 @@ def plot_by_prompt(df, metric, plot_type):
     
     plt.title(f"{metric}")
     plt.tight_layout()
-    plt.savefig(f"./{figure_dir}/{metric}-{plot_type}.png")
+    plt.savefig(f"./{figure_dir}/{metric}-{manipulation}-{plot_type}.png")
     plt.clf()
 
 def plot_response_counts(df, metric):
@@ -107,7 +111,7 @@ def plot_deltaE_subplots(models, word_stats, x_var, y_var, manipulation, figure_
 
         if models == ['human']:
             ax = axs
-            sns.scatterplot(data=model_data, x=x_var, y=y_var, color="k", alpha=0.8, ax=ax, s=6)        
+            sns.scatterplot(data=model_data, x=x_var, y=y_var, color="k", alpha=0.8, ax=ax, s=10)        
             # Add error bars for all points
             for idx in model_data.index:
                 ax.errorbar(model_data.loc[idx, x_var], model_data.loc[idx, y_var],
@@ -116,7 +120,7 @@ def plot_deltaE_subplots(models, word_stats, x_var, y_var, manipulation, figure_
                             fmt='none', alpha=0.2, capsize=2)  
         else: 
             ax = axs[i]
-            sns.scatterplot(data=model_data, x=x_var, y=y_var, hue=manipulation, palette=palette, hue_order=order, alpha=0.8, ax=ax, s=6)
+            sns.scatterplot(data=model_data, x=x_var, y=y_var, hue=manipulation, style=manipulation, palette=palette, hue_order=order, alpha=0.8, ax=ax, s=10)
 
         ax.plot([0,lim], [0,lim], 'k--', alpha=0.5)
         ax.set_ylim(0, lim)
@@ -195,7 +199,6 @@ def plot_deltaE_facetgrid(models, word_stats, x_var, y_var, x_label, y_label, ti
     plt.savefig(f"{figure_dir}/{title}.png")
     plt.clf()
 
-
 # DOESN'T GIVE A SQUARE PLOT
 def plot_word_ratings_subplots(models, word_stats, x_var, y_var, manipulation, figure_dir, title):
     word_stats = word_stats[word_stats['model_name'].isin(models)]
@@ -209,7 +212,6 @@ def plot_word_ratings_subplots(models, word_stats, x_var, y_var, manipulation, f
     plt.tight_layout()
     plt.savefig(f"{figure_dir}/{title}-{manipulation}.png", dpi=300, bbox_inches='tight')
     plt.clf()
-
 
 def plot_word_ratings_facetgrid(models, word_stats, x_var, y_var, x_label, y_label, title):
     # select data for the models
@@ -250,48 +252,6 @@ def plot_word_ratings_facetgrid(models, word_stats, x_var, y_var, x_label, y_lab
     plt.savefig(f"{figure_dir}/{title}.png")
     plt.clf()
 
-def _kl_divergence(p, q):
-    return np.sum(np.where(p != 0, p * np.log(p / q), 0))
-
-def _js_divergence(p, q):
-    m = 0.5 * (p + q)
-    return 0.5 * (_kl_divergence(p, m) + _kl_divergence(q, m))
-
-def compute_jsd(df):
-    # Assuming 'human' is one of the columns, and the rest are model names
-    models = [col for col in df.columns if col != 'human' and col != 'word']
-    
-    results = []
-    
-    for _, row in df.iterrows():
-        word = row['word']
-        human_dist = multivariate_normal(row['human']['mean'], row['human']['cov'])
-        
-        for model in models:
-            model_dist = multivariate_normal(row[model]['mean'], row[model]['cov'])
-            
-            # Generate points in 3D space
-            x, y, z = np.mgrid[-5:5:.1, -5:5:.1, -5:5:.1]
-            pos = np.dstack((x, y, z))
-            
-            human_pdf = human_dist.pdf(pos)
-            model_pdf = model_dist.pdf(pos)
-            
-            jsd = _js_divergence(human_pdf, model_pdf)
-            
-            results.append({'word': word, 'model': model, 'jsd': jsd})
-    
-    return pd.DataFrame(results)
-
-def plot_jsd(jsd_df):
-    plt.figure(figsize=(12, 6))
-    sns.boxplot(x='model', y='jsd', data=jsd_df)
-    plt.title('Jensen-Shannon Divergence between Human and Model Responses')
-    plt.xlabel('Model')
-    plt.ylabel('Jensen-Shannon Divergence')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.show()
 
 # Main execution
 if __name__ == "__main__":
@@ -331,12 +291,16 @@ if __name__ == "__main__":
     # [DONE] how much the model responses deviate from a homogenous population 
     # (i.e. where internal variability = population variability)
     elif args.plot == "population homogeneity":
-        plot_by_prompt(word_stats, "dist_from_diagonal", "point")
-        plot_by_prompt(word_stats, "dist_from_diagonal", "bar")
+        plot_by_prompt(word_stats, "dist_from_diagonal", "point", "prompt")
+        plot_by_prompt(word_stats, "dist_from_diagonal", "bar", "prompt")
+        plot_by_prompt(word_stats, "dist_from_diagonal", "point", "temperature")
+        plot_by_prompt(word_stats, "dist_from_diagonal", "bar", "temperature")
 
         # sum of distances from diagonal line
-        plot_by_prompt(dists, "sum", "bar")
-        plot_by_prompt(dists, "sum", "point")
+        plot_by_prompt(dists, "sum", "bar", "prompt")
+        plot_by_prompt(dists, "sum", "point", "prompt")
+        plot_by_prompt(dists, "sum", "bar", "temperature")
+        plot_by_prompt(dists, "sum", "point", "temperature")
 
     # plot population vs. internal deltaE for each word
     elif args.plot == "deltaE":
@@ -374,46 +338,7 @@ if __name__ == "__main__":
 
     # plot Jensen-Shannon divergences between human and model responses for each word
     elif args.plot == "JS divergence":
-        jsd_results = compute_jsd(word_stats)
-        plot_jsd(jsd_results)
-
-
-#- - - - - - - - - - - -
-
-# 1) PLOT RESPONSE COUNTS
-
-# plot_response_counts(response_counts, "invalid")
-# plot_response_counts(response_counts, "valid")
-
-#- - - - - - - - - - - -
-# 2) PLOT WORD LEVEL METRICS
-
-# # RSS and MSE from the diagonal line: how much the model responses deviate from a 
-# # homogenous population where internal variability == population variability
-# plot_by_prompt(word_stats, "dist_from_diagonal", "point")
-# plot_by_prompt(word_stats, "dist_from_diagonal", "bar")
-
-#- - - - - - - - - - - -
-
-
-
-# - - - - - - - - - - - -
-# Plot Jensen-Shannon divergences between human and model responses for each word 
-# and each prompt-temperature combination
-
-
-
-# 3) PLOT MODEL LEVEL METRICS
-
-# #- - - - - - - - - - - -
-# # sum of distances from diagonal line
-# plot_by_prompt(dists, "sum", "bar")
-# plot_by_prompt(dists, "sum", "point")
-
-
-
-#- - - - - - - - - - - -
-
+        pass
 
 
 
