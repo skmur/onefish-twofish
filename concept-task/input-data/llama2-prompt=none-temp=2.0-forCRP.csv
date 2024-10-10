@@ -1,0 +1,3823 @@
+Concept,ID,Question,ChoiceNumber
+Hillary Clinton,0,Abraham Lincoln Bernie Sanders,1
+Hillary Clinton,0,Elizabeth Warren Joe Biden,0
+Hillary Clinton,0,Elizabeth Warren Richard Nixon,1
+Hillary Clinton,0,Joe Biden Richard Nixon,0
+Donald Trump,1,Barack Obama Elizabeth Warren,0
+Donald Trump,1,Barack Obama Richard Nixon,0
+Donald Trump,1,Elizabeth Warren Hillary Clinton,0
+Joe Biden,2,Bernie Sanders Ronald Reagan,0
+Joe Biden,2,Elizabeth Warren Ronald Reagan,0
+Elizabeth Warren,3,Bernie Sanders Richard Nixon,0
+Elizabeth Warren,3,Donald Trump George W. Bush,0
+Elizabeth Warren,3,George W. Bush Hillary Clinton,0
+Hillary Clinton,4,Barack Obama Elizabeth Warren,0
+Hillary Clinton,4,Joe Biden Ronald Reagan,0
+Ronald Reagan,5,Barack Obama Joe Biden,0
+Ronald Reagan,5,Donald Trump Joe Biden,0
+Hillary Clinton,7,Abraham Lincoln Donald Trump,0
+Hillary Clinton,7,Abraham Lincoln Richard Nixon,1
+Hillary Clinton,7,Barack Obama Joe Biden,1
+Hillary Clinton,7,George W. Bush Joe Biden,0
+Hillary Clinton,7,George W. Bush Ronald Reagan,1
+Joe Biden,8,Hillary Clinton Richard Nixon,1
+Elizabeth Warren,9,Barack Obama Donald Trump,1
+Elizabeth Warren,9,Donald Trump Ronald Reagan,0
+Joe Biden,11,Barack Obama Bernie Sanders,0
+Joe Biden,12,Barack Obama Hillary Clinton,0
+Joe Biden,12,Elizabeth Warren George W. Bush,0
+Joe Biden,12,Hillary Clinton Richard Nixon,0
+Bernie Sanders,13,Elizabeth Warren Joe Biden,0
+George W. Bush,14,Donald Trump Hillary Clinton,0
+George W. Bush,14,Elizabeth Warren Ronald Reagan,0
+Elizabeth Warren,15,Abraham Lincoln Ronald Reagan,0
+Elizabeth Warren,15,Barack Obama Hillary Clinton,1
+Elizabeth Warren,15,Hillary Clinton Ronald Reagan,0
+Barack Obama,16,Abraham Lincoln Donald Trump,0
+Barack Obama,16,Bernie Sanders Hillary Clinton,0
+Joe Biden,17,Barack Obama George W. Bush,0
+Joe Biden,17,Donald Trump Ronald Reagan,0
+Joe Biden,17,Elizabeth Warren George W. Bush,0
+Joe Biden,17,Hillary Clinton Richard Nixon,0
+Joe Biden,17,Hillary Clinton Ronald Reagan,1
+George W. Bush,18,Abraham Lincoln Joe Biden,0
+George W. Bush,18,Barack Obama Donald Trump,1
+George W. Bush,18,Bernie Sanders Donald Trump,0
+George W. Bush,18,Hillary Clinton Joe Biden,1
+Elizabeth Warren,20,Abraham Lincoln Donald Trump,1
+Elizabeth Warren,20,Abraham Lincoln Joe Biden,1
+Elizabeth Warren,20,Donald Trump George W. Bush,0
+Abraham Lincoln,21,Donald Trump Ronald Reagan,1
+Abraham Lincoln,21,Elizabeth Warren Joe Biden,0
+Ronald Reagan,22,Abraham Lincoln Donald Trump,0
+Ronald Reagan,22,Abraham Lincoln George W. Bush,0
+Ronald Reagan,22,Abraham Lincoln Richard Nixon,0
+Ronald Reagan,22,Barack Obama Bernie Sanders,1
+Ronald Reagan,22,Barack Obama Donald Trump,0
+George W. Bush,23,Bernie Sanders Elizabeth Warren,0
+George W. Bush,23,Donald Trump Richard Nixon,0
+George W. Bush,23,Elizabeth Warren Richard Nixon,1
+Richard Nixon,24,Donald Trump Elizabeth Warren,1
+Richard Nixon,24,Joe Biden Ronald Reagan,0
+Abraham Lincoln,25,Barack Obama Donald Trump,1
+Ronald Reagan,26,Barack Obama Richard Nixon,1
+Bernie Sanders,27,Elizabeth Warren Hillary Clinton,0
+Hillary Clinton,28,Donald Trump Richard Nixon,0
+Donald Trump,29,Abraham Lincoln Ronald Reagan,0
+Donald Trump,29,Barack Obama Elizabeth Warren,0
+Donald Trump,29,Barack Obama Joe Biden,0
+Donald Trump,29,Hillary Clinton Ronald Reagan,0
+Richard Nixon,30,Abraham Lincoln Bernie Sanders,1
+Richard Nixon,30,Abraham Lincoln Elizabeth Warren,0
+Richard Nixon,30,Barack Obama Hillary Clinton,0
+Richard Nixon,30,Hillary Clinton Joe Biden,0
+Bernie Sanders,31,Barack Obama Joe Biden,0
+Elizabeth Warren,32,Abraham Lincoln Hillary Clinton,0
+Bernie Sanders,33,Donald Trump Hillary Clinton,1
+Hillary Clinton,34,Abraham Lincoln George W. Bush,0
+Elizabeth Warren,35,Abraham Lincoln Hillary Clinton,0
+Elizabeth Warren,35,George W. Bush Joe Biden,1
+Elizabeth Warren,35,Hillary Clinton Joe Biden,1
+Richard Nixon,36,Barack Obama Donald Trump,0
+Richard Nixon,36,Barack Obama Elizabeth Warren,1
+Hillary Clinton,37,Donald Trump Richard Nixon,1
+Hillary Clinton,37,Donald Trump Ronald Reagan,0
+Donald Trump,39,Abraham Lincoln Barack Obama,1
+Donald Trump,39,Elizabeth Warren Hillary Clinton,0
+Richard Nixon,40,Barack Obama Bernie Sanders,0
+Barack Obama,41,Abraham Lincoln Bernie Sanders,0
+Barack Obama,41,Abraham Lincoln Hillary Clinton,0
+Barack Obama,41,Bernie Sanders Donald Trump,1
+Barack Obama,41,Donald Trump Ronald Reagan,0
+Barack Obama,41,George W. Bush Ronald Reagan,1
+Ronald Reagan,42,Bernie Sanders Joe Biden,1
+Ronald Reagan,42,Elizabeth Warren Joe Biden,0
+Ronald Reagan,42,George W. Bush Joe Biden,0
+Richard Nixon,43,Abraham Lincoln Barack Obama,0
+Richard Nixon,43,Donald Trump Hillary Clinton,0
+Ronald Reagan,44,Hillary Clinton Richard Nixon,1
+Elizabeth Warren,45,Abraham Lincoln Barack Obama,0
+Elizabeth Warren,45,Barack Obama Donald Trump,1
+Elizabeth Warren,45,Richard Nixon Ronald Reagan,0
+Barack Obama,46,Donald Trump George W. Bush,0
+Barack Obama,46,Joe Biden Richard Nixon,1
+Donald Trump,47,Abraham Lincoln Richard Nixon,0
+Donald Trump,47,Abraham Lincoln Ronald Reagan,0
+Hillary Clinton,48,Abraham Lincoln Barack Obama,0
+Hillary Clinton,48,Abraham Lincoln Bernie Sanders,0
+Hillary Clinton,48,Abraham Lincoln Joe Biden,0
+Hillary Clinton,48,Barack Obama Donald Trump,1
+Hillary Clinton,48,Donald Trump Richard Nixon,0
+Joe Biden,49,Barack Obama Bernie Sanders,0
+Joe Biden,49,Elizabeth Warren Ronald Reagan,0
+Bernie Sanders,50,Abraham Lincoln Donald Trump,1
+Bernie Sanders,50,Barack Obama Richard Nixon,0
+Bernie Sanders,50,Donald Trump Hillary Clinton,0
+Bernie Sanders,50,Donald Trump Ronald Reagan,0
+Abraham Lincoln,51,Bernie Sanders Richard Nixon,0
+Donald Trump,52,Elizabeth Warren George W. Bush,0
+Donald Trump,52,Elizabeth Warren Hillary Clinton,0
+Donald Trump,52,Richard Nixon Ronald Reagan,0
+Barack Obama,53,Abraham Lincoln Joe Biden,1
+Joe Biden,54,Barack Obama George W. Bush,0
+Joe Biden,54,Donald Trump Hillary Clinton,0
+Joe Biden,54,Elizabeth Warren Richard Nixon,1
+Barack Obama,56,Donald Trump Elizabeth Warren,0
+Barack Obama,56,Elizabeth Warren George W. Bush,0
+George W. Bush,57,Barack Obama Elizabeth Warren,1
+George W. Bush,57,Bernie Sanders Elizabeth Warren,1
+George W. Bush,57,Bernie Sanders Joe Biden,0
+George W. Bush,57,Donald Trump Richard Nixon,1
+George W. Bush,58,Abraham Lincoln Hillary Clinton,0
+George W. Bush,58,Donald Trump Hillary Clinton,0
+George W. Bush,58,Hillary Clinton Ronald Reagan,0
+Ronald Reagan,59,Donald Trump Elizabeth Warren,0
+Ronald Reagan,59,George W. Bush Hillary Clinton,1
+Donald Trump,60,Bernie Sanders Elizabeth Warren,0
+George W. Bush,61,Donald Trump Hillary Clinton,1
+George W. Bush,61,Elizabeth Warren Hillary Clinton,0
+George W. Bush,61,Elizabeth Warren Ronald Reagan,1
+Barack Obama,62,Abraham Lincoln Bernie Sanders,1
+Barack Obama,62,Abraham Lincoln Elizabeth Warren,1
+Barack Obama,62,George W. Bush Ronald Reagan,0
+Barack Obama,62,Hillary Clinton Richard Nixon,0
+Ronald Reagan,63,Donald Trump Elizabeth Warren,0
+Ronald Reagan,63,Elizabeth Warren George W. Bush,0
+Barack Obama,64,Bernie Sanders Richard Nixon,0
+Barack Obama,64,Donald Trump Hillary Clinton,0
+Barack Obama,64,Joe Biden Richard Nixon,1
+Ronald Reagan,65,Abraham Lincoln Bernie Sanders,0
+Ronald Reagan,65,Barack Obama Joe Biden,1
+Ronald Reagan,65,George W. Bush Joe Biden,0
+Donald Trump,66,Abraham Lincoln Joe Biden,1
+Donald Trump,66,Bernie Sanders Elizabeth Warren,0
+Hillary Clinton,68,Abraham Lincoln Richard Nixon,1
+Hillary Clinton,68,Barack Obama Bernie Sanders,1
+Hillary Clinton,68,Elizabeth Warren Ronald Reagan,0
+Hillary Clinton,68,George W. Bush Joe Biden,0
+Richard Nixon,69,Abraham Lincoln Joe Biden,0
+Richard Nixon,69,Barack Obama Elizabeth Warren,0
+Richard Nixon,69,Bernie Sanders Donald Trump,0
+Richard Nixon,69,Elizabeth Warren George W. Bush,0
+Joe Biden,70,Abraham Lincoln Hillary Clinton,1
+Joe Biden,70,Donald Trump Richard Nixon,0
+Joe Biden,70,Elizabeth Warren Ronald Reagan,0
+Joe Biden,70,Hillary Clinton Richard Nixon,0
+Elizabeth Warren,71,Barack Obama Joe Biden,1
+Elizabeth Warren,71,Hillary Clinton Joe Biden,1
+Barack Obama,72,Bernie Sanders Elizabeth Warren,0
+Barack Obama,72,Donald Trump Elizabeth Warren,0
+Barack Obama,72,Donald Trump Joe Biden,0
+Elizabeth Warren,73,Abraham Lincoln Joe Biden,0
+Joe Biden,74,Barack Obama Richard Nixon,1
+Joe Biden,74,Donald Trump Elizabeth Warren,0
+Ronald Reagan,75,Abraham Lincoln Elizabeth Warren,0
+Ronald Reagan,75,Barack Obama Joe Biden,0
+Ronald Reagan,75,Joe Biden Richard Nixon,0
+Richard Nixon,76,Donald Trump Joe Biden,1
+Richard Nixon,76,Elizabeth Warren George W. Bush,0
+Richard Nixon,76,Hillary Clinton Ronald Reagan,0
+Richard Nixon,77,Abraham Lincoln Barack Obama,0
+Richard Nixon,77,Abraham Lincoln Ronald Reagan,0
+Abraham Lincoln,78,Barack Obama Joe Biden,0
+Abraham Lincoln,78,Bernie Sanders Hillary Clinton,0
+Richard Nixon,79,Barack Obama Donald Trump,0
+Richard Nixon,79,Bernie Sanders Donald Trump,0
+Richard Nixon,79,Hillary Clinton Joe Biden,0
+Hillary Clinton,80,Barack Obama Bernie Sanders,0
+Hillary Clinton,80,Barack Obama Donald Trump,0
+Hillary Clinton,80,Elizabeth Warren George W. Bush,0
+Richard Nixon,81,Abraham Lincoln Donald Trump,1
+Richard Nixon,81,Barack Obama Donald Trump,0
+Joe Biden,82,Abraham Lincoln George W. Bush,0
+Joe Biden,82,Abraham Lincoln Richard Nixon,1
+Joe Biden,82,Barack Obama Bernie Sanders,0
+Joe Biden,82,Donald Trump Richard Nixon,1
+Abraham Lincoln,83,Bernie Sanders Elizabeth Warren,1
+Abraham Lincoln,83,Bernie Sanders Joe Biden,0
+Abraham Lincoln,83,Richard Nixon Ronald Reagan,0
+Joe Biden,84,Abraham Lincoln Elizabeth Warren,0
+Joe Biden,85,Abraham Lincoln George W. Bush,0
+Joe Biden,85,Abraham Lincoln Richard Nixon,0
+Joe Biden,85,Barack Obama Richard Nixon,0
+Joe Biden,85,Elizabeth Warren George W. Bush,1
+Joe Biden,85,George W. Bush Ronald Reagan,0
+Bernie Sanders,86,Abraham Lincoln Barack Obama,0
+Bernie Sanders,86,Joe Biden Richard Nixon,1
+Bernie Sanders,86,Richard Nixon Ronald Reagan,0
+Abraham Lincoln,87,Elizabeth Warren Joe Biden,1
+Joe Biden,88,Abraham Lincoln Barack Obama,0
+Joe Biden,88,Barack Obama Bernie Sanders,0
+Joe Biden,88,Donald Trump Ronald Reagan,0
+Joe Biden,88,Elizabeth Warren George W. Bush,0
+Bernie Sanders,89,Elizabeth Warren Joe Biden,0
+Bernie Sanders,90,George W. Bush Ronald Reagan,1
+Abraham Lincoln,91,Barack Obama Donald Trump,0
+Abraham Lincoln,91,Barack Obama Richard Nixon,0
+Abraham Lincoln,91,Elizabeth Warren Joe Biden,0
+Elizabeth Warren,92,Abraham Lincoln Richard Nixon,0
+Ronald Reagan,93,Bernie Sanders Hillary Clinton,0
+Hillary Clinton,94,Abraham Lincoln Richard Nixon,1
+Hillary Clinton,94,Barack Obama Ronald Reagan,0
+Ronald Reagan,95,Abraham Lincoln Barack Obama,0
+Ronald Reagan,95,Bernie Sanders Donald Trump,1
+Ronald Reagan,95,Hillary Clinton Richard Nixon,1
+Richard Nixon,96,Abraham Lincoln Joe Biden,0
+Hillary Clinton,97,Abraham Lincoln Donald Trump,0
+Hillary Clinton,97,Abraham Lincoln Elizabeth Warren,0
+Hillary Clinton,97,Barack Obama Joe Biden,0
+Hillary Clinton,97,Donald Trump Richard Nixon,0
+Richard Nixon,98,Abraham Lincoln Donald Trump,0
+Richard Nixon,98,Abraham Lincoln Joe Biden,0
+Richard Nixon,98,Abraham Lincoln Ronald Reagan,1
+Richard Nixon,98,Donald Trump Elizabeth Warren,0
+Richard Nixon,98,Elizabeth Warren Ronald Reagan,0
+Joe Biden,99,Barack Obama Elizabeth Warren,1
+Barack Obama,100,Bernie Sanders Ronald Reagan,0
+Barack Obama,100,Elizabeth Warren Ronald Reagan,0
+Hillary Clinton,102,Barack Obama Joe Biden,1
+Hillary Clinton,103,Barack Obama Elizabeth Warren,0
+Hillary Clinton,103,Donald Trump Elizabeth Warren,0
+Hillary Clinton,103,Donald Trump Joe Biden,0
+Hillary Clinton,103,Elizabeth Warren Joe Biden,0
+Joe Biden,104,Abraham Lincoln Elizabeth Warren,0
+Joe Biden,104,Abraham Lincoln Hillary Clinton,0
+Joe Biden,104,Donald Trump George W. Bush,0
+Elizabeth Warren,105,Bernie Sanders Ronald Reagan,0
+Bernie Sanders,106,Abraham Lincoln Richard Nixon,0
+Bernie Sanders,106,Donald Trump Ronald Reagan,0
+Joe Biden,107,Donald Trump Hillary Clinton,0
+George W. Bush,108,Abraham Lincoln Donald Trump,0
+Bernie Sanders,109,Donald Trump Joe Biden,0
+Abraham Lincoln,110,Barack Obama Richard Nixon,1
+Abraham Lincoln,110,Barack Obama Ronald Reagan,1
+Abraham Lincoln,110,Bernie Sanders Donald Trump,1
+Abraham Lincoln,110,Bernie Sanders Elizabeth Warren,1
+Abraham Lincoln,110,Joe Biden Ronald Reagan,1
+Bernie Sanders,111,Elizabeth Warren Joe Biden,0
+Bernie Sanders,111,Hillary Clinton Richard Nixon,0
+Elizabeth Warren,112,Abraham Lincoln Barack Obama,0
+Elizabeth Warren,112,Abraham Lincoln Hillary Clinton,1
+Elizabeth Warren,112,Bernie Sanders George W. Bush,0
+Elizabeth Warren,112,Bernie Sanders Joe Biden,0
+Elizabeth Warren,112,Donald Trump Richard Nixon,1
+Elizabeth Warren,112,Donald Trump Ronald Reagan,0
+Bernie Sanders,113,George W. Bush Hillary Clinton,1
+Abraham Lincoln,114,Barack Obama Joe Biden,1
+Abraham Lincoln,114,Bernie Sanders Donald Trump,0
+Abraham Lincoln,114,Bernie Sanders Ronald Reagan,0
+Abraham Lincoln,114,Donald Trump Ronald Reagan,0
+Abraham Lincoln,114,Hillary Clinton Richard Nixon,0
+Elizabeth Warren,115,Abraham Lincoln Bernie Sanders,0
+Elizabeth Warren,115,Donald Trump Hillary Clinton,0
+Elizabeth Warren,115,Donald Trump Joe Biden,0
+Ronald Reagan,116,Abraham Lincoln Elizabeth Warren,0
+Ronald Reagan,116,Bernie Sanders George W. Bush,0
+Hillary Clinton,117,Bernie Sanders Elizabeth Warren,0
+Hillary Clinton,118,Abraham Lincoln Barack Obama,0
+Hillary Clinton,118,Abraham Lincoln Elizabeth Warren,0
+Hillary Clinton,118,Elizabeth Warren Richard Nixon,1
+Richard Nixon,119,Bernie Sanders Donald Trump,0
+Ronald Reagan,120,George W. Bush Hillary Clinton,0
+Ronald Reagan,120,Hillary Clinton Richard Nixon,0
+Ronald Reagan,121,Abraham Lincoln Hillary Clinton,0
+Ronald Reagan,121,Bernie Sanders George W. Bush,1
+Ronald Reagan,121,Joe Biden Richard Nixon,0
+Bernie Sanders,122,Barack Obama Joe Biden,0
+Bernie Sanders,122,Elizabeth Warren Joe Biden,0
+Bernie Sanders,122,Hillary Clinton Joe Biden,0
+Bernie Sanders,122,Hillary Clinton Richard Nixon,0
+Hillary Clinton,123,Barack Obama Elizabeth Warren,0
+Hillary Clinton,123,Donald Trump Richard Nixon,1
+Abraham Lincoln,124,George W. Bush Ronald Reagan,0
+Donald Trump,125,Bernie Sanders Joe Biden,0
+Elizabeth Warren,127,Abraham Lincoln Hillary Clinton,0
+Elizabeth Warren,127,Donald Trump Hillary Clinton,0
+Donald Trump,130,Barack Obama Joe Biden,0
+Donald Trump,130,Bernie Sanders Richard Nixon,1
+Donald Trump,130,Bernie Sanders Ronald Reagan,1
+Donald Trump,130,Elizabeth Warren Hillary Clinton,1
+Donald Trump,130,George W. Bush Richard Nixon,1
+Hillary Clinton,131,Bernie Sanders George W. Bush,0
+Hillary Clinton,131,Donald Trump Joe Biden,0
+Bernie Sanders,132,Abraham Lincoln Ronald Reagan,0
+Bernie Sanders,132,Elizabeth Warren Joe Biden,0
+Bernie Sanders,132,Hillary Clinton Ronald Reagan,1
+George W. Bush,133,Donald Trump Ronald Reagan,0
+George W. Bush,133,Joe Biden Ronald Reagan,0
+Barack Obama,134,Abraham Lincoln Hillary Clinton,0
+Barack Obama,134,Bernie Sanders Hillary Clinton,1
+Barack Obama,134,Donald Trump Joe Biden,0
+Barack Obama,134,Elizabeth Warren Richard Nixon,0
+Ronald Reagan,135,Abraham Lincoln Barack Obama,0
+Ronald Reagan,135,Abraham Lincoln Elizabeth Warren,0
+Ronald Reagan,135,Barack Obama Donald Trump,0
+Ronald Reagan,135,Bernie Sanders Donald Trump,1
+Ronald Reagan,135,Donald Trump Elizabeth Warren,0
+Ronald Reagan,135,Donald Trump Hillary Clinton,1
+Elizabeth Warren,137,Abraham Lincoln Ronald Reagan,0
+Elizabeth Warren,137,Bernie Sanders Donald Trump,0
+George W. Bush,138,Hillary Clinton Richard Nixon,0
+Donald Trump,139,Abraham Lincoln Joe Biden,0
+Donald Trump,139,Elizabeth Warren Ronald Reagan,0
+Donald Trump,139,Richard Nixon Ronald Reagan,0
+Ronald Reagan,140,Abraham Lincoln Elizabeth Warren,0
+Ronald Reagan,140,Bernie Sanders Hillary Clinton,0
+Ronald Reagan,140,Donald Trump Richard Nixon,0
+Ronald Reagan,140,Elizabeth Warren Richard Nixon,0
+Hillary Clinton,141,Abraham Lincoln Donald Trump,0
+Hillary Clinton,141,Abraham Lincoln George W. Bush,1
+Hillary Clinton,141,Bernie Sanders Joe Biden,1
+Hillary Clinton,141,Richard Nixon Ronald Reagan,0
+Hillary Clinton,143,Elizabeth Warren Richard Nixon,0
+Abraham Lincoln,144,Barack Obama Bernie Sanders,0
+Abraham Lincoln,144,Donald Trump Elizabeth Warren,1
+Abraham Lincoln,144,Donald Trump Hillary Clinton,0
+Abraham Lincoln,144,Donald Trump Joe Biden,1
+Abraham Lincoln,144,Elizabeth Warren Ronald Reagan,0
+Abraham Lincoln,144,Hillary Clinton Joe Biden,1
+Abraham Lincoln,144,Hillary Clinton Ronald Reagan,1
+Abraham Lincoln,144,Joe Biden Richard Nixon,0
+Abraham Lincoln,145,Bernie Sanders Donald Trump,1
+Abraham Lincoln,145,Bernie Sanders Richard Nixon,0
+Abraham Lincoln,145,Donald Trump Hillary Clinton,0
+Abraham Lincoln,145,Elizabeth Warren Hillary Clinton,0
+Abraham Lincoln,145,Elizabeth Warren Richard Nixon,0
+Richard Nixon,146,Abraham Lincoln Barack Obama,0
+Richard Nixon,146,Barack Obama Joe Biden,0
+Richard Nixon,147,Barack Obama Joe Biden,1
+Richard Nixon,147,Donald Trump Joe Biden,1
+Donald Trump,148,Abraham Lincoln Bernie Sanders,1
+Donald Trump,148,Abraham Lincoln George W. Bush,0
+Donald Trump,148,Elizabeth Warren George W. Bush,0
+Donald Trump,148,Joe Biden Richard Nixon,0
+Bernie Sanders,150,Abraham Lincoln Donald Trump,1
+Bernie Sanders,150,Barack Obama Donald Trump,0
+Bernie Sanders,150,Donald Trump Elizabeth Warren,0
+Bernie Sanders,150,Elizabeth Warren Hillary Clinton,0
+Bernie Sanders,150,George W. Bush Hillary Clinton,0
+Hillary Clinton,151,George W. Bush Ronald Reagan,1
+George W. Bush,152,Abraham Lincoln Bernie Sanders,0
+George W. Bush,152,Barack Obama Hillary Clinton,1
+Richard Nixon,154,Abraham Lincoln Joe Biden,0
+Richard Nixon,154,George W. Bush Joe Biden,1
+Elizabeth Warren,155,Donald Trump Ronald Reagan,0
+Elizabeth Warren,155,Joe Biden Richard Nixon,0
+Abraham Lincoln,156,Bernie Sanders Donald Trump,0
+Abraham Lincoln,156,Bernie Sanders Richard Nixon,0
+Abraham Lincoln,156,Elizabeth Warren Richard Nixon,1
+Abraham Lincoln,156,Hillary Clinton Richard Nixon,0
+Bernie Sanders,157,Abraham Lincoln Donald Trump,0
+Ronald Reagan,158,Donald Trump Hillary Clinton,0
+Ronald Reagan,158,Elizabeth Warren Joe Biden,0
+George W. Bush,160,Abraham Lincoln Barack Obama,1
+George W. Bush,160,Hillary Clinton Ronald Reagan,0
+Joe Biden,161,Barack Obama Elizabeth Warren,1
+Joe Biden,161,Barack Obama Hillary Clinton,0
+Joe Biden,161,Bernie Sanders Richard Nixon,1
+Joe Biden,161,Elizabeth Warren Ronald Reagan,0
+Richard Nixon,162,Abraham Lincoln Donald Trump,1
+Abraham Lincoln,164,Barack Obama Bernie Sanders,0
+Abraham Lincoln,164,Barack Obama Joe Biden,0
+Abraham Lincoln,164,Donald Trump Hillary Clinton,0
+Abraham Lincoln,164,Hillary Clinton Joe Biden,1
+Abraham Lincoln,165,Barack Obama Bernie Sanders,0
+Abraham Lincoln,165,Barack Obama Joe Biden,0
+Ronald Reagan,166,Elizabeth Warren Hillary Clinton,0
+Donald Trump,167,Joe Biden Richard Nixon,0
+Hillary Clinton,168,Abraham Lincoln Elizabeth Warren,0
+Hillary Clinton,168,Barack Obama Donald Trump,1
+Hillary Clinton,168,Donald Trump Elizabeth Warren,1
+Barack Obama,169,Elizabeth Warren George W. Bush,0
+Barack Obama,169,Elizabeth Warren Joe Biden,1
+Barack Obama,169,Hillary Clinton Richard Nixon,0
+Bernie Sanders,170,Barack Obama Elizabeth Warren,0
+Abraham Lincoln,171,Bernie Sanders Joe Biden,0
+Abraham Lincoln,171,Bernie Sanders Richard Nixon,1
+Abraham Lincoln,171,Donald Trump Richard Nixon,0
+Abraham Lincoln,171,Donald Trump Ronald Reagan,0
+Abraham Lincoln,171,George W. Bush Hillary Clinton,1
+Elizabeth Warren,172,Bernie Sanders Joe Biden,1
+Elizabeth Warren,172,Donald Trump Ronald Reagan,0
+Elizabeth Warren,172,George W. Bush Hillary Clinton,0
+Abraham Lincoln,173,Barack Obama Richard Nixon,0
+Abraham Lincoln,173,Elizabeth Warren George W. Bush,1
+Joe Biden,174,Bernie Sanders Hillary Clinton,1
+Joe Biden,174,Hillary Clinton Ronald Reagan,1
+Abraham Lincoln,175,Barack Obama Richard Nixon,0
+Abraham Lincoln,176,Bernie Sanders Hillary Clinton,0
+Abraham Lincoln,176,George W. Bush Hillary Clinton,0
+Abraham Lincoln,176,George W. Bush Richard Nixon,0
+Barack Obama,178,Hillary Clinton Ronald Reagan,0
+George W. Bush,179,Abraham Lincoln Barack Obama,0
+George W. Bush,179,Bernie Sanders Elizabeth Warren,1
+Hillary Clinton,180,Abraham Lincoln Donald Trump,1
+Hillary Clinton,180,Donald Trump Richard Nixon,0
+Hillary Clinton,180,Donald Trump Ronald Reagan,0
+Hillary Clinton,180,Elizabeth Warren Ronald Reagan,0
+Hillary Clinton,180,George W. Bush Richard Nixon,0
+Elizabeth Warren,181,Barack Obama Donald Trump,0
+Elizabeth Warren,181,Barack Obama Richard Nixon,0
+Elizabeth Warren,181,Bernie Sanders Ronald Reagan,1
+Elizabeth Warren,181,Donald Trump George W. Bush,1
+Elizabeth Warren,181,Donald Trump Richard Nixon,0
+Elizabeth Warren,181,George W. Bush Hillary Clinton,1
+Elizabeth Warren,181,Joe Biden Richard Nixon,1
+Abraham Lincoln,182,Barack Obama Richard Nixon,0
+Abraham Lincoln,182,Bernie Sanders Donald Trump,1
+Abraham Lincoln,182,Donald Trump George W. Bush,0
+Abraham Lincoln,182,Joe Biden Richard Nixon,0
+Abraham Lincoln,183,Bernie Sanders Ronald Reagan,1
+Bernie Sanders,184,Barack Obama Donald Trump,0
+Bernie Sanders,184,Donald Trump Elizabeth Warren,0
+Bernie Sanders,184,Donald Trump Ronald Reagan,0
+Barack Obama,185,Donald Trump Elizabeth Warren,0
+Elizabeth Warren,186,Abraham Lincoln Ronald Reagan,1
+Ronald Reagan,187,Abraham Lincoln Donald Trump,0
+Ronald Reagan,187,Barack Obama Elizabeth Warren,1
+Ronald Reagan,187,George W. Bush Joe Biden,1
+George W. Bush,188,Joe Biden Richard Nixon,1
+Hillary Clinton,189,Barack Obama Donald Trump,0
+Hillary Clinton,189,Barack Obama Elizabeth Warren,0
+Donald Trump,190,Barack Obama Richard Nixon,0
+Donald Trump,190,Hillary Clinton Joe Biden,1
+Donald Trump,190,Joe Biden Richard Nixon,0
+Hillary Clinton,191,Abraham Lincoln Ronald Reagan,0
+Hillary Clinton,191,Bernie Sanders Donald Trump,0
+Hillary Clinton,191,Elizabeth Warren Richard Nixon,0
+Hillary Clinton,191,George W. Bush Ronald Reagan,0
+Hillary Clinton,191,Richard Nixon Ronald Reagan,1
+Joe Biden,192,Abraham Lincoln Elizabeth Warren,0
+Joe Biden,192,Barack Obama Elizabeth Warren,0
+Joe Biden,192,Elizabeth Warren Richard Nixon,0
+Abraham Lincoln,193,Barack Obama Richard Nixon,1
+Abraham Lincoln,193,Bernie Sanders Richard Nixon,0
+Abraham Lincoln,193,Donald Trump Ronald Reagan,0
+Joe Biden,195,Abraham Lincoln Donald Trump,1
+Joe Biden,195,Bernie Sanders Donald Trump,1
+Joe Biden,195,Bernie Sanders George W. Bush,1
+Joe Biden,195,Donald Trump George W. Bush,0
+Elizabeth Warren,196,Barack Obama Ronald Reagan,0
+Donald Trump,197,Abraham Lincoln George W. Bush,0
+Barack Obama,198,Abraham Lincoln Donald Trump,0
+Barack Obama,198,Donald Trump Elizabeth Warren,1
+Barack Obama,198,Elizabeth Warren George W. Bush,1
+George W. Bush,199,Abraham Lincoln Donald Trump,0
+George W. Bush,200,Barack Obama Donald Trump,1
+George W. Bush,200,Donald Trump Richard Nixon,1
+George W. Bush,200,Elizabeth Warren Ronald Reagan,0
+Richard Nixon,202,Barack Obama Hillary Clinton,0
+George W. Bush,203,Barack Obama Bernie Sanders,1
+George W. Bush,203,Barack Obama Joe Biden,0
+Bernie Sanders,204,Elizabeth Warren Ronald Reagan,0
+Donald Trump,206,Barack Obama Richard Nixon,0
+Donald Trump,206,George W. Bush Richard Nixon,0
+Donald Trump,206,Hillary Clinton Ronald Reagan,0
+Bernie Sanders,207,Barack Obama Donald Trump,0
+Bernie Sanders,207,Barack Obama Richard Nixon,0
+Bernie Sanders,207,Hillary Clinton Joe Biden,0
+Ronald Reagan,208,Abraham Lincoln Barack Obama,0
+Ronald Reagan,208,Abraham Lincoln Joe Biden,1
+Ronald Reagan,208,Barack Obama Bernie Sanders,0
+Ronald Reagan,208,Barack Obama Donald Trump,1
+Ronald Reagan,208,Barack Obama Elizabeth Warren,1
+Ronald Reagan,208,Bernie Sanders Hillary Clinton,0
+Ronald Reagan,208,Donald Trump Richard Nixon,1
+Bernie Sanders,209,Abraham Lincoln Barack Obama,0
+Bernie Sanders,209,Elizabeth Warren Hillary Clinton,0
+Bernie Sanders,210,Abraham Lincoln Donald Trump,0
+Bernie Sanders,210,Abraham Lincoln George W. Bush,0
+Bernie Sanders,210,Elizabeth Warren George W. Bush,0
+Bernie Sanders,210,Hillary Clinton Joe Biden,0
+Hillary Clinton,212,Barack Obama Richard Nixon,0
+Hillary Clinton,212,Bernie Sanders George W. Bush,0
+Hillary Clinton,212,Joe Biden Richard Nixon,0
+Donald Trump,213,Barack Obama Hillary Clinton,1
+Donald Trump,213,Bernie Sanders Hillary Clinton,1
+Donald Trump,213,George W. Bush Joe Biden,1
+Richard Nixon,214,Bernie Sanders Elizabeth Warren,1
+Richard Nixon,214,Elizabeth Warren George W. Bush,1
+Abraham Lincoln,215,Barack Obama Joe Biden,0
+Joe Biden,216,Abraham Lincoln Donald Trump,1
+Joe Biden,216,Barack Obama Hillary Clinton,0
+Barack Obama,218,Elizabeth Warren Ronald Reagan,0
+Joe Biden,219,Donald Trump George W. Bush,1
+Joe Biden,219,Donald Trump Ronald Reagan,0
+Joe Biden,219,George W. Bush Hillary Clinton,0
+Joe Biden,219,George W. Bush Ronald Reagan,0
+Abraham Lincoln,220,Elizabeth Warren George W. Bush,0
+Abraham Lincoln,220,Joe Biden Richard Nixon,0
+Richard Nixon,221,Abraham Lincoln Ronald Reagan,0
+Richard Nixon,221,Barack Obama Joe Biden,0
+Richard Nixon,222,Abraham Lincoln Donald Trump,1
+Richard Nixon,222,Abraham Lincoln Ronald Reagan,0
+Richard Nixon,222,Bernie Sanders Donald Trump,0
+Richard Nixon,222,Bernie Sanders Ronald Reagan,0
+Richard Nixon,222,Donald Trump Joe Biden,0
+Barack Obama,223,Hillary Clinton Ronald Reagan,1
+Barack Obama,223,Joe Biden Ronald Reagan,0
+Hillary Clinton,224,Abraham Lincoln Donald Trump,0
+Hillary Clinton,224,Barack Obama Richard Nixon,0
+Hillary Clinton,224,Bernie Sanders Elizabeth Warren,1
+Ronald Reagan,225,Abraham Lincoln Barack Obama,0
+Ronald Reagan,225,Abraham Lincoln Bernie Sanders,0
+Ronald Reagan,225,Abraham Lincoln Joe Biden,1
+Ronald Reagan,225,Barack Obama Elizabeth Warren,0
+Ronald Reagan,225,Bernie Sanders Richard Nixon,1
+Bernie Sanders,226,Abraham Lincoln Richard Nixon,0
+Hillary Clinton,227,Joe Biden Ronald Reagan,1
+Ronald Reagan,228,Barack Obama Joe Biden,0
+Richard Nixon,229,Barack Obama Elizabeth Warren,0
+Richard Nixon,229,Donald Trump Ronald Reagan,0
+Richard Nixon,229,George W. Bush Joe Biden,0
+Abraham Lincoln,231,Donald Trump Elizabeth Warren,1
+Barack Obama,232,Abraham Lincoln George W. Bush,0
+Barack Obama,232,Abraham Lincoln Ronald Reagan,0
+Abraham Lincoln,233,Bernie Sanders Donald Trump,0
+Abraham Lincoln,233,Bernie Sanders Richard Nixon,0
+Abraham Lincoln,233,Elizabeth Warren Joe Biden,0
+Elizabeth Warren,234,Abraham Lincoln Barack Obama,0
+Elizabeth Warren,234,Barack Obama Ronald Reagan,0
+Elizabeth Warren,234,Bernie Sanders Joe Biden,0
+Elizabeth Warren,235,Abraham Lincoln Bernie Sanders,1
+Elizabeth Warren,235,Abraham Lincoln Richard Nixon,0
+Elizabeth Warren,235,Donald Trump Joe Biden,0
+Hillary Clinton,236,Abraham Lincoln Elizabeth Warren,0
+Hillary Clinton,236,Abraham Lincoln Joe Biden,0
+Hillary Clinton,236,Elizabeth Warren Richard Nixon,0
+Hillary Clinton,236,Richard Nixon Ronald Reagan,0
+Richard Nixon,237,Abraham Lincoln Hillary Clinton,0
+Richard Nixon,238,Bernie Sanders Hillary Clinton,1
+Bernie Sanders,240,Donald Trump Elizabeth Warren,0
+Bernie Sanders,240,Hillary Clinton Richard Nixon,0
+Bernie Sanders,241,Abraham Lincoln Barack Obama,0
+Bernie Sanders,241,Barack Obama Donald Trump,0
+Bernie Sanders,241,Barack Obama Richard Nixon,0
+Bernie Sanders,241,Donald Trump Richard Nixon,0
+Donald Trump,242,Abraham Lincoln George W. Bush,0
+Donald Trump,242,Bernie Sanders Hillary Clinton,1
+Donald Trump,242,Elizabeth Warren Hillary Clinton,0
+Joe Biden,243,Bernie Sanders George W. Bush,1
+George W. Bush,244,Bernie Sanders Donald Trump,1
+George W. Bush,244,Donald Trump Hillary Clinton,0
+Joe Biden,245,Abraham Lincoln Donald Trump,0
+Joe Biden,245,Abraham Lincoln Ronald Reagan,1
+Joe Biden,247,Abraham Lincoln Richard Nixon,0
+Joe Biden,247,Barack Obama George W. Bush,0
+Joe Biden,247,Donald Trump Ronald Reagan,0
+Donald Trump,248,Abraham Lincoln Joe Biden,1
+Donald Trump,248,Barack Obama Richard Nixon,1
+Donald Trump,248,Richard Nixon Ronald Reagan,0
+Abraham Lincoln,249,Barack Obama Richard Nixon,1
+Joe Biden,250,Barack Obama Ronald Reagan,0
+Joe Biden,250,Hillary Clinton Ronald Reagan,1
+Donald Trump,251,Abraham Lincoln George W. Bush,0
+Donald Trump,251,Elizabeth Warren George W. Bush,0
+George W. Bush,252,Barack Obama Donald Trump,1
+George W. Bush,252,Barack Obama Richard Nixon,1
+George W. Bush,252,Donald Trump Joe Biden,0
+George W. Bush,252,Donald Trump Richard Nixon,0
+Joe Biden,253,Barack Obama Richard Nixon,0
+Joe Biden,253,Bernie Sanders Richard Nixon,0
+Joe Biden,253,George W. Bush Richard Nixon,0
+Donald Trump,254,Abraham Lincoln Bernie Sanders,0
+Donald Trump,254,Barack Obama Ronald Reagan,0
+Donald Trump,254,Bernie Sanders Elizabeth Warren,0
+Donald Trump,254,Hillary Clinton Joe Biden,0
+Bernie Sanders,255,Donald Trump Richard Nixon,0
+Bernie Sanders,255,Hillary Clinton Ronald Reagan,0
+Richard Nixon,256,Barack Obama Elizabeth Warren,1
+Richard Nixon,256,Elizabeth Warren Hillary Clinton,0
+Richard Nixon,256,Elizabeth Warren Joe Biden,1
+Bernie Sanders,257,Barack Obama Hillary Clinton,0
+Bernie Sanders,257,Donald Trump Elizabeth Warren,0
+Bernie Sanders,257,Donald Trump Hillary Clinton,0
+Richard Nixon,258,Abraham Lincoln Ronald Reagan,1
+Richard Nixon,258,Hillary Clinton Joe Biden,1
+Barack Obama,259,George W. Bush Hillary Clinton,0
+Barack Obama,259,George W. Bush Ronald Reagan,1
+Barack Obama,259,Joe Biden Richard Nixon,0
+Barack Obama,260,Abraham Lincoln Hillary Clinton,1
+Barack Obama,261,Bernie Sanders Elizabeth Warren,0
+Barack Obama,261,Hillary Clinton Richard Nixon,0
+Barack Obama,261,Richard Nixon Ronald Reagan,0
+George W. Bush,262,Barack Obama Elizabeth Warren,1
+George W. Bush,262,Barack Obama Ronald Reagan,0
+George W. Bush,262,Bernie Sanders Hillary Clinton,0
+George W. Bush,262,Donald Trump Elizabeth Warren,1
+George W. Bush,262,Hillary Clinton Joe Biden,0
+George W. Bush,262,Hillary Clinton Richard Nixon,0
+Bernie Sanders,263,Abraham Lincoln George W. Bush,0
+Bernie Sanders,263,Barack Obama Richard Nixon,0
+Donald Trump,265,Abraham Lincoln George W. Bush,0
+Donald Trump,265,Barack Obama Joe Biden,0
+Donald Trump,265,Barack Obama Richard Nixon,0
+Abraham Lincoln,266,Bernie Sanders Hillary Clinton,0
+Abraham Lincoln,266,Donald Trump Elizabeth Warren,0
+Abraham Lincoln,266,Donald Trump Richard Nixon,1
+Abraham Lincoln,266,Elizabeth Warren George W. Bush,0
+Abraham Lincoln,266,George W. Bush Richard Nixon,0
+Donald Trump,267,Abraham Lincoln Elizabeth Warren,1
+Donald Trump,267,Joe Biden Ronald Reagan,0
+Abraham Lincoln,268,Barack Obama Elizabeth Warren,0
+Abraham Lincoln,268,Barack Obama Joe Biden,0
+Abraham Lincoln,268,Donald Trump Ronald Reagan,0
+Elizabeth Warren,269,Abraham Lincoln Barack Obama,0
+Elizabeth Warren,269,George W. Bush Joe Biden,1
+Elizabeth Warren,269,Joe Biden Ronald Reagan,0
+Donald Trump,270,Abraham Lincoln Barack Obama,1
+Donald Trump,270,Abraham Lincoln George W. Bush,0
+Joe Biden,271,Abraham Lincoln Hillary Clinton,0
+Joe Biden,271,Barack Obama George W. Bush,0
+Joe Biden,271,Bernie Sanders Hillary Clinton,0
+Joe Biden,271,Donald Trump Hillary Clinton,0
+Joe Biden,272,Barack Obama Richard Nixon,1
+Joe Biden,272,Bernie Sanders Hillary Clinton,1
+Hillary Clinton,273,Abraham Lincoln George W. Bush,0
+Hillary Clinton,273,Donald Trump Richard Nixon,1
+Bernie Sanders,274,George W. Bush Ronald Reagan,0
+Abraham Lincoln,275,George W. Bush Richard Nixon,0
+Abraham Lincoln,276,Barack Obama Hillary Clinton,0
+Abraham Lincoln,276,Bernie Sanders Ronald Reagan,0
+Abraham Lincoln,276,Donald Trump Richard Nixon,0
+Bernie Sanders,277,Barack Obama Ronald Reagan,1
+Bernie Sanders,277,Elizabeth Warren Hillary Clinton,0
+Bernie Sanders,277,George W. Bush Richard Nixon,0
+Hillary Clinton,279,Barack Obama Ronald Reagan,0
+Hillary Clinton,279,Elizabeth Warren Ronald Reagan,0
+George W. Bush,280,Abraham Lincoln Elizabeth Warren,1
+George W. Bush,280,Barack Obama Bernie Sanders,0
+George W. Bush,280,Elizabeth Warren Joe Biden,0
+George W. Bush,281,Abraham Lincoln Barack Obama,0
+George W. Bush,281,Abraham Lincoln Elizabeth Warren,0
+George W. Bush,281,Elizabeth Warren Joe Biden,0
+Bernie Sanders,283,Abraham Lincoln Hillary Clinton,0
+Bernie Sanders,283,Elizabeth Warren Joe Biden,0
+George W. Bush,284,Abraham Lincoln Donald Trump,1
+George W. Bush,284,Donald Trump Ronald Reagan,0
+George W. Bush,284,Joe Biden Richard Nixon,1
+Joe Biden,285,Abraham Lincoln Donald Trump,0
+Joe Biden,285,Abraham Lincoln George W. Bush,0
+Joe Biden,285,Abraham Lincoln Hillary Clinton,0
+Joe Biden,285,Barack Obama Hillary Clinton,0
+Joe Biden,285,Bernie Sanders Donald Trump,1
+Elizabeth Warren,287,Abraham Lincoln Donald Trump,1
+Elizabeth Warren,287,Barack Obama Donald Trump,0
+Elizabeth Warren,287,Bernie Sanders Richard Nixon,0
+Elizabeth Warren,287,Donald Trump Joe Biden,1
+Abraham Lincoln,289,Barack Obama Richard Nixon,0
+Abraham Lincoln,289,Bernie Sanders Hillary Clinton,0
+Abraham Lincoln,289,Bernie Sanders Joe Biden,0
+Elizabeth Warren,290,Abraham Lincoln Barack Obama,0
+Elizabeth Warren,290,Barack Obama Joe Biden,0
+Elizabeth Warren,290,Bernie Sanders Ronald Reagan,0
+Elizabeth Warren,290,George W. Bush Joe Biden,0
+Donald Trump,292,Abraham Lincoln Hillary Clinton,0
+Donald Trump,292,Barack Obama George W. Bush,0
+Bernie Sanders,293,Barack Obama Richard Nixon,0
+Bernie Sanders,293,Elizabeth Warren Ronald Reagan,1
+Bernie Sanders,293,Richard Nixon Ronald Reagan,1
+Abraham Lincoln,294,Richard Nixon Ronald Reagan,0
+Abraham Lincoln,295,Barack Obama Elizabeth Warren,0
+Abraham Lincoln,295,Donald Trump George W. Bush,0
+Abraham Lincoln,295,Donald Trump Richard Nixon,0
+Elizabeth Warren,296,Abraham Lincoln Richard Nixon,1
+Elizabeth Warren,296,Barack Obama Hillary Clinton,0
+Elizabeth Warren,296,Hillary Clinton Richard Nixon,0
+George W. Bush,297,Bernie Sanders Elizabeth Warren,0
+George W. Bush,297,Bernie Sanders Ronald Reagan,0
+George W. Bush,297,Donald Trump Richard Nixon,0
+George W. Bush,297,Richard Nixon Ronald Reagan,0
+Bernie Sanders,298,George W. Bush Richard Nixon,1
+Richard Nixon,299,George W. Bush Ronald Reagan,0
+Elizabeth Warren,300,Barack Obama Bernie Sanders,0
+Joe Biden,301,Abraham Lincoln George W. Bush,0
+Joe Biden,301,Barack Obama Hillary Clinton,0
+Abraham Lincoln,302,Barack Obama Donald Trump,0
+Abraham Lincoln,302,Barack Obama Richard Nixon,0
+Abraham Lincoln,302,Bernie Sanders Richard Nixon,0
+Elizabeth Warren,303,Donald Trump Richard Nixon,0
+Elizabeth Warren,303,George W. Bush Hillary Clinton,1
+Bernie Sanders,304,Donald Trump George W. Bush,0
+Abraham Lincoln,305,Barack Obama Donald Trump,0
+Abraham Lincoln,305,Donald Trump George W. Bush,0
+Abraham Lincoln,305,George W. Bush Joe Biden,1
+Abraham Lincoln,305,Joe Biden Ronald Reagan,0
+Donald Trump,306,Barack Obama Elizabeth Warren,0
+Donald Trump,306,Hillary Clinton Ronald Reagan,0
+Donald Trump,306,Richard Nixon Ronald Reagan,0
+Elizabeth Warren,307,Bernie Sanders Donald Trump,1
+Hillary Clinton,308,Abraham Lincoln Donald Trump,0
+Hillary Clinton,308,Abraham Lincoln George W. Bush,0
+Abraham Lincoln,309,Barack Obama Donald Trump,0
+Abraham Lincoln,309,Donald Trump Elizabeth Warren,0
+Abraham Lincoln,309,Donald Trump Hillary Clinton,0
+Bernie Sanders,310,Abraham Lincoln Elizabeth Warren,0
+Bernie Sanders,310,Abraham Lincoln Richard Nixon,0
+Bernie Sanders,310,Barack Obama Richard Nixon,1
+Bernie Sanders,310,Donald Trump Elizabeth Warren,1
+Barack Obama,311,Abraham Lincoln Donald Trump,0
+Barack Obama,311,Abraham Lincoln Hillary Clinton,0
+Barack Obama,311,Bernie Sanders Donald Trump,1
+Barack Obama,311,Bernie Sanders Elizabeth Warren,0
+Richard Nixon,312,Abraham Lincoln Ronald Reagan,0
+George W. Bush,314,Abraham Lincoln Barack Obama,0
+George W. Bush,314,Abraham Lincoln Richard Nixon,0
+George W. Bush,314,Bernie Sanders Elizabeth Warren,0
+Ronald Reagan,315,Abraham Lincoln Elizabeth Warren,0
+Ronald Reagan,315,Hillary Clinton Joe Biden,1
+Joe Biden,317,Barack Obama Hillary Clinton,1
+Barack Obama,319,Abraham Lincoln Bernie Sanders,1
+Barack Obama,319,Abraham Lincoln Richard Nixon,0
+Barack Obama,319,Donald Trump Ronald Reagan,0
+Barack Obama,319,Elizabeth Warren Richard Nixon,0
+George W. Bush,320,Joe Biden Richard Nixon,1
+George W. Bush,320,Joe Biden Ronald Reagan,0
+Hillary Clinton,321,Barack Obama Elizabeth Warren,0
+Hillary Clinton,321,Donald Trump Joe Biden,0
+Barack Obama,322,Donald Trump Elizabeth Warren,0
+Barack Obama,322,Joe Biden Ronald Reagan,0
+Ronald Reagan,323,Abraham Lincoln George W. Bush,0
+Ronald Reagan,323,Elizabeth Warren George W. Bush,0
+Ronald Reagan,323,George W. Bush Joe Biden,0
+Barack Obama,324,Donald Trump Joe Biden,0
+Ronald Reagan,325,Abraham Lincoln Hillary Clinton,0
+Ronald Reagan,325,Barack Obama Donald Trump,0
+Ronald Reagan,325,Barack Obama Joe Biden,0
+Ronald Reagan,325,Bernie Sanders Elizabeth Warren,1
+Ronald Reagan,325,Bernie Sanders Hillary Clinton,0
+Ronald Reagan,325,Donald Trump Hillary Clinton,0
+Abraham Lincoln,326,Barack Obama Richard Nixon,0
+Abraham Lincoln,326,Donald Trump Elizabeth Warren,0
+Joe Biden,327,Abraham Lincoln Donald Trump,1
+Joe Biden,327,Abraham Lincoln Richard Nixon,0
+Joe Biden,327,Bernie Sanders Hillary Clinton,0
+Joe Biden,327,Donald Trump Elizabeth Warren,0
+Joe Biden,327,Elizabeth Warren George W. Bush,0
+Abraham Lincoln,328,Donald Trump George W. Bush,0
+Abraham Lincoln,328,Donald Trump Hillary Clinton,0
+Abraham Lincoln,328,Hillary Clinton Joe Biden,1
+Richard Nixon,329,Barack Obama Joe Biden,0
+Richard Nixon,329,Donald Trump Joe Biden,0
+Richard Nixon,329,Elizabeth Warren Hillary Clinton,1
+George W. Bush,330,Donald Trump Hillary Clinton,0
+George W. Bush,330,Elizabeth Warren Hillary Clinton,0
+Ronald Reagan,332,Abraham Lincoln Bernie Sanders,1
+Ronald Reagan,332,Abraham Lincoln Joe Biden,0
+Ronald Reagan,332,Donald Trump George W. Bush,0
+Ronald Reagan,332,Donald Trump Richard Nixon,1
+Ronald Reagan,332,Elizabeth Warren Joe Biden,0
+Ronald Reagan,332,Hillary Clinton Joe Biden,0
+Hillary Clinton,333,Barack Obama Donald Trump,0
+Hillary Clinton,333,Barack Obama Richard Nixon,0
+Hillary Clinton,333,Bernie Sanders Joe Biden,0
+Hillary Clinton,333,Donald Trump Elizabeth Warren,1
+Hillary Clinton,333,Elizabeth Warren Richard Nixon,1
+Hillary Clinton,333,George W. Bush Richard Nixon,1
+Ronald Reagan,334,Barack Obama Joe Biden,0
+Ronald Reagan,334,Donald Trump Richard Nixon,0
+Bernie Sanders,335,Donald Trump Elizabeth Warren,1
+Barack Obama,336,Abraham Lincoln Ronald Reagan,0
+Barack Obama,336,Bernie Sanders Donald Trump,0
+Barack Obama,336,Joe Biden Richard Nixon,0
+Barack Obama,336,Richard Nixon Ronald Reagan,0
+Richard Nixon,337,Abraham Lincoln Barack Obama,0
+Richard Nixon,337,Abraham Lincoln Donald Trump,0
+Richard Nixon,337,Barack Obama Donald Trump,1
+Joe Biden,338,Barack Obama Richard Nixon,0
+Ronald Reagan,339,Abraham Lincoln George W. Bush,1
+Ronald Reagan,339,Abraham Lincoln Joe Biden,0
+Hillary Clinton,340,Abraham Lincoln Donald Trump,1
+Hillary Clinton,340,Abraham Lincoln Joe Biden,0
+Hillary Clinton,340,Abraham Lincoln Richard Nixon,0
+Hillary Clinton,340,Barack Obama Richard Nixon,0
+Hillary Clinton,340,Barack Obama Ronald Reagan,0
+Hillary Clinton,340,George W. Bush Joe Biden,1
+Hillary Clinton,340,Richard Nixon Ronald Reagan,1
+Richard Nixon,341,Barack Obama Bernie Sanders,1
+Richard Nixon,341,Bernie Sanders Donald Trump,1
+Donald Trump,342,Abraham Lincoln Bernie Sanders,0
+Abraham Lincoln,344,Barack Obama Richard Nixon,1
+Abraham Lincoln,344,Bernie Sanders Elizabeth Warren,0
+Abraham Lincoln,344,Bernie Sanders Richard Nixon,0
+Abraham Lincoln,344,Hillary Clinton Joe Biden,0
+Abraham Lincoln,344,Joe Biden Richard Nixon,0
+Joe Biden,345,Abraham Lincoln Barack Obama,0
+Joe Biden,345,Abraham Lincoln George W. Bush,0
+Joe Biden,345,Elizabeth Warren George W. Bush,0
+Joe Biden,345,Elizabeth Warren Hillary Clinton,0
+Bernie Sanders,346,Hillary Clinton Joe Biden,1
+Bernie Sanders,346,Joe Biden Richard Nixon,1
+Hillary Clinton,347,Abraham Lincoln Elizabeth Warren,0
+Hillary Clinton,347,Bernie Sanders Joe Biden,0
+Hillary Clinton,347,Joe Biden Richard Nixon,1
+Barack Obama,348,Abraham Lincoln Elizabeth Warren,1
+Barack Obama,348,George W. Bush Joe Biden,1
+Barack Obama,349,Abraham Lincoln Donald Trump,1
+Barack Obama,349,Abraham Lincoln Joe Biden,0
+Barack Obama,349,Donald Trump Richard Nixon,1
+Barack Obama,349,Hillary Clinton Richard Nixon,0
+Hillary Clinton,350,Bernie Sanders Ronald Reagan,0
+Bernie Sanders,352,Abraham Lincoln George W. Bush,0
+Bernie Sanders,352,Barack Obama Donald Trump,0
+Bernie Sanders,352,Barack Obama Richard Nixon,1
+Bernie Sanders,352,Donald Trump Joe Biden,0
+Richard Nixon,353,Donald Trump George W. Bush,0
+Ronald Reagan,354,Bernie Sanders Joe Biden,1
+Ronald Reagan,354,Donald Trump Richard Nixon,0
+George W. Bush,355,Donald Trump Elizabeth Warren,1
+Ronald Reagan,356,Abraham Lincoln Elizabeth Warren,0
+Ronald Reagan,357,Abraham Lincoln Barack Obama,1
+Ronald Reagan,357,Barack Obama Elizabeth Warren,0
+Ronald Reagan,357,Barack Obama Richard Nixon,1
+Ronald Reagan,357,Bernie Sanders Donald Trump,0
+Ronald Reagan,357,George W. Bush Hillary Clinton,1
+George W. Bush,358,Abraham Lincoln Elizabeth Warren,0
+George W. Bush,358,Barack Obama Donald Trump,1
+George W. Bush,358,Hillary Clinton Joe Biden,0
+Abraham Lincoln,359,Donald Trump Hillary Clinton,0
+Donald Trump,360,Bernie Sanders Richard Nixon,1
+Donald Trump,360,Hillary Clinton Ronald Reagan,1
+Ronald Reagan,361,Abraham Lincoln Barack Obama,0
+Ronald Reagan,361,Donald Trump George W. Bush,0
+Ronald Reagan,361,Elizabeth Warren Richard Nixon,0
+George W. Bush,362,Donald Trump Hillary Clinton,0
+George W. Bush,363,Barack Obama Richard Nixon,0
+George W. Bush,363,Joe Biden Ronald Reagan,1
+Elizabeth Warren,364,Bernie Sanders Donald Trump,1
+Abraham Lincoln,365,Donald Trump Ronald Reagan,1
+Joe Biden,366,Abraham Lincoln Donald Trump,0
+Joe Biden,366,Bernie Sanders Hillary Clinton,0
+Joe Biden,366,Bernie Sanders Ronald Reagan,1
+Joe Biden,366,Hillary Clinton Richard Nixon,1
+Elizabeth Warren,367,Abraham Lincoln Ronald Reagan,0
+Elizabeth Warren,367,Bernie Sanders George W. Bush,0
+Elizabeth Warren,368,Donald Trump Richard Nixon,0
+Hillary Clinton,369,Donald Trump Joe Biden,0
+Donald Trump,370,Abraham Lincoln Bernie Sanders,0
+Donald Trump,370,Barack Obama Bernie Sanders,1
+Donald Trump,370,Barack Obama Richard Nixon,1
+Donald Trump,370,Elizabeth Warren Ronald Reagan,1
+Donald Trump,370,George W. Bush Ronald Reagan,1
+Donald Trump,370,Hillary Clinton Joe Biden,0
+George W. Bush,371,Bernie Sanders Richard Nixon,0
+George W. Bush,371,Donald Trump Elizabeth Warren,0
+George W. Bush,371,Joe Biden Richard Nixon,0
+Bernie Sanders,373,Abraham Lincoln Richard Nixon,0
+Joe Biden,375,Abraham Lincoln Donald Trump,0
+Joe Biden,375,Abraham Lincoln Elizabeth Warren,1
+Joe Biden,375,Barack Obama Richard Nixon,1
+Donald Trump,376,Abraham Lincoln Bernie Sanders,1
+Donald Trump,376,Barack Obama Hillary Clinton,0
+Barack Obama,377,Abraham Lincoln Bernie Sanders,1
+Barack Obama,377,Bernie Sanders Elizabeth Warren,0
+Barack Obama,377,George W. Bush Hillary Clinton,0
+Bernie Sanders,379,Abraham Lincoln Donald Trump,0
+Bernie Sanders,379,Barack Obama Joe Biden,0
+Bernie Sanders,379,Elizabeth Warren Ronald Reagan,0
+Bernie Sanders,379,Hillary Clinton Richard Nixon,0
+Abraham Lincoln,380,Barack Obama George W. Bush,1
+Abraham Lincoln,380,Barack Obama Richard Nixon,0
+Abraham Lincoln,380,Barack Obama Ronald Reagan,0
+Abraham Lincoln,380,Bernie Sanders Elizabeth Warren,1
+Abraham Lincoln,380,Donald Trump Joe Biden,1
+Joe Biden,381,Abraham Lincoln Bernie Sanders,1
+Joe Biden,381,Barack Obama Richard Nixon,1
+Joe Biden,381,Donald Trump Hillary Clinton,0
+Bernie Sanders,382,Barack Obama Hillary Clinton,1
+Bernie Sanders,382,Donald Trump Elizabeth Warren,0
+Bernie Sanders,382,Elizabeth Warren George W. Bush,0
+Bernie Sanders,382,George W. Bush Joe Biden,1
+Ronald Reagan,383,Abraham Lincoln Richard Nixon,1
+Ronald Reagan,383,Barack Obama Elizabeth Warren,1
+Ronald Reagan,383,Donald Trump George W. Bush,0
+Ronald Reagan,383,Donald Trump Joe Biden,0
+Hillary Clinton,384,Bernie Sanders Elizabeth Warren,0
+Ronald Reagan,385,Abraham Lincoln Bernie Sanders,0
+Ronald Reagan,385,Donald Trump Joe Biden,0
+Ronald Reagan,385,George W. Bush Hillary Clinton,1
+Ronald Reagan,385,Hillary Clinton Richard Nixon,0
+Elizabeth Warren,386,Bernie Sanders Richard Nixon,0
+Elizabeth Warren,386,Donald Trump Hillary Clinton,1
+Ronald Reagan,387,Barack Obama Donald Trump,0
+Ronald Reagan,387,Bernie Sanders Elizabeth Warren,0
+Ronald Reagan,387,Donald Trump Hillary Clinton,1
+Ronald Reagan,387,Donald Trump Joe Biden,1
+Elizabeth Warren,388,Barack Obama Richard Nixon,1
+Elizabeth Warren,388,Hillary Clinton Richard Nixon,1
+Hillary Clinton,389,Abraham Lincoln Donald Trump,0
+Hillary Clinton,389,Abraham Lincoln Elizabeth Warren,1
+Hillary Clinton,389,Abraham Lincoln Joe Biden,0
+Hillary Clinton,389,Barack Obama Ronald Reagan,0
+Hillary Clinton,389,Joe Biden Richard Nixon,0
+Richard Nixon,390,Abraham Lincoln Bernie Sanders,1
+Richard Nixon,390,Abraham Lincoln George W. Bush,0
+Richard Nixon,390,Barack Obama George W. Bush,0
+Elizabeth Warren,391,Abraham Lincoln Joe Biden,1
+Elizabeth Warren,391,Donald Trump Richard Nixon,0
+Elizabeth Warren,391,Donald Trump Ronald Reagan,0
+Ronald Reagan,393,Barack Obama Bernie Sanders,1
+Ronald Reagan,393,Barack Obama Donald Trump,1
+Ronald Reagan,393,Bernie Sanders George W. Bush,0
+Ronald Reagan,394,Barack Obama Joe Biden,1
+Ronald Reagan,394,Bernie Sanders Hillary Clinton,1
+Abraham Lincoln,395,Barack Obama Bernie Sanders,1
+Abraham Lincoln,395,Donald Trump Ronald Reagan,0
+Abraham Lincoln,395,Hillary Clinton Richard Nixon,0
+Barack Obama,396,Abraham Lincoln George W. Bush,0
+George W. Bush,397,Abraham Lincoln Elizabeth Warren,0
+George W. Bush,397,Barack Obama Joe Biden,1
+George W. Bush,397,Barack Obama Ronald Reagan,0
+George W. Bush,397,Bernie Sanders Richard Nixon,1
+Richard Nixon,398,Donald Trump George W. Bush,1
+Joe Biden,399,Abraham Lincoln Donald Trump,1
+Joe Biden,399,Bernie Sanders Elizabeth Warren,0
+Elizabeth Warren,400,Barack Obama Bernie Sanders,0
+Abraham Lincoln,401,Donald Trump Hillary Clinton,0
+Hillary Clinton,402,Barack Obama George W. Bush,0
+Hillary Clinton,402,Barack Obama Ronald Reagan,0
+Elizabeth Warren,403,Abraham Lincoln Barack Obama,1
+Elizabeth Warren,403,Abraham Lincoln Joe Biden,1
+Elizabeth Warren,403,Abraham Lincoln Ronald Reagan,0
+Elizabeth Warren,403,Barack Obama Ronald Reagan,0
+Elizabeth Warren,403,Bernie Sanders Richard Nixon,0
+George W. Bush,404,Barack Obama Donald Trump,1
+George W. Bush,404,Bernie Sanders Richard Nixon,0
+Hillary Clinton,405,Abraham Lincoln Donald Trump,0
+Hillary Clinton,405,Abraham Lincoln Ronald Reagan,0
+Hillary Clinton,405,Barack Obama Donald Trump,1
+Hillary Clinton,405,Bernie Sanders Donald Trump,1
+Hillary Clinton,405,Bernie Sanders Richard Nixon,0
+Bernie Sanders,406,Abraham Lincoln Joe Biden,1
+Bernie Sanders,406,Barack Obama Donald Trump,0
+Bernie Sanders,406,Barack Obama Elizabeth Warren,0
+Bernie Sanders,406,Barack Obama Hillary Clinton,0
+Bernie Sanders,406,Hillary Clinton Joe Biden,0
+Bernie Sanders,408,Barack Obama Joe Biden,0
+Elizabeth Warren,409,Barack Obama Richard Nixon,0
+Elizabeth Warren,409,George W. Bush Joe Biden,1
+Elizabeth Warren,409,Hillary Clinton Joe Biden,1
+Richard Nixon,411,Abraham Lincoln Donald Trump,0
+Richard Nixon,411,Barack Obama Ronald Reagan,0
+Richard Nixon,411,George W. Bush Hillary Clinton,0
+Elizabeth Warren,412,Hillary Clinton Joe Biden,1
+Abraham Lincoln,413,Bernie Sanders Hillary Clinton,0
+Abraham Lincoln,413,Bernie Sanders Ronald Reagan,0
+Abraham Lincoln,413,Elizabeth Warren Ronald Reagan,1
+Donald Trump,414,Abraham Lincoln Ronald Reagan,0
+Donald Trump,414,Elizabeth Warren George W. Bush,0
+Donald Trump,414,Richard Nixon Ronald Reagan,0
+Elizabeth Warren,415,Abraham Lincoln Donald Trump,1
+Elizabeth Warren,415,Barack Obama Ronald Reagan,0
+Elizabeth Warren,415,Bernie Sanders Ronald Reagan,0
+Elizabeth Warren,415,George W. Bush Joe Biden,1
+Elizabeth Warren,415,Joe Biden Richard Nixon,1
+Elizabeth Warren,415,Richard Nixon Ronald Reagan,0
+Ronald Reagan,416,Barack Obama Bernie Sanders,0
+Ronald Reagan,416,George W. Bush Joe Biden,1
+Ronald Reagan,417,Abraham Lincoln George W. Bush,0
+Ronald Reagan,417,Donald Trump Elizabeth Warren,1
+Elizabeth Warren,418,Abraham Lincoln Joe Biden,0
+Elizabeth Warren,418,Bernie Sanders Ronald Reagan,0
+Hillary Clinton,419,Abraham Lincoln Donald Trump,0
+Hillary Clinton,419,Abraham Lincoln Elizabeth Warren,0
+Hillary Clinton,419,Barack Obama Elizabeth Warren,0
+Hillary Clinton,419,George W. Bush Joe Biden,1
+Donald Trump,420,Barack Obama Bernie Sanders,1
+Donald Trump,420,Barack Obama Hillary Clinton,0
+Abraham Lincoln,421,Bernie Sanders Hillary Clinton,0
+Abraham Lincoln,421,Hillary Clinton Richard Nixon,1
+Abraham Lincoln,421,Joe Biden Richard Nixon,0
+Elizabeth Warren,422,Donald Trump George W. Bush,0
+Hillary Clinton,423,Abraham Lincoln Elizabeth Warren,0
+Hillary Clinton,423,Bernie Sanders Donald Trump,0
+Hillary Clinton,423,Elizabeth Warren George W. Bush,0
+Hillary Clinton,423,Elizabeth Warren Richard Nixon,0
+Ronald Reagan,424,Abraham Lincoln Bernie Sanders,1
+Ronald Reagan,424,Barack Obama Joe Biden,0
+Ronald Reagan,424,George W. Bush Joe Biden,1
+Ronald Reagan,425,Bernie Sanders George W. Bush,0
+George W. Bush,426,Abraham Lincoln Donald Trump,1
+George W. Bush,426,Bernie Sanders Richard Nixon,1
+George W. Bush,426,Elizabeth Warren Richard Nixon,0
+George W. Bush,426,Joe Biden Richard Nixon,0
+Elizabeth Warren,427,Joe Biden Richard Nixon,0
+Donald Trump,428,Abraham Lincoln Bernie Sanders,0
+Donald Trump,428,Abraham Lincoln Elizabeth Warren,1
+Donald Trump,428,Abraham Lincoln Richard Nixon,1
+Barack Obama,429,Abraham Lincoln Donald Trump,0
+Barack Obama,429,Abraham Lincoln Richard Nixon,0
+Barack Obama,429,Bernie Sanders Elizabeth Warren,0
+Barack Obama,429,Donald Trump Ronald Reagan,0
+Barack Obama,429,Elizabeth Warren Ronald Reagan,0
+Donald Trump,430,Abraham Lincoln Elizabeth Warren,0
+Donald Trump,430,Abraham Lincoln Richard Nixon,0
+Ronald Reagan,431,Barack Obama Donald Trump,1
+Ronald Reagan,431,Bernie Sanders Donald Trump,0
+Ronald Reagan,431,Donald Trump Joe Biden,0
+Ronald Reagan,431,Hillary Clinton Joe Biden,0
+Ronald Reagan,432,Barack Obama Donald Trump,1
+Ronald Reagan,432,Bernie Sanders Joe Biden,1
+Ronald Reagan,432,Elizabeth Warren Richard Nixon,0
+Bernie Sanders,433,Barack Obama Richard Nixon,0
+Bernie Sanders,433,Donald Trump Ronald Reagan,0
+Bernie Sanders,433,Elizabeth Warren Ronald Reagan,0
+Ronald Reagan,434,Donald Trump Hillary Clinton,1
+Abraham Lincoln,435,Donald Trump Elizabeth Warren,0
+Abraham Lincoln,435,Donald Trump Hillary Clinton,1
+Joe Biden,436,Abraham Lincoln Barack Obama,0
+Joe Biden,436,Abraham Lincoln Elizabeth Warren,0
+Joe Biden,436,Bernie Sanders George W. Bush,0
+Joe Biden,436,Donald Trump Hillary Clinton,0
+Elizabeth Warren,437,Bernie Sanders Richard Nixon,0
+Donald Trump,438,Abraham Lincoln Barack Obama,0
+Donald Trump,438,Abraham Lincoln Joe Biden,1
+Donald Trump,438,Barack Obama Elizabeth Warren,0
+Donald Trump,438,Elizabeth Warren Joe Biden,0
+Joe Biden,439,Abraham Lincoln George W. Bush,0
+Hillary Clinton,440,Abraham Lincoln Richard Nixon,0
+Hillary Clinton,440,Bernie Sanders Joe Biden,0
+Barack Obama,441,Abraham Lincoln Donald Trump,0
+Barack Obama,441,Donald Trump Joe Biden,0
+Barack Obama,441,Donald Trump Richard Nixon,0
+Barack Obama,441,George W. Bush Hillary Clinton,1
+Barack Obama,441,George W. Bush Joe Biden,0
+Barack Obama,441,Hillary Clinton Joe Biden,1
+Abraham Lincoln,442,Barack Obama Hillary Clinton,0
+Abraham Lincoln,442,Elizabeth Warren Joe Biden,0
+Donald Trump,443,Barack Obama George W. Bush,0
+Donald Trump,443,Bernie Sanders Hillary Clinton,0
+Donald Trump,443,Joe Biden Richard Nixon,0
+Joe Biden,444,Barack Obama Bernie Sanders,0
+Bernie Sanders,446,Barack Obama Joe Biden,0
+Abraham Lincoln,447,Barack Obama Richard Nixon,0
+Abraham Lincoln,448,Donald Trump Hillary Clinton,0
+Abraham Lincoln,448,Donald Trump Joe Biden,0
+Abraham Lincoln,448,Donald Trump Richard Nixon,0
+Bernie Sanders,449,Abraham Lincoln Donald Trump,1
+Bernie Sanders,449,Elizabeth Warren Ronald Reagan,1
+Elizabeth Warren,450,Barack Obama Joe Biden,1
+Elizabeth Warren,450,Bernie Sanders Donald Trump,0
+Bernie Sanders,451,Abraham Lincoln Richard Nixon,0
+Bernie Sanders,451,Elizabeth Warren Richard Nixon,1
+Abraham Lincoln,452,Barack Obama Donald Trump,0
+Abraham Lincoln,452,Bernie Sanders Donald Trump,1
+Abraham Lincoln,452,Donald Trump George W. Bush,0
+Abraham Lincoln,452,Donald Trump Hillary Clinton,0
+Abraham Lincoln,453,Donald Trump George W. Bush,0
+Abraham Lincoln,453,Donald Trump Hillary Clinton,1
+Joe Biden,454,Barack Obama Donald Trump,0
+Joe Biden,454,Hillary Clinton Richard Nixon,0
+Barack Obama,456,Abraham Lincoln Elizabeth Warren,0
+Barack Obama,456,Abraham Lincoln Hillary Clinton,0
+Bernie Sanders,457,Barack Obama Donald Trump,0
+Barack Obama,458,Donald Trump Elizabeth Warren,0
+Barack Obama,458,Elizabeth Warren Richard Nixon,0
+Bernie Sanders,459,Donald Trump Hillary Clinton,0
+Bernie Sanders,459,Joe Biden Richard Nixon,1
+Hillary Clinton,460,George W. Bush Richard Nixon,0
+Abraham Lincoln,461,Barack Obama Joe Biden,1
+Abraham Lincoln,461,Bernie Sanders Joe Biden,0
+Abraham Lincoln,461,Donald Trump Hillary Clinton,1
+Abraham Lincoln,461,George W. Bush Ronald Reagan,1
+Ronald Reagan,462,Bernie Sanders Donald Trump,1
+Ronald Reagan,462,Donald Trump George W. Bush,0
+Ronald Reagan,462,Donald Trump Hillary Clinton,0
+Ronald Reagan,464,Abraham Lincoln Donald Trump,1
+Ronald Reagan,464,Abraham Lincoln George W. Bush,1
+Ronald Reagan,464,Bernie Sanders Donald Trump,1
+Ronald Reagan,464,Donald Trump Richard Nixon,0
+Ronald Reagan,465,Abraham Lincoln George W. Bush,0
+Ronald Reagan,465,Elizabeth Warren Richard Nixon,0
+Ronald Reagan,466,Barack Obama Elizabeth Warren,1
+Ronald Reagan,466,Barack Obama Joe Biden,0
+Barack Obama,467,Bernie Sanders Ronald Reagan,0
+Barack Obama,467,Donald Trump Richard Nixon,0
+Barack Obama,467,George W. Bush Richard Nixon,1
+Barack Obama,467,Hillary Clinton Joe Biden,0
+Bernie Sanders,468,Abraham Lincoln George W. Bush,0
+Bernie Sanders,468,Elizabeth Warren Ronald Reagan,0
+Richard Nixon,469,Abraham Lincoln Donald Trump,0
+Richard Nixon,469,Abraham Lincoln Joe Biden,0
+Richard Nixon,469,Bernie Sanders Donald Trump,1
+Richard Nixon,469,Donald Trump Joe Biden,0
+Hillary Clinton,470,Abraham Lincoln Donald Trump,1
+Hillary Clinton,470,Abraham Lincoln Elizabeth Warren,0
+Hillary Clinton,470,Donald Trump Elizabeth Warren,0
+Hillary Clinton,470,Donald Trump George W. Bush,0
+Hillary Clinton,470,Elizabeth Warren Joe Biden,0
+Donald Trump,471,Bernie Sanders George W. Bush,0
+Donald Trump,471,Elizabeth Warren Joe Biden,1
+Ronald Reagan,472,Abraham Lincoln Donald Trump,1
+Ronald Reagan,472,Abraham Lincoln Richard Nixon,1
+Ronald Reagan,472,Bernie Sanders Elizabeth Warren,0
+Elizabeth Warren,473,Abraham Lincoln Donald Trump,0
+Elizabeth Warren,473,Bernie Sanders Richard Nixon,1
+Elizabeth Warren,473,Donald Trump Richard Nixon,1
+Elizabeth Warren,473,Joe Biden Richard Nixon,0
+Barack Obama,474,Elizabeth Warren Joe Biden,0
+Joe Biden,475,Barack Obama Richard Nixon,1
+Joe Biden,475,Bernie Sanders Ronald Reagan,0
+Joe Biden,475,Donald Trump Elizabeth Warren,0
+Joe Biden,475,George W. Bush Hillary Clinton,0
+Donald Trump,476,Barack Obama Bernie Sanders,0
+Donald Trump,476,Elizabeth Warren Hillary Clinton,0
+Richard Nixon,477,Abraham Lincoln Elizabeth Warren,0
+Richard Nixon,477,Abraham Lincoln George W. Bush,0
+Richard Nixon,477,Hillary Clinton Joe Biden,1
+Elizabeth Warren,478,Bernie Sanders Donald Trump,1
+Elizabeth Warren,478,Bernie Sanders Ronald Reagan,0
+Elizabeth Warren,478,George W. Bush Richard Nixon,1
+Richard Nixon,479,Abraham Lincoln Donald Trump,0
+Richard Nixon,479,Barack Obama Ronald Reagan,0
+Richard Nixon,479,Bernie Sanders Ronald Reagan,0
+Donald Trump,480,Abraham Lincoln Joe Biden,0
+Donald Trump,480,Bernie Sanders Ronald Reagan,0
+Donald Trump,480,Hillary Clinton Richard Nixon,0
+Donald Trump,480,Richard Nixon Ronald Reagan,0
+Ronald Reagan,481,Donald Trump Elizabeth Warren,1
+Ronald Reagan,481,Donald Trump Hillary Clinton,0
+Ronald Reagan,481,Hillary Clinton Richard Nixon,0
+Elizabeth Warren,482,Abraham Lincoln Bernie Sanders,1
+Elizabeth Warren,482,Joe Biden Richard Nixon,0
+Richard Nixon,483,Abraham Lincoln Donald Trump,1
+Richard Nixon,483,Abraham Lincoln Ronald Reagan,0
+Richard Nixon,483,Elizabeth Warren Hillary Clinton,1
+Richard Nixon,483,George W. Bush Joe Biden,1
+Richard Nixon,483,Hillary Clinton Joe Biden,0
+Joe Biden,484,Barack Obama Bernie Sanders,1
+Joe Biden,484,Barack Obama Hillary Clinton,0
+Joe Biden,484,Donald Trump Hillary Clinton,1
+Joe Biden,484,Elizabeth Warren Hillary Clinton,0
+Bernie Sanders,485,Abraham Lincoln Elizabeth Warren,1
+Bernie Sanders,485,Joe Biden Ronald Reagan,1
+Bernie Sanders,487,Abraham Lincoln Donald Trump,0
+Bernie Sanders,487,Abraham Lincoln Elizabeth Warren,0
+Bernie Sanders,487,Barack Obama Donald Trump,0
+Bernie Sanders,487,Donald Trump Richard Nixon,1
+Donald Trump,488,Abraham Lincoln Richard Nixon,0
+Donald Trump,488,Barack Obama Ronald Reagan,1
+Donald Trump,488,Elizabeth Warren George W. Bush,0
+Donald Trump,488,Elizabeth Warren Joe Biden,1
+Donald Trump,488,George W. Bush Ronald Reagan,0
+Barack Obama,489,Hillary Clinton Richard Nixon,0
+Abraham Lincoln,490,Bernie Sanders Elizabeth Warren,0
+Abraham Lincoln,490,Donald Trump Hillary Clinton,0
+Joe Biden,492,Donald Trump Hillary Clinton,0
+Joe Biden,492,Donald Trump Richard Nixon,0
+Joe Biden,492,George W. Bush Richard Nixon,1
+Hillary Clinton,493,Barack Obama Donald Trump,0
+Hillary Clinton,493,Barack Obama Elizabeth Warren,1
+Elizabeth Warren,494,Barack Obama Bernie Sanders,1
+Abraham Lincoln,495,Donald Trump Elizabeth Warren,0
+Abraham Lincoln,495,Joe Biden Ronald Reagan,0
+Hillary Clinton,496,Barack Obama Donald Trump,0
+Hillary Clinton,496,Donald Trump Elizabeth Warren,0
+Hillary Clinton,497,Abraham Lincoln George W. Bush,0
+Hillary Clinton,497,Bernie Sanders Joe Biden,0
+Richard Nixon,498,Abraham Lincoln Hillary Clinton,0
+Richard Nixon,498,Abraham Lincoln Joe Biden,0
+Richard Nixon,498,Barack Obama Joe Biden,0
+Richard Nixon,498,Donald Trump Hillary Clinton,1
+Bernie Sanders,499,Elizabeth Warren George W. Bush,0
+Richard Nixon,500,Abraham Lincoln George W. Bush,0
+Richard Nixon,500,Bernie Sanders Elizabeth Warren,1
+Richard Nixon,500,Bernie Sanders George W. Bush,0
+Abraham Lincoln,501,Barack Obama Joe Biden,1
+Abraham Lincoln,502,George W. Bush Richard Nixon,1
+Donald Trump,503,Abraham Lincoln George W. Bush,0
+Donald Trump,503,Abraham Lincoln Hillary Clinton,1
+Donald Trump,503,Bernie Sanders Richard Nixon,0
+Donald Trump,503,Hillary Clinton Joe Biden,0
+Richard Nixon,504,Barack Obama Donald Trump,0
+Richard Nixon,504,Barack Obama Elizabeth Warren,1
+Richard Nixon,504,Donald Trump George W. Bush,0
+Richard Nixon,504,Elizabeth Warren Hillary Clinton,0
+Bernie Sanders,506,Abraham Lincoln Ronald Reagan,1
+Bernie Sanders,506,Donald Trump Ronald Reagan,0
+Bernie Sanders,506,Elizabeth Warren Hillary Clinton,0
+Bernie Sanders,506,George W. Bush Ronald Reagan,0
+Bernie Sanders,506,Joe Biden Ronald Reagan,0
+Donald Trump,508,Barack Obama Hillary Clinton,1
+Donald Trump,508,Bernie Sanders Joe Biden,0
+Donald Trump,508,Elizabeth Warren George W. Bush,0
+Donald Trump,508,Joe Biden Richard Nixon,0
+Donald Trump,508,Richard Nixon Ronald Reagan,0
+Richard Nixon,509,Donald Trump Elizabeth Warren,0
+Richard Nixon,511,Abraham Lincoln Elizabeth Warren,0
+Richard Nixon,511,Bernie Sanders Elizabeth Warren,1
+Richard Nixon,511,Elizabeth Warren George W. Bush,0
+Hillary Clinton,512,Abraham Lincoln Barack Obama,1
+Hillary Clinton,512,Abraham Lincoln Donald Trump,1
+Hillary Clinton,512,Donald Trump George W. Bush,0
+Donald Trump,513,Joe Biden Ronald Reagan,0
+Ronald Reagan,515,Bernie Sanders Donald Trump,1
+Ronald Reagan,515,Hillary Clinton Joe Biden,1
+Elizabeth Warren,516,Barack Obama Bernie Sanders,0
+Elizabeth Warren,516,Donald Trump Richard Nixon,1
+Elizabeth Warren,517,Barack Obama Richard Nixon,0
+Elizabeth Warren,517,Bernie Sanders George W. Bush,0
+Elizabeth Warren,517,George W. Bush Ronald Reagan,0
+Elizabeth Warren,517,Joe Biden Richard Nixon,0
+Bernie Sanders,518,Abraham Lincoln Elizabeth Warren,0
+Bernie Sanders,518,Elizabeth Warren Hillary Clinton,0
+Bernie Sanders,518,Elizabeth Warren Joe Biden,1
+Bernie Sanders,518,George W. Bush Joe Biden,1
+Bernie Sanders,518,George W. Bush Ronald Reagan,0
+Richard Nixon,519,Abraham Lincoln Barack Obama,0
+Richard Nixon,519,Abraham Lincoln Bernie Sanders,1
+Richard Nixon,519,Donald Trump Hillary Clinton,0
+Richard Nixon,519,Elizabeth Warren George W. Bush,0
+Donald Trump,520,Hillary Clinton Richard Nixon,0
+Elizabeth Warren,521,Abraham Lincoln Bernie Sanders,1
+Elizabeth Warren,521,Abraham Lincoln Hillary Clinton,1
+Donald Trump,522,Barack Obama George W. Bush,0
+Donald Trump,522,Bernie Sanders Elizabeth Warren,0
+Donald Trump,522,Bernie Sanders Ronald Reagan,1
+Elizabeth Warren,523,Barack Obama Donald Trump,1
+Elizabeth Warren,523,Barack Obama Hillary Clinton,0
+Elizabeth Warren,523,Barack Obama Joe Biden,0
+Elizabeth Warren,523,Donald Trump Richard Nixon,0
+Elizabeth Warren,523,Hillary Clinton Richard Nixon,0
+Elizabeth Warren,523,Hillary Clinton Ronald Reagan,1
+Hillary Clinton,524,Abraham Lincoln Bernie Sanders,1
+Hillary Clinton,524,Donald Trump Elizabeth Warren,0
+Richard Nixon,525,Donald Trump George W. Bush,0
+Richard Nixon,525,Donald Trump Joe Biden,0
+Hillary Clinton,526,Abraham Lincoln Bernie Sanders,0
+Hillary Clinton,526,Barack Obama Joe Biden,0
+Hillary Clinton,526,Bernie Sanders Donald Trump,0
+Hillary Clinton,526,Elizabeth Warren George W. Bush,0
+Elizabeth Warren,527,George W. Bush Joe Biden,1
+Ronald Reagan,528,Abraham Lincoln Barack Obama,0
+Ronald Reagan,528,Abraham Lincoln Donald Trump,0
+Ronald Reagan,528,Bernie Sanders Elizabeth Warren,1
+Ronald Reagan,529,Abraham Lincoln Joe Biden,1
+Ronald Reagan,529,Elizabeth Warren Hillary Clinton,0
+Hillary Clinton,530,Abraham Lincoln Donald Trump,1
+Hillary Clinton,530,Elizabeth Warren Joe Biden,1
+Ronald Reagan,531,Barack Obama Joe Biden,0
+Ronald Reagan,531,Donald Trump Elizabeth Warren,0
+Ronald Reagan,531,Donald Trump George W. Bush,0
+Elizabeth Warren,532,Abraham Lincoln Richard Nixon,1
+Elizabeth Warren,532,Barack Obama Hillary Clinton,0
+Elizabeth Warren,532,Bernie Sanders George W. Bush,1
+Elizabeth Warren,532,George W. Bush Joe Biden,1
+Bernie Sanders,533,Abraham Lincoln Joe Biden,0
+Bernie Sanders,533,Donald Trump Ronald Reagan,1
+Hillary Clinton,534,Bernie Sanders George W. Bush,0
+Hillary Clinton,534,Bernie Sanders Ronald Reagan,1
+Barack Obama,535,Donald Trump Hillary Clinton,0
+Barack Obama,535,Joe Biden Richard Nixon,0
+Richard Nixon,536,Donald Trump Hillary Clinton,0
+Richard Nixon,536,Elizabeth Warren Joe Biden,0
+Ronald Reagan,537,Abraham Lincoln Donald Trump,1
+Ronald Reagan,537,Barack Obama Joe Biden,0
+Ronald Reagan,537,Bernie Sanders Joe Biden,1
+Ronald Reagan,538,Bernie Sanders Richard Nixon,0
+Ronald Reagan,538,George W. Bush Hillary Clinton,0
+Abraham Lincoln,539,Elizabeth Warren George W. Bush,0
+Abraham Lincoln,539,George W. Bush Ronald Reagan,0
+George W. Bush,540,Barack Obama Donald Trump,1
+George W. Bush,540,Barack Obama Joe Biden,0
+George W. Bush,540,Barack Obama Ronald Reagan,1
+George W. Bush,540,Bernie Sanders Joe Biden,0
+George W. Bush,540,Bernie Sanders Richard Nixon,0
+George W. Bush,540,Elizabeth Warren Hillary Clinton,1
+George W. Bush,540,Richard Nixon Ronald Reagan,0
+Hillary Clinton,541,Abraham Lincoln Richard Nixon,0
+Hillary Clinton,541,Bernie Sanders Donald Trump,1
+Hillary Clinton,541,Donald Trump Joe Biden,1
+Hillary Clinton,541,Donald Trump Richard Nixon,0
+Joe Biden,542,Barack Obama George W. Bush,0
+Joe Biden,542,Bernie Sanders Elizabeth Warren,1
+Joe Biden,542,Donald Trump Richard Nixon,1
+Ronald Reagan,543,Donald Trump George W. Bush,0
+Richard Nixon,544,Bernie Sanders Elizabeth Warren,1
+Richard Nixon,544,Elizabeth Warren Joe Biden,0
+Richard Nixon,544,Elizabeth Warren Ronald Reagan,0
+Barack Obama,545,Abraham Lincoln Joe Biden,1
+Barack Obama,545,Bernie Sanders Donald Trump,0
+Ronald Reagan,546,Abraham Lincoln Donald Trump,0
+Ronald Reagan,546,Abraham Lincoln Hillary Clinton,0
+Ronald Reagan,546,Barack Obama Elizabeth Warren,0
+Ronald Reagan,546,Elizabeth Warren Hillary Clinton,0
+Barack Obama,547,Abraham Lincoln Bernie Sanders,0
+Barack Obama,547,Donald Trump Joe Biden,1
+Barack Obama,547,Elizabeth Warren Hillary Clinton,1
+Elizabeth Warren,548,George W. Bush Hillary Clinton,1
+Elizabeth Warren,549,Abraham Lincoln Donald Trump,0
+Elizabeth Warren,549,Abraham Lincoln Ronald Reagan,0
+Elizabeth Warren,549,Barack Obama George W. Bush,0
+George W. Bush,550,Donald Trump Richard Nixon,1
+Bernie Sanders,551,Abraham Lincoln Hillary Clinton,1
+Bernie Sanders,551,Donald Trump Elizabeth Warren,0
+Bernie Sanders,551,Elizabeth Warren Joe Biden,0
+Joe Biden,552,Elizabeth Warren Ronald Reagan,0
+Joe Biden,552,Richard Nixon Ronald Reagan,1
+Abraham Lincoln,553,Elizabeth Warren Joe Biden,0
+George W. Bush,554,Bernie Sanders Richard Nixon,0
+Donald Trump,555,Bernie Sanders Hillary Clinton,0
+Donald Trump,555,George W. Bush Hillary Clinton,0
+Donald Trump,555,Joe Biden Richard Nixon,1
+Abraham Lincoln,556,Barack Obama George W. Bush,0
+Abraham Lincoln,556,Barack Obama Hillary Clinton,1
+Abraham Lincoln,556,Bernie Sanders Hillary Clinton,0
+Abraham Lincoln,556,George W. Bush Richard Nixon,0
+Hillary Clinton,557,Abraham Lincoln Joe Biden,0
+Hillary Clinton,557,Donald Trump George W. Bush,0
+Richard Nixon,558,Donald Trump Joe Biden,0
+Richard Nixon,558,Hillary Clinton Ronald Reagan,1
+Richard Nixon,558,Joe Biden Ronald Reagan,1
+Donald Trump,559,Abraham Lincoln George W. Bush,1
+Donald Trump,559,Bernie Sanders Elizabeth Warren,1
+George W. Bush,561,Abraham Lincoln Joe Biden,1
+George W. Bush,561,Donald Trump Richard Nixon,0
+Bernie Sanders,562,Abraham Lincoln Joe Biden,0
+Bernie Sanders,562,Abraham Lincoln Ronald Reagan,0
+Bernie Sanders,562,Donald Trump Richard Nixon,0
+Bernie Sanders,562,Hillary Clinton Richard Nixon,1
+George W. Bush,563,Barack Obama Hillary Clinton,0
+George W. Bush,563,Barack Obama Richard Nixon,0
+George W. Bush,563,Bernie Sanders Donald Trump,0
+Hillary Clinton,564,Abraham Lincoln George W. Bush,1
+Hillary Clinton,564,Elizabeth Warren Joe Biden,0
+Ronald Reagan,566,Donald Trump Joe Biden,0
+Bernie Sanders,567,Abraham Lincoln Elizabeth Warren,0
+Bernie Sanders,567,Donald Trump Joe Biden,1
+Bernie Sanders,567,George W. Bush Joe Biden,1
+Hillary Clinton,568,Abraham Lincoln Barack Obama,1
+Hillary Clinton,568,Abraham Lincoln George W. Bush,0
+Hillary Clinton,568,Barack Obama Joe Biden,0
+Bernie Sanders,569,George W. Bush Ronald Reagan,0
+Barack Obama,570,Donald Trump George W. Bush,0
+Barack Obama,570,Elizabeth Warren Hillary Clinton,0
+Barack Obama,570,Elizabeth Warren Joe Biden,0
+Ronald Reagan,571,Donald Trump George W. Bush,0
+Donald Trump,572,Barack Obama Richard Nixon,1
+Donald Trump,572,George W. Bush Ronald Reagan,0
+Donald Trump,572,Joe Biden Ronald Reagan,0
+Joe Biden,573,Donald Trump George W. Bush,0
+Richard Nixon,574,Bernie Sanders Donald Trump,0
+Richard Nixon,574,Donald Trump Ronald Reagan,0
+Richard Nixon,574,Elizabeth Warren Joe Biden,0
+Hillary Clinton,575,Barack Obama Richard Nixon,1
+Hillary Clinton,575,Donald Trump Elizabeth Warren,0
+Abraham Lincoln,576,Donald Trump Elizabeth Warren,1
+Abraham Lincoln,576,Hillary Clinton Ronald Reagan,0
+Abraham Lincoln,576,Joe Biden Ronald Reagan,1
+Bernie Sanders,577,Abraham Lincoln Donald Trump,1
+Bernie Sanders,577,Abraham Lincoln Elizabeth Warren,0
+Bernie Sanders,577,Barack Obama Elizabeth Warren,0
+Bernie Sanders,577,Donald Trump Richard Nixon,0
+Bernie Sanders,577,Elizabeth Warren George W. Bush,1
+Bernie Sanders,577,Hillary Clinton Richard Nixon,1
+Richard Nixon,578,Barack Obama Bernie Sanders,0
+Richard Nixon,578,Bernie Sanders Hillary Clinton,1
+Richard Nixon,578,Bernie Sanders Ronald Reagan,1
+Abraham Lincoln,579,Barack Obama Richard Nixon,0
+Abraham Lincoln,579,Elizabeth Warren Hillary Clinton,0
+Richard Nixon,580,Barack Obama Bernie Sanders,0
+Joe Biden,581,Donald Trump Elizabeth Warren,0
+Abraham Lincoln,582,Barack Obama Elizabeth Warren,0
+Abraham Lincoln,582,Donald Trump Elizabeth Warren,0
+George W. Bush,583,Bernie Sanders Hillary Clinton,0
+Elizabeth Warren,584,Abraham Lincoln Joe Biden,0
+Elizabeth Warren,584,Abraham Lincoln Ronald Reagan,0
+George W. Bush,585,Abraham Lincoln Bernie Sanders,0
+George W. Bush,585,Abraham Lincoln Elizabeth Warren,0
+George W. Bush,585,Barack Obama Hillary Clinton,0
+George W. Bush,585,Barack Obama Joe Biden,0
+George W. Bush,585,Hillary Clinton Joe Biden,1
+Ronald Reagan,586,Abraham Lincoln Joe Biden,1
+Ronald Reagan,586,Barack Obama Richard Nixon,0
+Ronald Reagan,586,Bernie Sanders Donald Trump,0
+Ronald Reagan,586,Bernie Sanders Hillary Clinton,1
+Ronald Reagan,586,Elizabeth Warren George W. Bush,1
+Ronald Reagan,586,Elizabeth Warren Joe Biden,0
+Ronald Reagan,586,George W. Bush Joe Biden,0
+Elizabeth Warren,587,Abraham Lincoln Richard Nixon,0
+Elizabeth Warren,587,Bernie Sanders Donald Trump,0
+Elizabeth Warren,587,Donald Trump George W. Bush,0
+Elizabeth Warren,589,Abraham Lincoln Richard Nixon,1
+Elizabeth Warren,590,Bernie Sanders Richard Nixon,0
+Elizabeth Warren,590,Hillary Clinton Richard Nixon,0
+Donald Trump,591,Abraham Lincoln Richard Nixon,0
+Donald Trump,591,Barack Obama Elizabeth Warren,1
+Donald Trump,591,Elizabeth Warren Ronald Reagan,0
+Bernie Sanders,592,Abraham Lincoln Elizabeth Warren,0
+Bernie Sanders,592,Abraham Lincoln Ronald Reagan,1
+Bernie Sanders,592,Barack Obama Hillary Clinton,0
+Bernie Sanders,593,George W. Bush Joe Biden,1
+Donald Trump,594,Barack Obama Elizabeth Warren,1
+Donald Trump,594,Barack Obama Hillary Clinton,1
+Donald Trump,594,George W. Bush Hillary Clinton,0
+Richard Nixon,595,Elizabeth Warren George W. Bush,0
+Barack Obama,596,Bernie Sanders George W. Bush,0
+Barack Obama,596,Donald Trump Richard Nixon,0
+Barack Obama,596,Elizabeth Warren Joe Biden,1
+Richard Nixon,597,Barack Obama Ronald Reagan,1
+Richard Nixon,597,Bernie Sanders Elizabeth Warren,1
+Richard Nixon,597,Donald Trump Elizabeth Warren,1
+Richard Nixon,597,Donald Trump Hillary Clinton,0
+Richard Nixon,597,Elizabeth Warren Hillary Clinton,0
+Richard Nixon,597,George W. Bush Joe Biden,1
+Abraham Lincoln,598,Barack Obama Joe Biden,0
+Abraham Lincoln,598,Barack Obama Ronald Reagan,1
+Abraham Lincoln,599,Bernie Sanders Elizabeth Warren,1
+Abraham Lincoln,599,George W. Bush Hillary Clinton,1
+Abraham Lincoln,599,Richard Nixon Ronald Reagan,1
+Elizabeth Warren,600,Donald Trump Joe Biden,0
+George W. Bush,601,Donald Trump Ronald Reagan,0
+George W. Bush,601,Joe Biden Richard Nixon,0
+George W. Bush,602,Abraham Lincoln Joe Biden,1
+George W. Bush,602,Elizabeth Warren Joe Biden,1
+Bernie Sanders,603,Abraham Lincoln Donald Trump,0
+Hillary Clinton,604,Barack Obama Ronald Reagan,0
+Hillary Clinton,604,Donald Trump George W. Bush,0
+Richard Nixon,605,Abraham Lincoln Barack Obama,1
+Ronald Reagan,606,Abraham Lincoln Elizabeth Warren,0
+Joe Biden,607,Abraham Lincoln Hillary Clinton,0
+Joe Biden,607,Bernie Sanders Richard Nixon,1
+Joe Biden,607,Donald Trump Richard Nixon,1
+Joe Biden,607,Donald Trump Ronald Reagan,0
+George W. Bush,608,Bernie Sanders Richard Nixon,0
+George W. Bush,608,Donald Trump Ronald Reagan,0
+Joe Biden,609,Barack Obama Elizabeth Warren,0
+Joe Biden,609,Elizabeth Warren Richard Nixon,1
+Elizabeth Warren,610,Abraham Lincoln Joe Biden,1
+Elizabeth Warren,610,George W. Bush Hillary Clinton,0
+Elizabeth Warren,610,Joe Biden Ronald Reagan,0
+Joe Biden,611,Abraham Lincoln Donald Trump,1
+Joe Biden,611,Barack Obama Hillary Clinton,0
+Joe Biden,611,Bernie Sanders Richard Nixon,1
+Joe Biden,611,Bernie Sanders Ronald Reagan,0
+Ronald Reagan,612,Abraham Lincoln Bernie Sanders,0
+Ronald Reagan,612,Abraham Lincoln Richard Nixon,1
+Donald Trump,613,Abraham Lincoln George W. Bush,1
+Ronald Reagan,614,Barack Obama Bernie Sanders,0
+Ronald Reagan,614,Barack Obama Joe Biden,0
+Joe Biden,615,Abraham Lincoln Bernie Sanders,0
+Joe Biden,615,Barack Obama Bernie Sanders,0
+Ronald Reagan,616,Abraham Lincoln George W. Bush,1
+Ronald Reagan,616,Abraham Lincoln Joe Biden,1
+Ronald Reagan,616,Bernie Sanders Elizabeth Warren,1
+Ronald Reagan,616,Bernie Sanders George W. Bush,1
+Ronald Reagan,616,Bernie Sanders Richard Nixon,0
+Barack Obama,617,Bernie Sanders Donald Trump,0
+Barack Obama,617,Elizabeth Warren Richard Nixon,1
+Elizabeth Warren,618,Barack Obama Joe Biden,1
+Elizabeth Warren,618,Donald Trump Hillary Clinton,0
+Richard Nixon,619,Abraham Lincoln Ronald Reagan,1
+Richard Nixon,619,Barack Obama Joe Biden,0
+Donald Trump,620,Abraham Lincoln Ronald Reagan,0
+George W. Bush,621,Abraham Lincoln Barack Obama,1
+George W. Bush,621,Barack Obama Richard Nixon,0
+Abraham Lincoln,622,Bernie Sanders George W. Bush,0
+Abraham Lincoln,622,Bernie Sanders Richard Nixon,1
+Abraham Lincoln,622,Elizabeth Warren Joe Biden,0
+Richard Nixon,623,Abraham Lincoln Donald Trump,0
+Richard Nixon,623,Bernie Sanders Ronald Reagan,0
+Abraham Lincoln,624,Bernie Sanders Donald Trump,0
+Abraham Lincoln,624,Joe Biden Richard Nixon,1
+Elizabeth Warren,625,Bernie Sanders Donald Trump,1
+Bernie Sanders,627,Abraham Lincoln Elizabeth Warren,0
+Bernie Sanders,627,Elizabeth Warren Joe Biden,0
+Bernie Sanders,627,Hillary Clinton Richard Nixon,0
+George W. Bush,628,Donald Trump Richard Nixon,1
+George W. Bush,628,Hillary Clinton Joe Biden,0
+Barack Obama,629,Bernie Sanders Elizabeth Warren,1
+Barack Obama,629,Bernie Sanders Richard Nixon,0
+Barack Obama,629,George W. Bush Hillary Clinton,0
+Elizabeth Warren,631,Abraham Lincoln Donald Trump,0
+Elizabeth Warren,631,Barack Obama Hillary Clinton,0
+Richard Nixon,632,Abraham Lincoln Barack Obama,0
+Richard Nixon,632,Abraham Lincoln Hillary Clinton,0
+Richard Nixon,632,George W. Bush Joe Biden,0
+Barack Obama,633,Abraham Lincoln Donald Trump,1
+Barack Obama,633,Elizabeth Warren Joe Biden,1
+Barack Obama,633,George W. Bush Hillary Clinton,1
+Barack Obama,633,Joe Biden Richard Nixon,0
+Ronald Reagan,634,Bernie Sanders Joe Biden,0
+Joe Biden,635,Abraham Lincoln Richard Nixon,1
+Joe Biden,635,Donald Trump Elizabeth Warren,1
+Joe Biden,635,Donald Trump Ronald Reagan,0
+Barack Obama,636,Bernie Sanders Hillary Clinton,0
+Barack Obama,636,Donald Trump Ronald Reagan,1
+Elizabeth Warren,637,Abraham Lincoln Joe Biden,0
+Elizabeth Warren,637,Barack Obama Donald Trump,1
+Elizabeth Warren,637,Donald Trump Joe Biden,0
+Hillary Clinton,638,Abraham Lincoln Barack Obama,0
+Hillary Clinton,638,Donald Trump Elizabeth Warren,1
+Joe Biden,639,Barack Obama Ronald Reagan,1
+George W. Bush,641,Abraham Lincoln Richard Nixon,1
+George W. Bush,641,Barack Obama Donald Trump,0
+George W. Bush,641,Bernie Sanders Ronald Reagan,1
+George W. Bush,641,Donald Trump Hillary Clinton,0
+George W. Bush,641,Donald Trump Richard Nixon,0
+Abraham Lincoln,642,Bernie Sanders Richard Nixon,0
+Abraham Lincoln,642,George W. Bush Richard Nixon,0
+Abraham Lincoln,642,Hillary Clinton Richard Nixon,1
+Barack Obama,643,Abraham Lincoln Ronald Reagan,0
+Barack Obama,643,Bernie Sanders Elizabeth Warren,1
+Barack Obama,643,Bernie Sanders Hillary Clinton,1
+Barack Obama,643,Bernie Sanders Richard Nixon,0
+Barack Obama,643,Donald Trump Richard Nixon,1
+Barack Obama,643,George W. Bush Joe Biden,0
+Abraham Lincoln,644,Donald Trump Richard Nixon,0
+Abraham Lincoln,644,George W. Bush Ronald Reagan,1
+Elizabeth Warren,645,Bernie Sanders Donald Trump,0
+Elizabeth Warren,645,Donald Trump Joe Biden,1
+Richard Nixon,647,Abraham Lincoln Elizabeth Warren,0
+Richard Nixon,647,Elizabeth Warren Joe Biden,0
+George W. Bush,648,Donald Trump Ronald Reagan,0
+George W. Bush,648,Elizabeth Warren Richard Nixon,0
+George W. Bush,648,Hillary Clinton Joe Biden,0
+George W. Bush,648,Joe Biden Ronald Reagan,0
+Abraham Lincoln,649,George W. Bush Joe Biden,1
+Abraham Lincoln,650,Barack Obama Joe Biden,1
+Barack Obama,651,Bernie Sanders Donald Trump,0
+Barack Obama,651,Donald Trump Elizabeth Warren,0
+Barack Obama,651,Elizabeth Warren Joe Biden,1
+Barack Obama,651,Hillary Clinton Ronald Reagan,0
+Richard Nixon,652,Barack Obama George W. Bush,0
+Richard Nixon,652,George W. Bush Ronald Reagan,1
+Bernie Sanders,653,Abraham Lincoln Barack Obama,0
+Abraham Lincoln,654,Bernie Sanders George W. Bush,0
+Abraham Lincoln,654,Donald Trump Richard Nixon,1
+Abraham Lincoln,654,Hillary Clinton Joe Biden,0
+Elizabeth Warren,655,Barack Obama Ronald Reagan,0
+Elizabeth Warren,655,Bernie Sanders Richard Nixon,1
+Elizabeth Warren,655,Donald Trump Joe Biden,0
+Hillary Clinton,656,Abraham Lincoln Richard Nixon,0
+George W. Bush,657,Abraham Lincoln Richard Nixon,1
+George W. Bush,657,Barack Obama Bernie Sanders,0
+George W. Bush,657,Barack Obama Donald Trump,1
+George W. Bush,657,Barack Obama Joe Biden,1
+George W. Bush,657,Donald Trump Hillary Clinton,0
+George W. Bush,657,Donald Trump Ronald Reagan,0
+Abraham Lincoln,658,Barack Obama Bernie Sanders,0
+Abraham Lincoln,658,Barack Obama Elizabeth Warren,1
+Abraham Lincoln,658,Barack Obama Joe Biden,0
+Abraham Lincoln,658,Barack Obama Richard Nixon,0
+Elizabeth Warren,659,Abraham Lincoln Hillary Clinton,0
+Elizabeth Warren,659,Abraham Lincoln Richard Nixon,0
+Elizabeth Warren,659,Hillary Clinton Joe Biden,0
+Elizabeth Warren,660,Abraham Lincoln Joe Biden,0
+Elizabeth Warren,660,Bernie Sanders Hillary Clinton,0
+Elizabeth Warren,660,George W. Bush Richard Nixon,0
+George W. Bush,661,Abraham Lincoln Bernie Sanders,0
+George W. Bush,661,Abraham Lincoln Donald Trump,1
+George W. Bush,661,Abraham Lincoln Joe Biden,0
+George W. Bush,661,Barack Obama Elizabeth Warren,0
+Bernie Sanders,662,Abraham Lincoln Richard Nixon,1
+Bernie Sanders,662,Hillary Clinton Joe Biden,0
+Elizabeth Warren,663,Abraham Lincoln Joe Biden,1
+Elizabeth Warren,663,Barack Obama Joe Biden,0
+Elizabeth Warren,663,Bernie Sanders Richard Nixon,0
+Elizabeth Warren,665,Abraham Lincoln Joe Biden,0
+Elizabeth Warren,666,Abraham Lincoln Bernie Sanders,0
+Elizabeth Warren,666,Donald Trump Joe Biden,0
+Elizabeth Warren,666,Donald Trump Richard Nixon,0
+Elizabeth Warren,666,Hillary Clinton Joe Biden,0
+Elizabeth Warren,667,Barack Obama Joe Biden,1
+Elizabeth Warren,667,Donald Trump Hillary Clinton,0
+Ronald Reagan,668,Abraham Lincoln Barack Obama,0
+Ronald Reagan,668,Donald Trump Hillary Clinton,1
+Ronald Reagan,669,Abraham Lincoln Donald Trump,0
+Ronald Reagan,669,Donald Trump Elizabeth Warren,1
+Bernie Sanders,670,Abraham Lincoln George W. Bush,0
+Bernie Sanders,670,Barack Obama Hillary Clinton,0
+Bernie Sanders,670,Elizabeth Warren Hillary Clinton,0
+Bernie Sanders,670,Elizabeth Warren Richard Nixon,0
+Abraham Lincoln,671,Barack Obama Elizabeth Warren,0
+Abraham Lincoln,671,George W. Bush Ronald Reagan,0
+Abraham Lincoln,671,Hillary Clinton Joe Biden,0
+Elizabeth Warren,672,Abraham Lincoln Donald Trump,1
+Elizabeth Warren,672,Barack Obama Bernie Sanders,0
+Elizabeth Warren,672,Donald Trump George W. Bush,0
+Elizabeth Warren,672,Joe Biden Ronald Reagan,0
+Richard Nixon,673,Abraham Lincoln Ronald Reagan,0
+Richard Nixon,673,Barack Obama Joe Biden,0
+Richard Nixon,673,Donald Trump Hillary Clinton,0
+Abraham Lincoln,674,Donald Trump Joe Biden,1
+Bernie Sanders,675,Donald Trump Richard Nixon,0
+Bernie Sanders,675,Elizabeth Warren George W. Bush,0
+Bernie Sanders,675,Elizabeth Warren Hillary Clinton,0
+Donald Trump,676,Abraham Lincoln George W. Bush,0
+Donald Trump,676,Joe Biden Richard Nixon,1
+Abraham Lincoln,678,Donald Trump Richard Nixon,0
+Joe Biden,679,Donald Trump George W. Bush,0
+Barack Obama,680,Abraham Lincoln Elizabeth Warren,1
+Barack Obama,680,Donald Trump Hillary Clinton,1
+Barack Obama,680,Donald Trump Joe Biden,0
+Joe Biden,681,Elizabeth Warren Ronald Reagan,0
+Hillary Clinton,682,Abraham Lincoln Joe Biden,0
+Ronald Reagan,683,Abraham Lincoln Hillary Clinton,0
+Ronald Reagan,683,Barack Obama Donald Trump,1
+Ronald Reagan,683,Barack Obama Elizabeth Warren,0
+Ronald Reagan,683,Donald Trump Elizabeth Warren,0
+Ronald Reagan,683,Elizabeth Warren Hillary Clinton,0
+Ronald Reagan,684,Abraham Lincoln Barack Obama,0
+Ronald Reagan,684,Abraham Lincoln Bernie Sanders,0
+Ronald Reagan,684,Abraham Lincoln Hillary Clinton,0
+Ronald Reagan,684,Elizabeth Warren Richard Nixon,0
+Barack Obama,685,Abraham Lincoln Bernie Sanders,0
+Barack Obama,685,Abraham Lincoln Joe Biden,1
+Barack Obama,685,Abraham Lincoln Richard Nixon,0
+George W. Bush,686,Barack Obama Joe Biden,0
+George W. Bush,686,Elizabeth Warren Ronald Reagan,1
+George W. Bush,686,Hillary Clinton Joe Biden,0
+George W. Bush,687,Abraham Lincoln Elizabeth Warren,0
+George W. Bush,687,Barack Obama Hillary Clinton,0
+George W. Bush,687,Bernie Sanders Donald Trump,1
+Bernie Sanders,688,Donald Trump Ronald Reagan,0
+Barack Obama,689,Elizabeth Warren Richard Nixon,0
+Barack Obama,689,Joe Biden Richard Nixon,0
+Abraham Lincoln,690,Joe Biden Richard Nixon,0
+George W. Bush,691,Donald Trump Elizabeth Warren,0
+Elizabeth Warren,692,Donald Trump Ronald Reagan,0
+Richard Nixon,693,Abraham Lincoln Hillary Clinton,0
+Richard Nixon,693,Abraham Lincoln Joe Biden,1
+Richard Nixon,693,Donald Trump Elizabeth Warren,0
+Hillary Clinton,695,Abraham Lincoln Joe Biden,1
+Hillary Clinton,695,Bernie Sanders Donald Trump,1
+Elizabeth Warren,697,Abraham Lincoln Joe Biden,0
+Elizabeth Warren,697,Donald Trump Hillary Clinton,1
+Barack Obama,698,Bernie Sanders Ronald Reagan,1
+Barack Obama,698,Elizabeth Warren George W. Bush,0
+Barack Obama,698,Elizabeth Warren Joe Biden,1
+Barack Obama,698,Elizabeth Warren Ronald Reagan,0
+Barack Obama,698,Hillary Clinton Richard Nixon,0
+Bernie Sanders,699,Barack Obama Donald Trump,1
+Bernie Sanders,699,Barack Obama Richard Nixon,0
+Hillary Clinton,700,Bernie Sanders Donald Trump,0
+Hillary Clinton,700,Bernie Sanders Elizabeth Warren,1
+Hillary Clinton,700,Bernie Sanders Joe Biden,0
+George W. Bush,701,Abraham Lincoln Elizabeth Warren,0
+Barack Obama,702,Donald Trump Joe Biden,1
+Barack Obama,702,Donald Trump Richard Nixon,0
+George W. Bush,703,Abraham Lincoln Ronald Reagan,0
+George W. Bush,703,Barack Obama Donald Trump,0
+Barack Obama,704,Bernie Sanders Richard Nixon,1
+Barack Obama,704,Donald Trump Joe Biden,0
+Barack Obama,704,Elizabeth Warren Ronald Reagan,0
+Barack Obama,705,Bernie Sanders George W. Bush,0
+Barack Obama,705,Elizabeth Warren Hillary Clinton,0
+Barack Obama,705,Elizabeth Warren Richard Nixon,0
+Barack Obama,705,George W. Bush Richard Nixon,0
+Barack Obama,706,Elizabeth Warren Hillary Clinton,0
+Barack Obama,708,Abraham Lincoln Joe Biden,1
+Barack Obama,708,Bernie Sanders Donald Trump,1
+Barack Obama,708,Donald Trump Elizabeth Warren,0
+Donald Trump,709,Abraham Lincoln Ronald Reagan,0
+Richard Nixon,710,Elizabeth Warren Ronald Reagan,1
+Richard Nixon,710,George W. Bush Hillary Clinton,0
+George W. Bush,711,Elizabeth Warren Ronald Reagan,0
+Abraham Lincoln,712,Bernie Sanders Elizabeth Warren,0
+Abraham Lincoln,712,Bernie Sanders George W. Bush,0
+Abraham Lincoln,712,Donald Trump George W. Bush,1
+Joe Biden,713,Barack Obama Elizabeth Warren,1
+Joe Biden,713,Barack Obama Ronald Reagan,0
+Hillary Clinton,714,Abraham Lincoln Donald Trump,0
+Hillary Clinton,714,Donald Trump Elizabeth Warren,0
+Hillary Clinton,714,Donald Trump Joe Biden,1
+Hillary Clinton,714,Elizabeth Warren Richard Nixon,0
+Ronald Reagan,715,Barack Obama George W. Bush,0
+Ronald Reagan,715,Donald Trump Richard Nixon,0
+Ronald Reagan,715,Elizabeth Warren Hillary Clinton,1
+Bernie Sanders,716,George W. Bush Richard Nixon,1
+Bernie Sanders,716,Hillary Clinton Richard Nixon,1
+Bernie Sanders,716,Richard Nixon Ronald Reagan,0
+Abraham Lincoln,717,Bernie Sanders Donald Trump,0
+Abraham Lincoln,717,Bernie Sanders George W. Bush,0
+Abraham Lincoln,717,Bernie Sanders Hillary Clinton,0
+Elizabeth Warren,718,Bernie Sanders Hillary Clinton,1
+Donald Trump,719,Abraham Lincoln Joe Biden,0
+Donald Trump,719,Barack Obama Richard Nixon,0
+Donald Trump,719,Elizabeth Warren Joe Biden,0
+Joe Biden,721,Abraham Lincoln Richard Nixon,1
+Joe Biden,721,Barack Obama Richard Nixon,0
+Abraham Lincoln,722,Barack Obama Bernie Sanders,0
+Abraham Lincoln,722,Barack Obama Ronald Reagan,0
+Abraham Lincoln,722,Bernie Sanders Joe Biden,1
+Ronald Reagan,723,Abraham Lincoln Donald Trump,0
+Ronald Reagan,723,Elizabeth Warren George W. Bush,0
+Ronald Reagan,723,Elizabeth Warren Joe Biden,1
+Ronald Reagan,723,George W. Bush Richard Nixon,0
+Ronald Reagan,723,Hillary Clinton Joe Biden,0
+Abraham Lincoln,724,Donald Trump Richard Nixon,0
+Donald Trump,725,Barack Obama Bernie Sanders,0
+Donald Trump,725,George W. Bush Joe Biden,1
+Donald Trump,725,George W. Bush Richard Nixon,1
+Donald Trump,725,Hillary Clinton Ronald Reagan,0
+Donald Trump,725,Richard Nixon Ronald Reagan,0
+Joe Biden,726,Barack Obama Donald Trump,0
+Joe Biden,726,Barack Obama Elizabeth Warren,0
+Joe Biden,726,Elizabeth Warren Hillary Clinton,0
+Elizabeth Warren,727,Abraham Lincoln Bernie Sanders,0
+Elizabeth Warren,727,Abraham Lincoln Hillary Clinton,0
+Elizabeth Warren,727,Abraham Lincoln Joe Biden,1
+Barack Obama,728,Abraham Lincoln Hillary Clinton,0
+Barack Obama,728,Hillary Clinton Joe Biden,1
+George W. Bush,729,Abraham Lincoln Hillary Clinton,0
+George W. Bush,729,Barack Obama Bernie Sanders,0
+Elizabeth Warren,730,Bernie Sanders Ronald Reagan,0
+Barack Obama,731,Donald Trump Joe Biden,0
+Barack Obama,731,Donald Trump Ronald Reagan,0
+Barack Obama,731,Elizabeth Warren Hillary Clinton,0
+Bernie Sanders,732,Barack Obama Joe Biden,1
+Bernie Sanders,732,George W. Bush Richard Nixon,1
+Richard Nixon,733,Abraham Lincoln Elizabeth Warren,1
+Richard Nixon,733,Donald Trump Joe Biden,1
+Joe Biden,737,Elizabeth Warren Hillary Clinton,0
+Joe Biden,737,George W. Bush Hillary Clinton,1
+Donald Trump,738,Abraham Lincoln Barack Obama,0
+Donald Trump,738,Bernie Sanders Richard Nixon,0
+Donald Trump,738,George W. Bush Hillary Clinton,1
+Donald Trump,738,George W. Bush Joe Biden,1
+Joe Biden,739,Abraham Lincoln Elizabeth Warren,0
+Joe Biden,739,Barack Obama Hillary Clinton,0
+Joe Biden,739,Barack Obama Ronald Reagan,1
+Donald Trump,740,Bernie Sanders Richard Nixon,0
+Joe Biden,741,Abraham Lincoln Donald Trump,0
+Joe Biden,741,Barack Obama Hillary Clinton,0
+Joe Biden,741,Bernie Sanders Donald Trump,0
+Richard Nixon,742,Barack Obama George W. Bush,0
+Richard Nixon,742,Hillary Clinton Joe Biden,0
+Bernie Sanders,743,Elizabeth Warren Hillary Clinton,1
+Bernie Sanders,743,Joe Biden Richard Nixon,0
+Bernie Sanders,744,Elizabeth Warren Joe Biden,0
+Barack Obama,745,Abraham Lincoln Richard Nixon,0
+Barack Obama,745,Bernie Sanders Hillary Clinton,1
+Barack Obama,745,Elizabeth Warren Hillary Clinton,0
+Ronald Reagan,746,Abraham Lincoln Donald Trump,1
+Ronald Reagan,746,Abraham Lincoln Elizabeth Warren,0
+Ronald Reagan,746,Donald Trump Elizabeth Warren,0
+Ronald Reagan,746,Elizabeth Warren Joe Biden,0
+Bernie Sanders,747,Donald Trump Richard Nixon,1
+Bernie Sanders,747,Hillary Clinton Joe Biden,1
+Bernie Sanders,748,Barack Obama Richard Nixon,0
+Elizabeth Warren,749,Barack Obama Hillary Clinton,0
+Elizabeth Warren,749,Bernie Sanders George W. Bush,0
+Elizabeth Warren,750,Barack Obama Joe Biden,0
+Elizabeth Warren,750,Bernie Sanders Joe Biden,0
+Elizabeth Warren,750,Donald Trump Joe Biden,0
+Elizabeth Warren,750,Donald Trump Richard Nixon,0
+Elizabeth Warren,750,Joe Biden Richard Nixon,0
+Barack Obama,751,Abraham Lincoln Richard Nixon,0
+Barack Obama,751,Bernie Sanders Donald Trump,0
+Barack Obama,751,Bernie Sanders Elizabeth Warren,0
+Barack Obama,751,Donald Trump George W. Bush,0
+Barack Obama,751,Donald Trump Hillary Clinton,0
+George W. Bush,753,Elizabeth Warren Joe Biden,0
+Elizabeth Warren,754,Abraham Lincoln George W. Bush,0
+Elizabeth Warren,754,Abraham Lincoln Hillary Clinton,0
+Elizabeth Warren,754,Abraham Lincoln Richard Nixon,0
+Elizabeth Warren,754,Barack Obama Hillary Clinton,1
+Elizabeth Warren,754,Barack Obama Joe Biden,1
+Elizabeth Warren,754,Barack Obama Richard Nixon,0
+George W. Bush,755,Bernie Sanders Richard Nixon,0
+George W. Bush,755,Donald Trump Richard Nixon,1
+George W. Bush,755,Hillary Clinton Ronald Reagan,1
+Abraham Lincoln,756,Barack Obama Ronald Reagan,1
+Ronald Reagan,759,Donald Trump George W. Bush,0
+Ronald Reagan,759,Elizabeth Warren Hillary Clinton,0
+Ronald Reagan,759,Elizabeth Warren Richard Nixon,0
+Abraham Lincoln,761,Elizabeth Warren Hillary Clinton,0
+Abraham Lincoln,761,Joe Biden Ronald Reagan,0
+Ronald Reagan,762,Abraham Lincoln George W. Bush,1
+Richard Nixon,763,Hillary Clinton Ronald Reagan,0
+Ronald Reagan,764,Elizabeth Warren Richard Nixon,1
+Richard Nixon,765,Hillary Clinton Joe Biden,0
+Richard Nixon,766,Abraham Lincoln Barack Obama,0
+Richard Nixon,766,Bernie Sanders Hillary Clinton,1
+George W. Bush,767,Abraham Lincoln Donald Trump,1
+George W. Bush,767,Barack Obama Ronald Reagan,0
+George W. Bush,767,Bernie Sanders Hillary Clinton,1
+George W. Bush,767,Joe Biden Richard Nixon,0
+Joe Biden,768,Abraham Lincoln Richard Nixon,0
+Joe Biden,768,Barack Obama Richard Nixon,0
+Joe Biden,768,Bernie Sanders Richard Nixon,1
+Joe Biden,768,Bernie Sanders Ronald Reagan,0
+Joe Biden,768,Donald Trump Elizabeth Warren,1
+Joe Biden,768,Donald Trump George W. Bush,0
+Joe Biden,768,Elizabeth Warren Hillary Clinton,0
+Joe Biden,768,Hillary Clinton Richard Nixon,0
+Abraham Lincoln,769,Donald Trump Hillary Clinton,0
+Abraham Lincoln,769,Elizabeth Warren George W. Bush,0
+Abraham Lincoln,769,Hillary Clinton Joe Biden,0
+Ronald Reagan,770,Abraham Lincoln Barack Obama,0
+Ronald Reagan,770,Abraham Lincoln Richard Nixon,1
+Ronald Reagan,770,Barack Obama Elizabeth Warren,1
+Ronald Reagan,770,Donald Trump Elizabeth Warren,0
+Ronald Reagan,770,George W. Bush Joe Biden,1
+Donald Trump,771,Barack Obama Hillary Clinton,0
+Abraham Lincoln,772,Barack Obama Donald Trump,0
+Joe Biden,773,Barack Obama Donald Trump,1
+Abraham Lincoln,774,Bernie Sanders Donald Trump,1
+Bernie Sanders,775,Abraham Lincoln Joe Biden,0
+Bernie Sanders,775,Barack Obama Richard Nixon,1
+Bernie Sanders,775,Donald Trump Hillary Clinton,1
+Donald Trump,776,Elizabeth Warren Ronald Reagan,0
+George W. Bush,778,Donald Trump Joe Biden,0
+Ronald Reagan,779,Abraham Lincoln Donald Trump,1
+Ronald Reagan,779,Abraham Lincoln George W. Bush,0
+Ronald Reagan,779,Donald Trump Elizabeth Warren,1
+Ronald Reagan,779,Donald Trump Richard Nixon,0
+Hillary Clinton,780,Barack Obama Richard Nixon,0
+Hillary Clinton,780,Donald Trump Joe Biden,1
+Joe Biden,781,Abraham Lincoln Barack Obama,0
+Joe Biden,781,Bernie Sanders Elizabeth Warren,0
+Joe Biden,781,Donald Trump Hillary Clinton,0
+Joe Biden,781,Elizabeth Warren George W. Bush,0
+Barack Obama,782,Abraham Lincoln Donald Trump,0
+Barack Obama,782,Abraham Lincoln Richard Nixon,0
+Barack Obama,782,Donald Trump Elizabeth Warren,1
+Barack Obama,782,Donald Trump Joe Biden,0
+Ronald Reagan,783,Abraham Lincoln Hillary Clinton,0
+Ronald Reagan,783,Abraham Lincoln Richard Nixon,0
+Ronald Reagan,783,Barack Obama Donald Trump,1
+Ronald Reagan,783,Donald Trump Hillary Clinton,1
+Joe Biden,784,Donald Trump Hillary Clinton,0
+Joe Biden,784,Hillary Clinton Richard Nixon,0
+Bernie Sanders,785,Abraham Lincoln Barack Obama,0
+Bernie Sanders,785,Abraham Lincoln George W. Bush,0
+Bernie Sanders,785,Hillary Clinton Joe Biden,1
+Hillary Clinton,786,Abraham Lincoln Barack Obama,0
+Hillary Clinton,786,Abraham Lincoln Bernie Sanders,0
+Hillary Clinton,786,Abraham Lincoln Ronald Reagan,0
+Hillary Clinton,786,Elizabeth Warren Ronald Reagan,0
+Hillary Clinton,786,Joe Biden Richard Nixon,0
+Bernie Sanders,787,Abraham Lincoln Donald Trump,0
+Bernie Sanders,787,Abraham Lincoln Ronald Reagan,1
+Bernie Sanders,787,Donald Trump Ronald Reagan,0
+Bernie Sanders,787,Elizabeth Warren Hillary Clinton,0
+Bernie Sanders,787,George W. Bush Richard Nixon,1
+Hillary Clinton,788,Abraham Lincoln Barack Obama,1
+Hillary Clinton,788,Abraham Lincoln Donald Trump,0
+Hillary Clinton,788,Abraham Lincoln Richard Nixon,1
+Hillary Clinton,788,Donald Trump Joe Biden,1
+Hillary Clinton,788,Donald Trump Ronald Reagan,0
+Barack Obama,789,Elizabeth Warren Richard Nixon,0
+Ronald Reagan,790,George W. Bush Richard Nixon,1
+George W. Bush,791,Abraham Lincoln Richard Nixon,1
+George W. Bush,791,Abraham Lincoln Ronald Reagan,0
+George W. Bush,791,Bernie Sanders Richard Nixon,1
+George W. Bush,791,Donald Trump Hillary Clinton,0
+Bernie Sanders,792,Abraham Lincoln Donald Trump,1
+Bernie Sanders,792,Abraham Lincoln George W. Bush,0
+Bernie Sanders,792,Abraham Lincoln Ronald Reagan,0
+Bernie Sanders,792,Donald Trump George W. Bush,0
+Bernie Sanders,792,Donald Trump Richard Nixon,0
+Bernie Sanders,793,Barack Obama Elizabeth Warren,1
+Bernie Sanders,793,Barack Obama Richard Nixon,1
+Bernie Sanders,793,Elizabeth Warren Joe Biden,1
+Richard Nixon,794,Abraham Lincoln Joe Biden,1
+Richard Nixon,794,Donald Trump Joe Biden,1
+Elizabeth Warren,796,Abraham Lincoln Barack Obama,1
+Elizabeth Warren,796,Bernie Sanders Richard Nixon,0
+Elizabeth Warren,796,Donald Trump George W. Bush,0
+Ronald Reagan,797,Bernie Sanders Donald Trump,0
+Ronald Reagan,797,Bernie Sanders Joe Biden,0
+Ronald Reagan,797,Donald Trump Hillary Clinton,0
+Ronald Reagan,797,Donald Trump Joe Biden,0
+Hillary Clinton,798,Abraham Lincoln Ronald Reagan,0
+Hillary Clinton,798,Barack Obama Joe Biden,0
+Hillary Clinton,798,Barack Obama Richard Nixon,0
+Hillary Clinton,798,George W. Bush Richard Nixon,1
+Hillary Clinton,798,Richard Nixon Ronald Reagan,0
+Richard Nixon,799,Abraham Lincoln Elizabeth Warren,0
+Richard Nixon,799,Bernie Sanders Donald Trump,1
+Richard Nixon,799,Bernie Sanders Elizabeth Warren,0
+Richard Nixon,799,Bernie Sanders Hillary Clinton,0
+Abraham Lincoln,800,Barack Obama Bernie Sanders,0
+Hillary Clinton,801,Bernie Sanders Richard Nixon,0
+Hillary Clinton,801,Elizabeth Warren Ronald Reagan,0
+George W. Bush,802,Elizabeth Warren Hillary Clinton,0
+Ronald Reagan,803,Abraham Lincoln Donald Trump,0
+Ronald Reagan,803,Barack Obama Donald Trump,1
+Ronald Reagan,803,Barack Obama George W. Bush,0
+Ronald Reagan,803,Bernie Sanders Joe Biden,0
+Ronald Reagan,803,Hillary Clinton Richard Nixon,1
+Richard Nixon,804,Abraham Lincoln Barack Obama,1
+Richard Nixon,804,Barack Obama Bernie Sanders,0
+Richard Nixon,804,Donald Trump George W. Bush,0
+Abraham Lincoln,805,Bernie Sanders Ronald Reagan,0
+Abraham Lincoln,805,Donald Trump Richard Nixon,0
+Abraham Lincoln,805,Elizabeth Warren Richard Nixon,0
+Donald Trump,806,Abraham Lincoln Elizabeth Warren,1
+Donald Trump,806,Abraham Lincoln Richard Nixon,0
+Donald Trump,806,George W. Bush Richard Nixon,0
+Donald Trump,806,Hillary Clinton Richard Nixon,0
+Donald Trump,806,Joe Biden Richard Nixon,1
+Richard Nixon,807,Abraham Lincoln Donald Trump,1
+Richard Nixon,807,Abraham Lincoln Elizabeth Warren,1
+Donald Trump,808,Abraham Lincoln Joe Biden,0
+Donald Trump,808,Bernie Sanders Richard Nixon,0
+Donald Trump,808,George W. Bush Joe Biden,1
+Donald Trump,808,Hillary Clinton Joe Biden,0
+Ronald Reagan,809,Abraham Lincoln Hillary Clinton,0
+Ronald Reagan,809,Bernie Sanders George W. Bush,0
+Ronald Reagan,809,Bernie Sanders Joe Biden,0
+Ronald Reagan,809,Donald Trump Elizabeth Warren,0
+Ronald Reagan,809,Donald Trump Hillary Clinton,0
+Bernie Sanders,810,Abraham Lincoln Joe Biden,1
+Bernie Sanders,810,Barack Obama Ronald Reagan,1
+Bernie Sanders,810,George W. Bush Joe Biden,1
+Bernie Sanders,810,Hillary Clinton Ronald Reagan,0
+Richard Nixon,811,Barack Obama Bernie Sanders,1
+Richard Nixon,811,Barack Obama Joe Biden,1
+Richard Nixon,811,George W. Bush Hillary Clinton,1
+Barack Obama,812,Richard Nixon Ronald Reagan,0
+Donald Trump,813,George W. Bush Ronald Reagan,0
+George W. Bush,814,Abraham Lincoln Elizabeth Warren,0
+George W. Bush,814,Abraham Lincoln Richard Nixon,0
+George W. Bush,814,Bernie Sanders Elizabeth Warren,0
+Barack Obama,815,Joe Biden Richard Nixon,0
+Joe Biden,816,Abraham Lincoln Donald Trump,1
+Joe Biden,816,Abraham Lincoln Richard Nixon,1
+Joe Biden,816,Donald Trump Ronald Reagan,0
+Joe Biden,817,Donald Trump Elizabeth Warren,0
+Joe Biden,817,Donald Trump Ronald Reagan,0
+Abraham Lincoln,818,Barack Obama Ronald Reagan,0
+Abraham Lincoln,818,Elizabeth Warren Joe Biden,0
+Bernie Sanders,819,Donald Trump Hillary Clinton,0
+Ronald Reagan,820,Barack Obama Donald Trump,1
+Ronald Reagan,820,Bernie Sanders George W. Bush,0
+Ronald Reagan,820,Donald Trump Joe Biden,0
+Ronald Reagan,820,George W. Bush Joe Biden,1
+Richard Nixon,821,Bernie Sanders Joe Biden,0
+Elizabeth Warren,822,Abraham Lincoln Barack Obama,0
+George W. Bush,823,Abraham Lincoln Hillary Clinton,1
+George W. Bush,823,Donald Trump Elizabeth Warren,0
+George W. Bush,823,Donald Trump Hillary Clinton,0
+Ronald Reagan,825,Abraham Lincoln Joe Biden,0
+Ronald Reagan,825,Donald Trump George W. Bush,0
+Ronald Reagan,825,Donald Trump Joe Biden,1
+Barack Obama,826,Abraham Lincoln Ronald Reagan,0
+Barack Obama,826,Bernie Sanders Elizabeth Warren,0
+Barack Obama,826,Donald Trump Hillary Clinton,0
+Barack Obama,826,Elizabeth Warren Hillary Clinton,0
+Barack Obama,826,Hillary Clinton Joe Biden,0
+Barack Obama,826,Joe Biden Ronald Reagan,0
+Joe Biden,827,Abraham Lincoln Bernie Sanders,0
+Joe Biden,827,Barack Obama Ronald Reagan,0
+Joe Biden,827,Donald Trump Hillary Clinton,0
+Joe Biden,827,Richard Nixon Ronald Reagan,1
+George W. Bush,828,Abraham Lincoln Donald Trump,0
+George W. Bush,828,Bernie Sanders Elizabeth Warren,0
+George W. Bush,828,Donald Trump Ronald Reagan,0
+George W. Bush,828,Richard Nixon Ronald Reagan,0
+Elizabeth Warren,829,Abraham Lincoln Barack Obama,0
+Elizabeth Warren,829,Abraham Lincoln Donald Trump,0
+Elizabeth Warren,829,Abraham Lincoln Hillary Clinton,0
+Abraham Lincoln,831,Donald Trump Richard Nixon,0
+Elizabeth Warren,832,Joe Biden Ronald Reagan,0
+George W. Bush,833,Abraham Lincoln Barack Obama,0
+George W. Bush,833,Barack Obama Elizabeth Warren,0
+George W. Bush,833,Bernie Sanders Donald Trump,0
+George W. Bush,833,Donald Trump Elizabeth Warren,0
+George W. Bush,833,Hillary Clinton Joe Biden,0
+Elizabeth Warren,834,Abraham Lincoln Barack Obama,0
+Elizabeth Warren,834,Abraham Lincoln Joe Biden,1
+Elizabeth Warren,834,Bernie Sanders Hillary Clinton,0
+Elizabeth Warren,834,Donald Trump Ronald Reagan,1
+George W. Bush,835,Donald Trump Richard Nixon,0
+George W. Bush,835,Hillary Clinton Richard Nixon,0
+George W. Bush,836,Elizabeth Warren Joe Biden,0
+Hillary Clinton,837,Abraham Lincoln Donald Trump,1
+Hillary Clinton,837,Barack Obama George W. Bush,0
+Hillary Clinton,837,Donald Trump Richard Nixon,0
+Donald Trump,838,Abraham Lincoln Barack Obama,0
+Donald Trump,838,Abraham Lincoln Joe Biden,0
+Joe Biden,839,Barack Obama Bernie Sanders,1
+Joe Biden,839,Donald Trump Richard Nixon,1
+Hillary Clinton,840,Barack Obama Joe Biden,0
+Hillary Clinton,840,Barack Obama Ronald Reagan,0
+Richard Nixon,841,Barack Obama Bernie Sanders,1
+Richard Nixon,841,Barack Obama Donald Trump,0
+Richard Nixon,841,Bernie Sanders Hillary Clinton,0
+Hillary Clinton,842,Donald Trump Richard Nixon,0
+Hillary Clinton,842,Elizabeth Warren Joe Biden,0
+Bernie Sanders,843,Abraham Lincoln Elizabeth Warren,0
+Bernie Sanders,844,Abraham Lincoln Hillary Clinton,0
+Bernie Sanders,844,Barack Obama Hillary Clinton,0
+Bernie Sanders,844,Barack Obama Joe Biden,0
+Bernie Sanders,844,Elizabeth Warren George W. Bush,0
+Bernie Sanders,844,Elizabeth Warren Richard Nixon,0
+Bernie Sanders,844,Joe Biden Ronald Reagan,1
+Joe Biden,845,Abraham Lincoln Hillary Clinton,0
+Donald Trump,847,Abraham Lincoln Barack Obama,0
+Donald Trump,847,Abraham Lincoln George W. Bush,1
+Donald Trump,847,Bernie Sanders Joe Biden,1
+Donald Trump,847,Elizabeth Warren George W. Bush,1
+George W. Bush,849,Abraham Lincoln Ronald Reagan,0
+Barack Obama,850,Abraham Lincoln Richard Nixon,0
+Donald Trump,851,Barack Obama Elizabeth Warren,1
+Donald Trump,851,Bernie Sanders Richard Nixon,0
+Donald Trump,851,George W. Bush Richard Nixon,1
+Donald Trump,851,Hillary Clinton Richard Nixon,0
+Donald Trump,852,Abraham Lincoln Joe Biden,0
+Donald Trump,852,George W. Bush Hillary Clinton,1
+Donald Trump,852,George W. Bush Richard Nixon,0
+George W. Bush,853,Hillary Clinton Ronald Reagan,1
+George W. Bush,854,Abraham Lincoln Joe Biden,1
+George W. Bush,854,Bernie Sanders Richard Nixon,0
+George W. Bush,854,Donald Trump Joe Biden,1
+George W. Bush,854,Donald Trump Ronald Reagan,0
+Joe Biden,856,Abraham Lincoln Bernie Sanders,1
+Joe Biden,856,Abraham Lincoln Hillary Clinton,0
+Joe Biden,856,Elizabeth Warren George W. Bush,0
+George W. Bush,857,Abraham Lincoln Barack Obama,0
+George W. Bush,857,Abraham Lincoln Richard Nixon,0
+George W. Bush,857,Barack Obama Donald Trump,1
+George W. Bush,857,Donald Trump Ronald Reagan,0
+Bernie Sanders,858,Barack Obama Elizabeth Warren,1
+Bernie Sanders,858,Elizabeth Warren Joe Biden,0
+Bernie Sanders,858,George W. Bush Joe Biden,1
+Bernie Sanders,858,Hillary Clinton Richard Nixon,1
+Bernie Sanders,858,Joe Biden Richard Nixon,0
+Richard Nixon,859,Abraham Lincoln Barack Obama,0
+Richard Nixon,859,Donald Trump Elizabeth Warren,0
+Barack Obama,860,Abraham Lincoln George W. Bush,1
+Barack Obama,860,Bernie Sanders George W. Bush,0
+Barack Obama,860,Donald Trump Elizabeth Warren,0
+Barack Obama,860,Donald Trump Richard Nixon,0
+Barack Obama,860,Elizabeth Warren Hillary Clinton,0
+Barack Obama,860,Richard Nixon Ronald Reagan,0
+Joe Biden,861,George W. Bush Richard Nixon,1
+Ronald Reagan,862,Barack Obama Richard Nixon,1
+Ronald Reagan,862,Bernie Sanders George W. Bush,0
+Bernie Sanders,863,Donald Trump Ronald Reagan,0
+Bernie Sanders,863,Elizabeth Warren Ronald Reagan,0
+Bernie Sanders,863,George W. Bush Hillary Clinton,1
+Bernie Sanders,863,George W. Bush Joe Biden,0
+Elizabeth Warren,864,Abraham Lincoln Barack Obama,0
+Elizabeth Warren,864,Abraham Lincoln Ronald Reagan,0
+Elizabeth Warren,864,Barack Obama Hillary Clinton,0
+Elizabeth Warren,864,Donald Trump George W. Bush,0
+Elizabeth Warren,864,Hillary Clinton Ronald Reagan,1
+George W. Bush,865,Elizabeth Warren Ronald Reagan,0
+Ronald Reagan,866,Abraham Lincoln Bernie Sanders,0
+Ronald Reagan,866,Donald Trump Joe Biden,0
+Ronald Reagan,866,Joe Biden Richard Nixon,0
+George W. Bush,867,Abraham Lincoln Joe Biden,1
+George W. Bush,867,Barack Obama Elizabeth Warren,1
+George W. Bush,867,Bernie Sanders Donald Trump,1
+George W. Bush,867,Bernie Sanders Hillary Clinton,0
+George W. Bush,867,Donald Trump Ronald Reagan,0
+Donald Trump,868,Abraham Lincoln Richard Nixon,0
+Donald Trump,868,Abraham Lincoln Ronald Reagan,0
+Donald Trump,868,Barack Obama Bernie Sanders,0
+Donald Trump,868,Bernie Sanders Joe Biden,0
+Donald Trump,868,Elizabeth Warren Joe Biden,1
+Donald Trump,868,Hillary Clinton Joe Biden,1
+Donald Trump,868,Hillary Clinton Richard Nixon,1
+Donald Trump,868,Joe Biden Richard Nixon,0
+Bernie Sanders,869,Abraham Lincoln Hillary Clinton,0
+Bernie Sanders,869,Barack Obama Elizabeth Warren,0
+Bernie Sanders,869,Barack Obama Richard Nixon,0
+Bernie Sanders,869,Donald Trump Richard Nixon,0
+Bernie Sanders,869,Joe Biden Richard Nixon,0
+Donald Trump,870,Abraham Lincoln Barack Obama,0
+Donald Trump,870,Barack Obama Joe Biden,0
+Donald Trump,870,Hillary Clinton Ronald Reagan,1
+Abraham Lincoln,871,Barack Obama Ronald Reagan,1
+Abraham Lincoln,871,Bernie Sanders Joe Biden,1
+Abraham Lincoln,871,Elizabeth Warren Joe Biden,1
+Donald Trump,872,Bernie Sanders Elizabeth Warren,0
+Donald Trump,872,Elizabeth Warren Richard Nixon,0
+Abraham Lincoln,873,Barack Obama Richard Nixon,0
+Ronald Reagan,875,Abraham Lincoln Joe Biden,1
+Ronald Reagan,875,Abraham Lincoln Richard Nixon,1
+Ronald Reagan,875,Bernie Sanders Donald Trump,1
+Ronald Reagan,875,Elizabeth Warren Hillary Clinton,0
+Ronald Reagan,875,Elizabeth Warren Richard Nixon,0
+Ronald Reagan,875,George W. Bush Joe Biden,0
+Ronald Reagan,875,Joe Biden Richard Nixon,0
+George W. Bush,876,Donald Trump Joe Biden,0
+George W. Bush,876,Elizabeth Warren Joe Biden,1
+Donald Trump,878,Abraham Lincoln Bernie Sanders,0
+Donald Trump,878,Abraham Lincoln Elizabeth Warren,0
+Donald Trump,878,Bernie Sanders Richard Nixon,1
+Donald Trump,878,George W. Bush Richard Nixon,1
+Abraham Lincoln,880,Barack Obama Bernie Sanders,0
+Abraham Lincoln,880,Bernie Sanders Elizabeth Warren,0
+Abraham Lincoln,880,Donald Trump Ronald Reagan,0
+George W. Bush,881,Barack Obama Joe Biden,0
+Barack Obama,882,George W. Bush Richard Nixon,0
+Barack Obama,882,Hillary Clinton Joe Biden,0
+Joe Biden,883,Bernie Sanders Hillary Clinton,1
+Joe Biden,883,Elizabeth Warren Hillary Clinton,1
+Ronald Reagan,884,Abraham Lincoln Bernie Sanders,1
+Elizabeth Warren,885,Abraham Lincoln Bernie Sanders,0
+Elizabeth Warren,885,Donald Trump George W. Bush,1
+Elizabeth Warren,885,Richard Nixon Ronald Reagan,1
+Hillary Clinton,886,Abraham Lincoln Joe Biden,1
+Hillary Clinton,886,Bernie Sanders Donald Trump,1
+Hillary Clinton,886,Bernie Sanders Ronald Reagan,0
+Ronald Reagan,887,Donald Trump Joe Biden,0
+Barack Obama,888,Bernie Sanders George W. Bush,0
+Barack Obama,888,Donald Trump Joe Biden,0
+Joe Biden,889,Barack Obama George W. Bush,1
+Joe Biden,889,Bernie Sanders Richard Nixon,0
+Joe Biden,889,Donald Trump George W. Bush,0
+Joe Biden,889,Donald Trump Richard Nixon,0
+Abraham Lincoln,892,George W. Bush Joe Biden,0
+Elizabeth Warren,893,Joe Biden Richard Nixon,0
+Richard Nixon,894,Bernie Sanders Elizabeth Warren,0
+Richard Nixon,894,Donald Trump Hillary Clinton,0
+Richard Nixon,894,George W. Bush Hillary Clinton,0
+Abraham Lincoln,895,Donald Trump Hillary Clinton,0
+Abraham Lincoln,895,Richard Nixon Ronald Reagan,1
+Richard Nixon,896,Abraham Lincoln Elizabeth Warren,1
+Richard Nixon,896,Hillary Clinton Joe Biden,0
+Joe Biden,897,Barack Obama Bernie Sanders,1
+Joe Biden,897,Barack Obama Elizabeth Warren,1
+Joe Biden,897,Elizabeth Warren Richard Nixon,0
+George W. Bush,898,Bernie Sanders Donald Trump,0
+George W. Bush,898,Joe Biden Richard Nixon,1
+a salmon,0,a robin an ostrich,0
+an eagle,1,a robin a salmon,0
+an eagle,1,a robin a dolphin,0
+an eagle,1,a seal a dolphin,0
+a seal,2,a robin a chicken,0
+an ostrich,3,a robin a salmon,0
+an ostrich,3,a chicken a dolphin,0
+an ostrich,3,an eagle a salmon,0
+an ostrich,3,a salmon a whale,0
+a salmon,4,a finch a whale,0
+a salmon,4,an ostrich a dolphin,0
+a whale,5,a robin a dolphin,0
+a whale,5,an eagle a seal,0
+a salmon,7,a finch a dolphin,0
+a seal,8,a robin a chicken,0
+a seal,8,a robin a penguin,0
+an ostrich,9,a robin a seal,1
+an ostrich,9,a chicken an eagle,0
+an ostrich,9,an eagle a penguin,0
+an ostrich,9,an eagle a dolphin,1
+an eagle,10,a finch a seal,0
+an eagle,10,a robin a chicken,0
+an eagle,10,a robin a whale,0
+a seal,11,a finch a whale,0
+a seal,12,a finch a whale,1
+a seal,12,a chicken a salmon,0
+a chicken,13,a finch a robin,0
+a chicken,13,a robin a penguin,0
+a chicken,13,a robin a salmon,0
+a chicken,13,an ostrich a dolphin,0
+a chicken,13,an ostrich a whale,0
+a penguin,14,a finch a robin,0
+a penguin,14,a chicken a seal,0
+a robin,16,an eagle a whale,0
+a robin,16,a penguin a whale,0
+a penguin,18,a finch a chicken,1
+a penguin,18,a robin a dolphin,0
+a robin,19,an ostrich a seal,0
+an ostrich,20,a finch an eagle,1
+an ostrich,20,a chicken a penguin,0
+a whale,22,a robin an ostrich,1
+a whale,22,a robin a salmon,0
+a whale,22,an eagle an ostrich,0
+a whale,22,an ostrich a seal,0
+a whale,22,an ostrich a dolphin,1
+a penguin,23,a chicken a dolphin,0
+a dolphin,24,a robin a salmon,0
+a finch,25,an ostrich a penguin,0
+a finch,25,a salmon a seal,0
+a whale,26,a finch a dolphin,0
+an eagle,29,a finch a salmon,0
+an eagle,29,a robin an ostrich,1
+an eagle,29,a robin a seal,0
+an eagle,29,a chicken an ostrich,1
+a dolphin,30,a finch a penguin,0
+a dolphin,30,a robin a salmon,0
+a chicken,31,an eagle a whale,0
+a salmon,34,a chicken a penguin,1
+a salmon,34,a chicken a dolphin,0
+a salmon,34,a seal a whale,1
+an ostrich,35,a robin an eagle,0
+a salmon,37,a finch a penguin,1
+a salmon,37,a chicken an ostrich,0
+a salmon,37,an ostrich a whale,0
+a robin,38,a penguin a whale,0
+a robin,38,a salmon a whale,0
+an eagle,39,a robin a seal,0
+an eagle,39,a chicken a dolphin,0
+a dolphin,40,a robin an eagle,1
+a dolphin,40,a robin a salmon,0
+a robin,41,a finch a salmon,1
+a robin,41,a finch a seal,1
+a robin,41,an eagle a salmon,1
+a robin,41,an ostrich a seal,0
+a robin,41,a penguin a salmon,0
+a robin,41,a penguin a seal,0
+a whale,42,an eagle a salmon,0
+a dolphin,43,a finch a robin,1
+a dolphin,43,a finch a penguin,0
+a whale,44,a robin a chicken,0
+a whale,44,a robin an eagle,0
+a whale,44,a robin a dolphin,0
+a whale,44,a seal a dolphin,1
+an ostrich,45,a robin a whale,0
+an ostrich,45,an eagle a whale,0
+a robin,46,a seal a whale,1
+an eagle,47,a finch an ostrich,1
+an eagle,47,an ostrich a seal,0
+a salmon,48,a robin a whale,0
+a seal,49,a chicken an ostrich,1
+a seal,49,a penguin a dolphin,1
+a finch,51,a robin a whale,0
+a finch,51,an eagle a seal,0
+a robin,53,a salmon a whale,0
+a robin,53,a seal a whale,0
+a seal,54,a robin a whale,1
+an eagle,55,a finch a salmon,1
+a robin,56,an eagle a penguin,1
+a penguin,57,a robin a seal,0
+a penguin,57,an eagle an ostrich,0
+a penguin,57,an ostrich a whale,0
+a penguin,58,an eagle an ostrich,0
+a penguin,58,an ostrich a salmon,0
+a penguin,58,a salmon a seal,1
+a penguin,58,a salmon a dolphin,1
+a whale,59,a chicken a salmon,1
+a whale,59,an eagle a penguin,0
+an eagle,60,a robin an ostrich,0
+an eagle,60,a seal a whale,0
+a penguin,61,a robin a dolphin,1
+a robin,62,a chicken an eagle,0
+a robin,62,an ostrich a seal,1
+a whale,63,an ostrich a salmon,0
+a robin,64,a finch a seal,0
+a robin,64,a finch a dolphin,1
+a robin,64,a chicken an ostrich,1
+a robin,64,a penguin a salmon,0
+a whale,65,a robin a seal,0
+a whale,65,a chicken a penguin,1
+an eagle,66,a chicken a dolphin,0
+a seal,67,a finch a dolphin,0
+a seal,67,a robin an ostrich,0
+a seal,67,a penguin a salmon,1
+a seal,67,a penguin a dolphin,0
+a dolphin,69,an eagle a whale,1
+a seal,70,a robin a dolphin,1
+a seal,70,a chicken an ostrich,0
+a seal,70,a dolphin a whale,0
+an ostrich,71,a finch a salmon,0
+an ostrich,71,a finch a seal,0
+a robin,72,an eagle an ostrich,1
+a robin,72,an ostrich a whale,0
+a robin,72,a penguin a dolphin,0
+an ostrich,73,a finch a whale,0
+an ostrich,73,a robin a seal,0
+an ostrich,73,a penguin a whale,0
+an ostrich,73,a dolphin a whale,0
+a seal,74,a chicken an ostrich,0
+a whale,75,a finch a chicken,0
+a whale,75,a robin an ostrich,0
+a dolphin,76,a finch a chicken,0
+a dolphin,76,a robin a salmon,0
+a dolphin,77,a robin a salmon,0
+a dolphin,77,a chicken an eagle,0
+a dolphin,77,an eagle a whale,1
+a finch,78,a robin a chicken,1
+a dolphin,79,a robin a chicken,1
+a dolphin,79,a robin a penguin,0
+a dolphin,79,an eagle a seal,0
+a dolphin,79,an eagle a whale,0
+a salmon,80,a finch a dolphin,0
+a salmon,80,an ostrich a penguin,0
+a dolphin,81,a finch a whale,1
+a seal,82,a finch an eagle,1
+a seal,82,a chicken an eagle,0
+a seal,82,a chicken a penguin,1
+a seal,82,an eagle an ostrich,0
+a seal,82,an eagle a penguin,1
+a seal,82,a penguin a whale,1
+a seal,85,a finch a chicken,0
+a chicken,86,a finch a seal,1
+a chicken,86,an eagle a whale,0
+a chicken,86,a salmon a whale,0
+a finch,87,an eagle a salmon,0
+a chicken,89,a finch an ostrich,0
+a chicken,89,an ostrich a seal,0
+a chicken,90,a robin an eagle,0
+a finch,91,a robin an ostrich,0
+a finch,91,a robin a dolphin,0
+a finch,91,a penguin a salmon,0
+an ostrich,92,a seal a whale,1
+a whale,93,a seal a dolphin,1
+a salmon,94,a finch an ostrich,1
+a whale,95,a robin a dolphin,1
+a whale,95,a chicken an ostrich,1
+a whale,95,an eagle a salmon,1
+a whale,95,an eagle a seal,0
+a dolphin,96,a chicken a seal,0
+a salmon,97,a chicken a seal,1
+a salmon,97,an ostrich a penguin,1
+a seal,99,a penguin a whale,0
+a robin,100,a chicken an eagle,1
+a robin,100,a penguin a seal,0
+a robin,100,a salmon a dolphin,0
+a finch,101,a robin a salmon,0
+a salmon,102,an eagle an ostrich,0
+a salmon,102,an eagle a penguin,0
+a seal,104,a robin a chicken,0
+a seal,104,a chicken a penguin,1
+a seal,104,an eagle an ostrich,0
+an ostrich,105,a penguin a seal,1
+a seal,107,a finch a whale,0
+a penguin,108,a robin a whale,1
+a penguin,108,a chicken a seal,1
+a penguin,108,a chicken a dolphin,0
+a chicken,109,an eagle a salmon,1
+a finch,110,an eagle a whale,1
+a chicken,111,a finch an eagle,0
+a chicken,111,a robin a whale,0
+a chicken,111,an eagle a salmon,1
+a chicken,111,an ostrich a salmon,0
+an ostrich,112,an eagle a penguin,1
+a chicken,113,a robin an eagle,0
+a chicken,113,a salmon a dolphin,0
+a chicken,113,a seal a dolphin,1
+a finch,114,a robin an eagle,0
+a finch,114,a robin a penguin,0
+a finch,114,a salmon a dolphin,0
+an ostrich,115,a chicken a whale,0
+an ostrich,115,a penguin a seal,0
+a whale,116,a finch an ostrich,1
+a salmon,117,a robin a chicken,0
+a salmon,117,a robin an eagle,0
+a salmon,117,a robin an ostrich,0
+a salmon,118,a finch a dolphin,0
+a dolphin,119,an ostrich a whale,0
+a whale,121,a salmon a seal,1
+a chicken,122,a finch an eagle,0
+a salmon,123,a chicken a whale,0
+a finch,124,a robin a penguin,0
+a finch,124,a robin a seal,0
+a finch,124,a robin a whale,0
+a finch,124,a chicken a whale,0
+a finch,124,an eagle a salmon,1
+a finch,124,a salmon a seal,1
+an eagle,126,a chicken a seal,1
+an eagle,126,an ostrich a seal,1
+an eagle,126,a seal a dolphin,0
+an eagle,126,a dolphin a whale,0
+an ostrich,127,a finch a salmon,1
+an ostrich,127,a chicken a whale,0
+an ostrich,127,an eagle a salmon,0
+a salmon,128,a penguin a seal,1
+a salmon,129,a finch an ostrich,0
+a salmon,129,an eagle a dolphin,0
+an eagle,130,a finch an ostrich,1
+an eagle,130,a finch a penguin,1
+an eagle,130,a finch a salmon,0
+an eagle,130,a robin a dolphin,0
+an eagle,130,an ostrich a whale,1
+an eagle,130,a penguin a salmon,0
+a salmon,131,a robin a whale,0
+a salmon,131,a chicken a dolphin,0
+a chicken,132,a robin a seal,1
+a penguin,133,a robin a whale,0
+a penguin,133,a salmon a seal,0
+a robin,134,a chicken a penguin,1
+a robin,134,a penguin a salmon,1
+a whale,135,a finch an eagle,0
+a whale,135,an eagle an ostrich,1
+a whale,135,an eagle a seal,1
+a whale,135,a salmon a dolphin,0
+a dolphin,136,a robin a chicken,1
+an ostrich,137,a finch an eagle,0
+an ostrich,137,a salmon a whale,0
+a penguin,138,a robin an ostrich,0
+a penguin,138,a robin a salmon,0
+a whale,140,a finch a salmon,0
+a whale,140,a salmon a seal,0
+a salmon,141,a robin a chicken,0
+a salmon,141,a robin a penguin,0
+a salmon,143,a robin a penguin,0
+a salmon,143,a penguin a seal,0
+a finch,144,a robin a dolphin,1
+a finch,144,an eagle a seal,0
+a finch,145,an eagle a penguin,0
+a dolphin,147,a penguin a seal,0
+an eagle,148,a finch a dolphin,0
+a dolphin,149,a finch a seal,0
+a dolphin,149,a chicken a salmon,1
+a dolphin,149,an eagle a salmon,0
+a dolphin,149,an eagle a whale,0
+a dolphin,149,a penguin a seal,1
+a dolphin,149,a penguin a whale,1
+a chicken,150,a finch a robin,0
+a chicken,150,a robin an ostrich,0
+a chicken,150,a robin a whale,0
+a salmon,151,a finch an eagle,0
+a salmon,151,a robin a dolphin,0
+a penguin,152,a finch an ostrich,0
+a penguin,152,a chicken an eagle,0
+a penguin,152,a chicken a dolphin,0
+a seal,153,a robin an ostrich,0
+a seal,153,a chicken a salmon,0
+a dolphin,154,an eagle a seal,0
+an ostrich,155,a finch a robin,0
+an ostrich,155,a finch an eagle,0
+an ostrich,155,a robin an eagle,0
+an ostrich,155,a robin a penguin,1
+an ostrich,155,an eagle a penguin,0
+a finch,156,an ostrich a seal,0
+a finch,156,a seal a dolphin,1
+a chicken,157,an eagle a penguin,0
+a chicken,157,an ostrich a penguin,1
+a whale,158,a finch an ostrich,0
+a whale,158,a robin a chicken,0
+a whale,158,a seal a dolphin,0
+a seal,159,a robin an ostrich,0
+a penguin,160,a finch a whale,0
+a penguin,160,a robin a whale,0
+a penguin,160,a chicken a seal,0
+a penguin,160,an eagle a salmon,1
+a penguin,160,an eagle a whale,1
+a seal,161,a finch a chicken,1
+a dolphin,162,a chicken an eagle,0
+an eagle,163,an ostrich a dolphin,0
+an eagle,163,a seal a whale,0
+a finch,164,a robin a seal,0
+a finch,164,a chicken a seal,0
+a finch,164,an eagle a penguin,0
+a whale,166,a finch a robin,0
+a whale,166,a robin a dolphin,0
+an eagle,167,a chicken a salmon,1
+an eagle,167,a penguin a seal,0
+a salmon,168,a finch an ostrich,0
+a robin,169,a chicken a salmon,0
+a robin,169,a chicken a whale,1
+a robin,169,an ostrich a salmon,0
+a robin,169,a penguin a seal,1
+a chicken,170,an ostrich a seal,1
+a chicken,170,a penguin a seal,0
+a finch,171,an ostrich a penguin,0
+an ostrich,172,a chicken a dolphin,0
+an ostrich,172,an eagle a penguin,1
+an ostrich,172,an eagle a dolphin,1
+an ostrich,172,a dolphin a whale,1
+a finch,173,a chicken an eagle,0
+a finch,173,an eagle a whale,1
+a finch,173,a salmon a seal,1
+a seal,174,a finch an ostrich,0
+a seal,174,a robin a salmon,0
+a seal,174,a chicken a whale,0
+a finch,175,a penguin a dolphin,0
+a finch,176,a chicken a dolphin,1
+a finch,176,a chicken a whale,1
+a robin,177,an eagle a dolphin,0
+a robin,178,a finch a dolphin,0
+a robin,178,an eagle an ostrich,0
+a robin,178,an ostrich a seal,0
+a robin,178,a penguin a dolphin,0
+a robin,178,a salmon a dolphin,0
+a penguin,179,a robin an ostrich,0
+a penguin,179,a seal a dolphin,0
+a salmon,180,a finch a whale,1
+a salmon,180,a chicken a dolphin,0
+an ostrich,181,a robin a penguin,0
+an ostrich,181,an eagle a penguin,0
+an ostrich,181,an eagle a whale,0
+a finch,183,a robin an ostrich,0
+a finch,183,a robin a dolphin,1
+a finch,183,a seal a dolphin,0
+a chicken,184,a robin an eagle,0
+a chicken,184,an eagle a salmon,0
+a chicken,184,an ostrich a dolphin,0
+a chicken,184,an ostrich a whale,0
+an ostrich,186,a finch a salmon,0
+an ostrich,186,an eagle a salmon,0
+a whale,187,a robin a chicken,0
+a penguin,188,a robin a seal,1
+a penguin,188,an ostrich a salmon,1
+a salmon,189,a finch an ostrich,0
+an eagle,190,a robin a salmon,0
+a seal,192,a robin a penguin,0
+a seal,192,a robin a dolphin,0
+a seal,192,an eagle a salmon,0
+a seal,192,an ostrich a whale,1
+a finch,193,a penguin a dolphin,1
+a penguin,194,a finch a dolphin,1
+a penguin,194,a chicken an ostrich,1
+a seal,195,an eagle an ostrich,0
+a seal,195,an ostrich a salmon,0
+an ostrich,196,a robin a whale,0
+an ostrich,196,a chicken a whale,0
+an eagle,197,a robin an ostrich,0
+an eagle,197,a salmon a dolphin,0
+a robin,198,a chicken a dolphin,0
+a penguin,199,an eagle a seal,0
+a penguin,199,a salmon a dolphin,1
+a penguin,200,a finch a dolphin,0
+a penguin,200,a robin a chicken,0
+a penguin,200,a chicken a whale,1
+a penguin,200,a salmon a whale,1
+a finch,201,a robin an ostrich,0
+a finch,201,a robin a penguin,1
+a finch,201,an eagle a seal,0
+a finch,201,a penguin a salmon,0
+a dolphin,202,a finch a chicken,1
+a dolphin,202,a finch an eagle,0
+a dolphin,202,a finch a salmon,1
+a dolphin,202,a chicken a salmon,1
+a penguin,203,a robin a salmon,1
+a chicken,204,a finch an eagle,0
+an eagle,205,a robin a chicken,1
+an eagle,205,a chicken a whale,0
+an eagle,206,a finch a robin,1
+an eagle,206,a chicken a whale,0
+a chicken,207,an ostrich a dolphin,0
+a whale,208,a chicken a salmon,0
+a whale,208,an ostrich a penguin,0
+a chicken,209,a finch an eagle,1
+a chicken,210,an eagle a penguin,0
+a chicken,210,a seal a dolphin,0
+an eagle,211,a finch a chicken,1
+an eagle,211,a chicken a seal,1
+an eagle,213,an ostrich a whale,0
+a finch,215,a penguin a whale,0
+a seal,216,a finch a robin,1
+a seal,216,a chicken an ostrich,0
+a seal,216,an eagle a dolphin,0
+a salmon,217,a finch an eagle,1
+a salmon,217,a finch a seal,0
+a salmon,217,a chicken a dolphin,0
+a salmon,217,an ostrich a whale,0
+a robin,218,a finch a whale,0
+a robin,218,an eagle a salmon,0
+a robin,218,a penguin a salmon,0
+a seal,219,an eagle a salmon,1
+a finch,220,a robin a penguin,0
+a finch,220,an ostrich a seal,0
+a dolphin,221,an ostrich a seal,1
+a dolphin,221,a seal a whale,1
+a dolphin,222,a chicken a salmon,0
+a dolphin,222,an eagle a salmon,1
+a robin,223,an eagle a salmon,0
+a salmon,224,an eagle a whale,0
+a salmon,224,a seal a whale,0
+a whale,225,a robin a dolphin,1
+a whale,225,a penguin a salmon,0
+a salmon,227,a finch a robin,0
+a salmon,227,a chicken a penguin,0
+a salmon,227,an eagle an ostrich,0
+a whale,228,a robin an eagle,0
+a whale,228,an eagle a penguin,0
+a dolphin,229,a chicken an eagle,0
+an eagle,230,a chicken an ostrich,0
+a finch,231,a chicken an ostrich,0
+a finch,231,a chicken a seal,0
+a finch,231,a penguin a dolphin,0
+a robin,232,a finch an eagle,0
+a robin,232,a chicken an ostrich,0
+a robin,232,a chicken a salmon,1
+a robin,232,a chicken a whale,0
+a robin,232,an ostrich a salmon,0
+a finch,233,an eagle a seal,0
+a finch,233,an ostrich a seal,1
+a finch,233,an ostrich a whale,0
+a finch,233,a penguin a dolphin,1
+an ostrich,234,a robin a seal,1
+an ostrich,235,a chicken an eagle,1
+an ostrich,235,a penguin a salmon,0
+a salmon,236,a robin a chicken,0
+a salmon,236,a robin a whale,1
+a salmon,236,a chicken an eagle,0
+a salmon,236,a seal a dolphin,0
+a dolphin,237,a chicken a penguin,0
+a dolphin,238,a robin a penguin,0
+a chicken,239,a dolphin a whale,0
+a chicken,240,a robin a penguin,0
+a chicken,240,an ostrich a salmon,0
+a chicken,240,a salmon a dolphin,0
+an eagle,242,a robin a whale,0
+an eagle,242,a chicken a penguin,1
+an eagle,242,a penguin a dolphin,0
+an eagle,242,a seal a dolphin,1
+a seal,243,a robin an eagle,0
+a penguin,244,an eagle a seal,0
+a penguin,244,a salmon a seal,1
+a seal,245,a finch a chicken,0
+a seal,245,a robin a penguin,1
+a seal,245,a chicken a dolphin,0
+a finch,246,a seal a whale,0
+a seal,247,a finch a salmon,0
+a seal,247,a chicken a penguin,0
+a seal,247,a penguin a salmon,1
+an eagle,248,an ostrich a seal,0
+a finch,249,an eagle a seal,0
+a finch,249,an ostrich a whale,0
+a seal,250,a finch a chicken,0
+an eagle,251,a robin a chicken,0
+an eagle,251,a seal a whale,1
+a chicken,255,a finch a whale,0
+a chicken,255,a robin an ostrich,1
+a chicken,255,a robin a salmon,0
+a chicken,255,an eagle a penguin,0
+a chicken,255,a salmon a seal,1
+a dolphin,256,a robin a whale,0
+a dolphin,256,a chicken an ostrich,0
+a chicken,257,a finch a robin,0
+a chicken,257,an eagle a penguin,0
+a dolphin,258,a finch a penguin,0
+a dolphin,258,an ostrich a seal,1
+a dolphin,258,a seal a whale,1
+a robin,259,a chicken a seal,1
+a robin,259,an eagle a salmon,1
+a robin,259,an ostrich a dolphin,0
+a robin,260,a finch a chicken,0
+a robin,260,a finch an eagle,0
+a robin,260,an eagle an ostrich,0
+a robin,260,a salmon a dolphin,0
+a penguin,262,a chicken a salmon,0
+a penguin,262,an ostrich a salmon,1
+a chicken,263,an ostrich a dolphin,0
+a chicken,263,a seal a dolphin,1
+a finch,266,a chicken an ostrich,0
+a finch,266,a chicken a salmon,1
+a finch,266,a chicken a seal,1
+a finch,266,an eagle a whale,0
+a finch,266,an ostrich a seal,1
+an eagle,267,a salmon a seal,1
+a finch,268,a robin a whale,0
+a finch,268,a chicken a penguin,0
+a finch,268,a chicken a seal,1
+a finch,268,a dolphin a whale,0
+a seal,271,a finch a chicken,0
+a salmon,273,a chicken a seal,0
+a salmon,273,an eagle a dolphin,0
+a chicken,274,a robin a whale,0
+a chicken,274,a penguin a salmon,0
+a finch,275,an ostrich a penguin,0
+a finch,276,a chicken a whale,1
+a finch,276,an eagle a salmon,0
+a finch,276,a seal a whale,0
+a chicken,277,a finch an ostrich,0
+a chicken,277,an eagle a whale,0
+a chicken,277,an ostrich a salmon,1
+a chicken,277,an ostrich a whale,0
+a penguin,278,a finch a chicken,1
+a penguin,278,a finch a seal,0
+a penguin,278,a robin a salmon,0
+a penguin,278,a robin a whale,0
+a penguin,278,a salmon a whale,0
+a salmon,279,a chicken an eagle,0
+a penguin,280,a finch a salmon,0
+a penguin,280,an eagle a dolphin,1
+a penguin,281,an ostrich a seal,0
+a penguin,282,a finch an eagle,1
+a chicken,283,a finch a salmon,1
+a penguin,284,a robin a seal,0
+a penguin,284,a chicken a seal,0
+a robin,286,a finch a penguin,0
+a robin,286,an ostrich a penguin,0
+an ostrich,287,a robin a whale,1
+an ostrich,287,a chicken a salmon,0
+an ostrich,287,a chicken a whale,1
+a finch,289,a chicken a dolphin,1
+an ostrich,290,a finch an eagle,0
+an ostrich,290,a robin an eagle,1
+an ostrich,290,a robin a penguin,0
+a chicken,291,a robin an ostrich,0
+a chicken,291,an ostrich a dolphin,1
+an eagle,292,a finch a robin,0
+a chicken,293,a finch an eagle,1
+a chicken,293,an eagle a dolphin,1
+a finch,294,a robin an eagle,1
+a finch,294,a chicken a whale,0
+a finch,294,an eagle a salmon,0
+a finch,295,an eagle a salmon,0
+an ostrich,296,a finch a penguin,0
+an ostrich,296,a robin a seal,0
+a penguin,297,a robin an eagle,0
+a penguin,297,a robin a whale,0
+a penguin,297,an eagle a dolphin,0
+a penguin,297,a seal a whale,0
+a chicken,298,a finch a whale,0
+a chicken,298,an ostrich a seal,0
+a dolphin,299,a finch a seal,1
+a dolphin,299,an eagle a seal,0
+a dolphin,299,an ostrich a penguin,0
+an ostrich,300,a chicken a seal,0
+an ostrich,300,an eagle a salmon,0
+a seal,301,a robin a penguin,0
+a seal,301,a chicken an eagle,0
+a seal,301,a chicken an ostrich,0
+a seal,301,an eagle a dolphin,1
+a seal,301,a penguin a whale,0
+an ostrich,303,a salmon a seal,0
+a chicken,304,a robin an ostrich,1
+a chicken,304,an eagle a seal,0
+a finch,305,a robin a penguin,0
+an eagle,306,a salmon a dolphin,0
+an ostrich,307,a finch a seal,0
+an ostrich,307,a robin a whale,0
+an ostrich,307,an eagle a seal,0
+a salmon,308,a robin a chicken,0
+a finch,309,a chicken an eagle,0
+a chicken,310,a finch an eagle,0
+a chicken,310,a robin a whale,0
+a chicken,310,an eagle a salmon,1
+a chicken,310,an eagle a whale,0
+a chicken,310,an ostrich a whale,0
+a robin,311,a salmon a whale,0
+a penguin,314,an ostrich a dolphin,0
+a whale,315,a robin a seal,0
+a whale,315,a chicken a salmon,1
+a chicken,316,a robin a salmon,0
+a chicken,316,a penguin a salmon,0
+a chicken,316,a penguin a whale,0
+a seal,317,a robin an ostrich,0
+a robin,319,a finch a seal,0
+a robin,319,a finch a whale,0
+a robin,319,a salmon a seal,1
+a robin,319,a seal a whale,0
+a penguin,320,an eagle a whale,0
+a penguin,320,a seal a whale,1
+a salmon,321,a robin a dolphin,1
+a salmon,321,a chicken an eagle,0
+a salmon,321,an eagle a penguin,0
+a robin,322,an eagle a seal,0
+a robin,322,a penguin a seal,0
+a whale,323,a finch an ostrich,0
+a whale,323,an eagle a penguin,0
+a robin,324,a chicken a penguin,1
+a robin,324,an ostrich a dolphin,0
+a whale,325,a finch a chicken,0
+a whale,325,an ostrich a seal,0
+a finch,326,an eagle a salmon,0
+a finch,326,a salmon a seal,0
+a seal,327,a finch an eagle,0
+a finch,328,an ostrich a seal,0
+a dolphin,329,a chicken a salmon,1
+a penguin,330,an ostrich a salmon,0
+a penguin,330,an ostrich a seal,1
+a whale,332,an eagle an ostrich,1
+a salmon,333,a finch a chicken,0
+a salmon,333,a finch an eagle,1
+a salmon,333,a dolphin a whale,0
+a chicken,335,a finch a penguin,0
+a robin,336,a finch an eagle,0
+a robin,336,an eagle a salmon,0
+a dolphin,337,a robin an eagle,0
+a seal,338,a robin a whale,0
+a seal,338,an eagle an ostrich,0
+a whale,339,a robin a salmon,1
+a salmon,340,a finch a chicken,1
+a salmon,340,a robin a chicken,1
+a salmon,340,a robin an eagle,1
+a salmon,340,a chicken a penguin,0
+a salmon,340,a penguin a seal,0
+a dolphin,341,a finch a chicken,0
+a dolphin,341,a chicken a salmon,0
+a dolphin,341,an ostrich a whale,0
+a finch,344,a chicken an ostrich,0
+a finch,344,a chicken a whale,0
+a finch,344,an eagle an ostrich,0
+a finch,344,an eagle a seal,0
+a finch,344,a penguin a whale,1
+a seal,345,a finch a robin,0
+a seal,345,a finch an ostrich,0
+a seal,345,a robin a penguin,1
+a seal,345,an ostrich a whale,0
+a seal,345,a penguin a salmon,0
+a chicken,346,an eagle a penguin,0
+a chicken,346,a penguin a seal,0
+a salmon,347,a penguin a seal,0
+a robin,348,a finch an ostrich,0
+a robin,348,a seal a dolphin,0
+a robin,349,a finch a salmon,0
+a robin,349,a seal a dolphin,0
+a penguin,351,a finch an ostrich,0
+a penguin,351,a dolphin a whale,0
+a chicken,352,a finch a dolphin,0
+a dolphin,353,an eagle a salmon,0
+a whale,354,a finch a seal,0
+a whale,354,a robin an eagle,0
+a whale,354,an eagle an ostrich,0
+a whale,354,a salmon a dolphin,1
+a penguin,355,a finch an eagle,1
+a penguin,355,a finch a whale,0
+a penguin,355,a salmon a whale,1
+a whale,357,a robin a salmon,1
+a penguin,358,an eagle a seal,0
+a finch,359,a robin an ostrich,1
+a finch,359,an eagle a penguin,0
+an eagle,360,a finch a salmon,0
+an eagle,360,a robin an ostrich,0
+a whale,361,a robin an eagle,0
+a whale,361,a robin a seal,0
+a whale,361,a salmon a dolphin,1
+a penguin,362,a robin a salmon,0
+a penguin,362,a chicken an eagle,1
+a penguin,362,an ostrich a dolphin,0
+a penguin,363,a chicken a whale,0
+a penguin,363,an eagle a whale,0
+a finch,365,a robin a seal,0
+a finch,365,a salmon a dolphin,1
+a seal,366,a chicken a penguin,0
+a seal,366,a penguin a dolphin,0
+an ostrich,367,a chicken a dolphin,0
+an ostrich,367,a penguin a dolphin,0
+an ostrich,368,a robin a seal,1
+an ostrich,368,a penguin a whale,0
+a salmon,369,a robin a whale,0
+a salmon,369,a chicken an ostrich,0
+an eagle,370,an ostrich a dolphin,0
+an eagle,370,a salmon a dolphin,0
+a penguin,371,a salmon a seal,1
+a penguin,371,a seal a whale,0
+an eagle,372,a finch a whale,0
+an eagle,372,a robin a dolphin,0
+an eagle,372,a chicken a dolphin,0
+a chicken,373,a penguin a salmon,0
+a salmon,374,a finch an ostrich,0
+a salmon,374,an ostrich a penguin,0
+a seal,375,a finch a chicken,0
+a seal,375,a chicken a whale,0
+a seal,375,an ostrich a whale,1
+an eagle,376,a finch a seal,1
+an eagle,376,a robin a chicken,0
+an eagle,376,a robin a penguin,0
+an eagle,376,a robin a salmon,0
+an eagle,376,a chicken a dolphin,0
+an eagle,376,a salmon a dolphin,0
+an eagle,376,a salmon a whale,0
+a whale,378,an ostrich a dolphin,0
+a chicken,379,a finch an ostrich,1
+a chicken,379,an ostrich a salmon,0
+a finch,380,a robin a chicken,0
+a finch,380,an eagle a seal,0
+a finch,380,an eagle a whale,1
+a seal,381,a robin a penguin,1
+a seal,381,a robin a salmon,0
+a seal,381,an ostrich a whale,0
+a seal,381,a penguin a whale,0
+a chicken,382,an ostrich a dolphin,0
+a whale,383,a robin an eagle,1
+a whale,383,a robin a seal,0
+a whale,383,a robin a dolphin,1
+a whale,383,an eagle a penguin,0
+a salmon,384,a robin a whale,1
+a salmon,384,a chicken an ostrich,0
+a whale,385,an eagle an ostrich,0
+an ostrich,386,a robin a seal,1
+an ostrich,386,an eagle a dolphin,0
+an ostrich,386,a seal a whale,0
+a whale,387,a chicken a penguin,0
+a whale,387,an eagle a seal,1
+an ostrich,388,a robin a whale,1
+an ostrich,388,a chicken a salmon,0
+a salmon,389,a robin a chicken,1
+a dolphin,390,a finch a chicken,0
+a dolphin,390,a robin a whale,0
+a dolphin,390,a chicken an ostrich,0
+a dolphin,390,a seal a whale,0
+an ostrich,391,a penguin a salmon,0
+an ostrich,391,a seal a whale,0
+a finch,392,a robin a dolphin,0
+a finch,392,a chicken an ostrich,0
+a finch,392,a chicken a dolphin,0
+a whale,393,a finch an ostrich,0
+a whale,393,a chicken a salmon,1
+a whale,393,an ostrich a salmon,0
+a whale,393,a penguin a salmon,1
+a whale,393,a salmon a seal,0
+a whale,394,a finch an ostrich,0
+a whale,394,a salmon a seal,0
+a finch,395,an ostrich a whale,0
+a robin,396,a salmon a seal,0
+a penguin,397,a chicken a seal,1
+a dolphin,398,a robin a salmon,1
+a dolphin,398,a chicken a seal,0
+a dolphin,398,a seal a whale,1
+a seal,399,a finch a penguin,0
+a seal,399,a penguin a salmon,0
+a finch,401,an eagle a whale,0
+a finch,401,an ostrich a whale,1
+a salmon,402,a dolphin a whale,0
+a salmon,405,a finch a robin,0
+a salmon,405,a finch an eagle,0
+a salmon,405,an eagle a whale,0
+a chicken,406,a finch a dolphin,0
+a chicken,406,a robin a penguin,0
+a chicken,406,an eagle a penguin,0
+a chicken,406,a penguin a salmon,1
+a whale,407,a robin a penguin,0
+a whale,407,a penguin a seal,1
+a chicken,408,a finch a salmon,1
+a chicken,408,a robin an ostrich,1
+a chicken,408,a robin a seal,1
+a chicken,408,an ostrich a dolphin,0
+a chicken,408,a seal a whale,0
+an ostrich,409,a finch a chicken,0
+a dolphin,411,an eagle a penguin,1
+an ostrich,412,an eagle a seal,0
+a finch,413,a robin a penguin,0
+a finch,413,a robin a seal,0
+a finch,413,an eagle an ostrich,0
+a finch,413,a salmon a seal,1
+an ostrich,415,a finch a whale,1
+an ostrich,415,a robin an eagle,1
+a whale,416,a robin an eagle,0
+a whale,416,a robin an ostrich,0
+a whale,416,a robin a seal,0
+a whale,416,a chicken a salmon,1
+a whale,417,a robin a penguin,1
+a whale,417,an eagle a dolphin,0
+a salmon,419,a chicken a whale,0
+an eagle,420,a finch a robin,0
+an eagle,420,a chicken an ostrich,0
+an eagle,420,a seal a whale,0
+a finch,421,a robin a whale,0
+a finch,421,a chicken a salmon,0
+a finch,421,an eagle an ostrich,0
+a finch,421,an ostrich a dolphin,0
+a finch,421,a penguin a whale,0
+an ostrich,422,a finch a salmon,0
+an ostrich,422,a robin a salmon,1
+an ostrich,422,a chicken a whale,0
+a salmon,423,a chicken an eagle,1
+a whale,424,a finch an eagle,0
+a whale,425,a robin an eagle,0
+a whale,425,an ostrich a salmon,0
+a whale,425,a penguin a salmon,1
+a penguin,426,a robin an ostrich,0
+a penguin,426,an ostrich a salmon,0
+an ostrich,427,a finch a chicken,0
+an ostrich,427,a chicken a penguin,1
+an ostrich,427,an eagle a whale,0
+an eagle,428,a finch a chicken,1
+a robin,429,a finch an eagle,0
+a robin,429,an eagle an ostrich,1
+a robin,429,a seal a dolphin,0
+a robin,429,a dolphin a whale,1
+an eagle,430,a chicken a penguin,0
+a whale,431,a robin a chicken,0
+a whale,431,an eagle a seal,1
+a whale,431,an eagle a dolphin,0
+a whale,432,a robin a penguin,0
+a whale,432,a robin a seal,0
+a chicken,433,a finch a salmon,0
+a chicken,433,a robin an eagle,1
+a chicken,433,a robin a salmon,1
+a chicken,433,a salmon a dolphin,0
+a chicken,433,a seal a dolphin,1
+a whale,434,a finch an eagle,1
+a whale,434,a robin a chicken,1
+a whale,434,an eagle a salmon,0
+a finch,435,a robin a salmon,0
+a finch,435,an ostrich a dolphin,1
+a seal,436,a finch a salmon,0
+a seal,436,a robin a dolphin,0
+a seal,436,an eagle a dolphin,0
+a seal,436,a penguin a salmon,1
+a seal,436,a penguin a whale,0
+an ostrich,437,a seal a dolphin,0
+an eagle,438,a robin a whale,1
+an eagle,438,a chicken a salmon,1
+a seal,439,a finch a robin,0
+a salmon,440,a finch a penguin,0
+a salmon,440,an ostrich a dolphin,0
+a salmon,440,a penguin a dolphin,1
+a robin,441,an eagle an ostrich,0
+a finch,442,a chicken an ostrich,0
+a finch,442,an ostrich a seal,1
+a finch,442,a salmon a seal,0
+an eagle,443,a penguin a dolphin,0
+a seal,444,a finch a dolphin,0
+a seal,444,a robin a dolphin,0
+a seal,444,an eagle a penguin,0
+a robin,445,a finch an ostrich,0
+a robin,445,a salmon a whale,1
+a finch,447,an ostrich a dolphin,1
+a finch,448,an eagle a penguin,0
+a finch,448,an eagle a dolphin,0
+a chicken,449,a finch an eagle,1
+an ostrich,450,a chicken a seal,1
+a chicken,451,a finch a whale,0
+a chicken,451,an eagle a seal,1
+a chicken,451,a penguin a salmon,0
+a finch,452,an ostrich a penguin,0
+a finch,453,an eagle an ostrich,1
+a finch,453,an eagle a whale,0
+a seal,454,a chicken an ostrich,0
+a seal,454,a chicken a dolphin,0
+a whale,455,an ostrich a dolphin,0
+a robin,456,an ostrich a whale,0
+a chicken,457,a robin a penguin,0
+a robin,458,a finch a whale,1
+a robin,458,a chicken a seal,0
+a chicken,459,a finch a seal,0
+a chicken,459,a robin a penguin,0
+a salmon,460,a chicken a whale,0
+a whale,462,a finch a dolphin,0
+a whale,462,a robin a chicken,0
+a whale,462,a robin an eagle,0
+a whale,464,a finch an eagle,1
+a whale,464,a robin a dolphin,0
+a whale,464,a seal a dolphin,0
+a whale,465,a robin an eagle,0
+a whale,465,a chicken a penguin,0
+a whale,466,a robin a chicken,1
+a whale,466,a robin a seal,1
+a robin,467,a penguin a salmon,0
+a chicken,468,an eagle a salmon,0
+a chicken,468,an eagle a whale,0
+a chicken,468,a penguin a seal,1
+a dolphin,469,a robin a salmon,0
+a dolphin,469,an ostrich a whale,0
+a salmon,470,an eagle a penguin,0
+a salmon,470,a penguin a seal,0
+a whale,472,a chicken a seal,0
+an ostrich,473,an eagle a dolphin,0
+a robin,474,a chicken a salmon,0
+a robin,474,a penguin a whale,0
+a robin,474,a seal a whale,0
+an eagle,476,a finch a salmon,0
+an eagle,476,a robin a seal,0
+an eagle,476,a robin a whale,0
+an eagle,476,an ostrich a whale,0
+a dolphin,477,a robin a chicken,0
+an ostrich,478,a chicken a whale,0
+a dolphin,479,a robin a chicken,0
+a dolphin,479,a chicken an eagle,1
+an eagle,480,an ostrich a dolphin,0
+an eagle,480,a salmon a seal,1
+a whale,481,a robin a chicken,1
+a whale,481,a robin a dolphin,0
+a whale,481,a chicken an eagle,0
+an ostrich,482,a finch a robin,0
+a seal,484,a finch an eagle,0
+a seal,484,a robin a salmon,0
+a seal,484,a chicken an ostrich,1
+a chicken,485,a robin a penguin,0
+a finch,486,a chicken an ostrich,0
+a chicken,487,a finch an ostrich,0
+a chicken,487,a robin a penguin,0
+an eagle,488,a robin an ostrich,1
+an eagle,488,a salmon a dolphin,0
+a robin,489,an eagle a penguin,0
+a robin,489,a seal a whale,1
+a finch,490,a robin an eagle,1
+a salmon,491,a finch a robin,0
+a salmon,491,a robin a seal,1
+a salmon,491,a chicken a dolphin,0
+a seal,492,a robin a penguin,0
+a seal,492,a chicken a whale,0
+a salmon,493,a robin a penguin,0
+a salmon,493,an ostrich a penguin,0
+an ostrich,494,a finch a dolphin,0
+an ostrich,494,a robin a seal,0
+a finch,495,a robin an eagle,0
+a finch,495,an ostrich a salmon,0
+a finch,495,a penguin a dolphin,0
+a finch,495,a seal a whale,1
+a finch,495,a dolphin a whale,1
+a salmon,497,a finch a whale,0
+a salmon,497,a seal a dolphin,0
+a dolphin,498,a finch an eagle,0
+a dolphin,498,a chicken a penguin,0
+a dolphin,498,a seal a whale,0
+a chicken,499,a robin a whale,0
+a dolphin,500,a robin a whale,0
+a dolphin,500,an ostrich a penguin,0
+a finch,502,a robin a whale,0
+a finch,502,an ostrich a dolphin,0
+a dolphin,504,a chicken a salmon,0
+a dolphin,504,a chicken a whale,1
+a dolphin,504,an eagle a salmon,1
+a penguin,505,a finch an ostrich,0
+a chicken,506,a robin a salmon,0
+a chicken,506,an eagle a seal,0
+a chicken,506,an ostrich a penguin,1
+a chicken,506,a seal a whale,0
+a finch,507,a chicken a seal,1
+a finch,507,a salmon a seal,0
+an eagle,508,a robin an ostrich,0
+an eagle,508,a robin a dolphin,0
+a chicken,510,an eagle an ostrich,0
+a chicken,510,a salmon a whale,1
+a dolphin,511,a robin a salmon,0
+a dolphin,511,an eagle a seal,1
+a salmon,512,a finch a chicken,0
+a salmon,512,a finch a whale,0
+a salmon,512,a chicken a penguin,0
+an eagle,513,a robin a whale,0
+an eagle,513,a chicken an ostrich,0
+an eagle,513,a chicken a penguin,1
+an ostrich,516,a robin a penguin,0
+an ostrich,517,a robin an eagle,0
+an ostrich,517,a robin a dolphin,0
+a chicken,518,a finch a whale,0
+a chicken,518,a robin a dolphin,0
+a dolphin,519,a chicken a penguin,0
+a dolphin,519,a chicken a salmon,1
+a dolphin,519,an ostrich a whale,0
+a dolphin,519,a salmon a whale,0
+a dolphin,519,a seal a whale,0
+an ostrich,521,an eagle a seal,1
+an ostrich,521,a penguin a dolphin,0
+an ostrich,523,a robin a penguin,0
+an ostrich,527,a robin a chicken,0
+an ostrich,527,a robin an eagle,1
+an ostrich,527,a robin a seal,0
+a whale,528,a robin an ostrich,1
+a whale,528,a chicken a seal,1
+a whale,529,a chicken a dolphin,1
+a salmon,530,a chicken a seal,0
+a salmon,530,an eagle a whale,0
+a whale,531,a finch a robin,1
+a whale,531,a chicken an eagle,1
+an ostrich,532,a salmon a seal,0
+a chicken,533,a finch a whale,1
+a salmon,534,a finch a whale,1
+a salmon,534,an ostrich a dolphin,0
+a robin,535,a finch an eagle,1
+a robin,535,a finch an ostrich,0
+a dolphin,536,a chicken an eagle,0
+a whale,537,a finch an ostrich,0
+a whale,537,a finch a salmon,0
+a whale,537,a penguin a seal,1
+a whale,538,a finch a robin,0
+a whale,538,a finch a salmon,0
+a whale,538,an ostrich a penguin,1
+a finch,539,a robin a whale,0
+a finch,539,an eagle a whale,0
+a finch,539,an ostrich a seal,1
+a finch,539,a seal a dolphin,0
+a penguin,540,a robin an eagle,0
+a penguin,540,a robin a dolphin,1
+a penguin,540,a chicken an eagle,0
+a penguin,540,an ostrich a seal,1
+a penguin,540,a salmon a dolphin,0
+a salmon,541,a finch a chicken,1
+a salmon,541,a chicken an eagle,0
+a salmon,541,a chicken an ostrich,0
+a salmon,541,an eagle a seal,1
+a salmon,541,an ostrich a whale,1
+a seal,542,a finch a chicken,0
+a seal,542,a robin a dolphin,0
+a seal,542,a chicken a salmon,0
+a seal,542,an ostrich a penguin,0
+a whale,543,a finch a salmon,1
+a whale,543,an eagle a dolphin,1
+a whale,543,an ostrich a penguin,0
+a dolphin,544,a salmon a seal,0
+a robin,545,a chicken a salmon,0
+a robin,545,an eagle a penguin,0
+a robin,545,an ostrich a salmon,1
+a whale,546,a chicken an eagle,1
+a robin,547,a finch a penguin,1
+a robin,547,a finch a seal,0
+a robin,547,a chicken an ostrich,1
+a robin,547,an eagle an ostrich,1
+a robin,547,a penguin a seal,0
+an ostrich,548,a robin a whale,0
+an ostrich,549,an eagle a penguin,0
+a penguin,550,an eagle an ostrich,1
+a chicken,551,a penguin a whale,0
+a seal,552,an eagle an ostrich,0
+a finch,553,an eagle a penguin,1
+a penguin,554,a chicken an eagle,1
+a penguin,554,a salmon a dolphin,0
+an eagle,555,a finch a robin,0
+an eagle,555,a finch a chicken,0
+an eagle,555,a robin a seal,0
+an eagle,555,a penguin a seal,1
+a finch,556,a robin an ostrich,0
+a finch,556,a robin a salmon,1
+a finch,556,a robin a whale,0
+a finch,556,an ostrich a whale,0
+a salmon,557,a finch a whale,1
+a salmon,557,a seal a whale,0
+a dolphin,558,a finch a seal,0
+an eagle,559,a chicken a whale,0
+an eagle,560,a finch a chicken,0
+an eagle,560,a finch a salmon,1
+an eagle,560,a chicken a penguin,1
+a penguin,561,a finch a seal,0
+a penguin,561,a salmon a dolphin,0
+a chicken,562,a finch a robin,0
+a chicken,562,a robin a seal,0
+a chicken,562,an eagle a salmon,1
+a penguin,563,a finch a chicken,0
+a penguin,563,a finch a seal,1
+a salmon,564,a robin a chicken,1
+a whale,565,a chicken a penguin,0
+a whale,566,a finch a seal,1
+a chicken,567,a finch an ostrich,1
+a chicken,567,a penguin a dolphin,1
+a salmon,568,a robin a chicken,0
+a chicken,569,an eagle an ostrich,0
+a chicken,569,a salmon a whale,0
+a robin,570,a finch a seal,0
+a robin,570,a chicken a penguin,0
+a robin,570,a salmon a seal,0
+an eagle,572,a finch an ostrich,1
+an eagle,572,an ostrich a dolphin,1
+an eagle,572,a penguin a seal,0
+a seal,573,a finch a whale,0
+a dolphin,574,a robin a penguin,1
+a salmon,575,a finch a seal,1
+a finch,576,a chicken an ostrich,1
+a finch,576,a chicken a dolphin,1
+a finch,576,an ostrich a salmon,1
+a chicken,577,an eagle a salmon,0
+a chicken,577,an ostrich a whale,0
+a chicken,577,a salmon a dolphin,0
+a dolphin,578,a finch a chicken,1
+a dolphin,578,an eagle a salmon,0
+a dolphin,578,an eagle a whale,1
+a dolphin,578,an ostrich a whale,0
+a dolphin,580,a finch an eagle,0
+a seal,581,a robin an ostrich,0
+a penguin,583,a finch an eagle,0
+an ostrich,584,a finch a seal,1
+a penguin,585,a finch a seal,0
+a penguin,585,an eagle a dolphin,1
+a whale,586,a finch an ostrich,0
+an ostrich,587,a finch a penguin,0
+a penguin,588,a chicken an ostrich,1
+an ostrich,589,a robin a penguin,1
+an ostrich,589,a chicken a dolphin,0
+an ostrich,589,an eagle a whale,0
+an ostrich,590,a chicken an eagle,0
+an ostrich,590,a chicken a salmon,0
+an eagle,591,a robin a penguin,0
+an eagle,591,a dolphin a whale,0
+a chicken,592,a finch an ostrich,0
+a chicken,592,an eagle a seal,0
+a chicken,592,a penguin a dolphin,1
+a chicken,592,a salmon a whale,0
+a chicken,593,a finch a whale,0
+a chicken,593,a salmon a whale,1
+an eagle,594,a robin a dolphin,0
+a dolphin,595,a robin a seal,1
+a robin,596,a finch an ostrich,1
+a robin,596,a finch a whale,0
+a robin,596,an eagle an ostrich,0
+a robin,596,an eagle a whale,0
+a robin,596,a salmon a seal,0
+a robin,596,a seal a whale,0
+a dolphin,597,a robin a chicken,0
+a dolphin,597,a chicken a seal,0
+a dolphin,597,a seal a whale,0
+a finch,598,an eagle an ostrich,0
+a finch,598,an eagle a seal,1
+a finch,598,a penguin a dolphin,0
+a finch,599,a penguin a salmon,0
+a penguin,602,a chicken a salmon,0
+a penguin,602,an ostrich a dolphin,0
+a chicken,603,an ostrich a whale,1
+a salmon,604,an eagle a dolphin,0
+a salmon,604,an ostrich a penguin,0
+a dolphin,605,a robin a chicken,0
+a dolphin,605,a robin a whale,0
+a dolphin,605,an eagle a whale,1
+a dolphin,605,a salmon a seal,1
+a whale,606,a chicken an eagle,1
+a penguin,608,a finch a robin,0
+a penguin,608,a robin a chicken,0
+a seal,611,a finch a chicken,0
+a seal,611,a chicken an eagle,1
+a seal,611,a penguin a dolphin,0
+a seal,611,a penguin a whale,1
+a whale,612,a robin a salmon,0
+a whale,612,a seal a dolphin,1
+an eagle,613,a finch a salmon,0
+a whale,614,a finch a chicken,0
+a whale,614,a robin a salmon,0
+a whale,614,a robin a seal,0
+a seal,615,a chicken a salmon,0
+a seal,615,an eagle a dolphin,0
+a whale,616,a robin an eagle,1
+a whale,616,an eagle a dolphin,0
+a robin,617,a chicken a whale,0
+a robin,617,a salmon a whale,0
+a robin,617,a dolphin a whale,0
+an ostrich,618,a finch a dolphin,0
+an ostrich,618,a chicken a seal,1
+an ostrich,618,a salmon a whale,0
+a dolphin,619,a robin a chicken,1
+an eagle,620,a robin a penguin,1
+a penguin,621,a finch a chicken,0
+a penguin,621,a chicken a whale,0
+a penguin,621,a salmon a seal,1
+a finch,622,a chicken a whale,0
+a dolphin,623,a finch a whale,1
+a dolphin,623,a robin a penguin,0
+a finch,624,a robin a dolphin,0
+a finch,624,an eagle an ostrich,0
+an ostrich,625,a robin a salmon,0
+an eagle,626,a finch a chicken,0
+an eagle,626,a finch a dolphin,1
+an eagle,626,a chicken a penguin,0
+an eagle,626,a chicken a salmon,0
+an eagle,626,a chicken a whale,0
+an eagle,626,an ostrich a salmon,0
+an eagle,626,a salmon a whale,0
+a chicken,627,a finch a robin,0
+a chicken,627,an eagle a penguin,0
+a chicken,627,a penguin a seal,0
+a penguin,628,an eagle a salmon,0
+a robin,629,an ostrich a whale,0
+an ostrich,631,a finch a salmon,0
+a robin,633,a chicken an eagle,1
+a seal,635,a finch a robin,0
+a seal,635,an ostrich a whale,0
+a robin,636,an ostrich a whale,0
+an ostrich,637,a penguin a seal,0
+an ostrich,637,a salmon a seal,1
+an ostrich,637,a seal a whale,0
+a salmon,638,a finch a robin,0
+a salmon,638,an eagle a whale,1
+a salmon,638,an ostrich a dolphin,0
+a seal,639,a finch an eagle,0
+a seal,639,a finch a penguin,0
+a seal,639,a chicken a dolphin,0
+a penguin,641,a finch a seal,1
+a penguin,641,a robin an eagle,0
+a penguin,641,a robin a salmon,0
+a penguin,641,a robin a seal,0
+a penguin,641,a salmon a dolphin,0
+a robin,643,a chicken a seal,0
+a robin,643,a salmon a seal,0
+an ostrich,645,a finch a chicken,0
+an ostrich,645,a chicken a penguin,0
+an ostrich,645,an eagle a salmon,0
+a whale,646,a robin an eagle,0
+a whale,646,a chicken a dolphin,1
+a whale,646,an eagle a salmon,0
+a whale,646,a salmon a seal,0
+a dolphin,647,a robin a penguin,1
+a dolphin,647,a chicken an ostrich,0
+a penguin,648,a chicken a dolphin,0
+a penguin,648,an eagle a seal,0
+a finch,649,a robin an ostrich,1
+a finch,649,a chicken an eagle,1
+a finch,649,a penguin a dolphin,1
+a finch,650,a robin a chicken,1
+a finch,650,a robin an eagle,0
+a robin,651,an ostrich a salmon,1
+a robin,651,an ostrich a seal,1
+a dolphin,652,a finch a seal,1
+a dolphin,652,a finch a whale,0
+a dolphin,652,an eagle an ostrich,0
+a chicken,653,a robin a salmon,0
+a chicken,653,an eagle an ostrich,1
+a chicken,653,a seal a dolphin,0
+a finch,654,an eagle a dolphin,0
+an ostrich,655,a robin an eagle,1
+an ostrich,655,a chicken a salmon,0
+an ostrich,655,a chicken a whale,0
+a salmon,656,a robin a seal,0
+a finch,658,a robin a penguin,0
+a finch,658,an eagle an ostrich,0
+a finch,658,an eagle a seal,0
+a finch,658,an ostrich a seal,0
+a finch,658,a seal a whale,1
+an ostrich,659,a salmon a whale,0
+an ostrich,660,a penguin a salmon,0
+a penguin,661,an ostrich a whale,0
+a chicken,662,an eagle a seal,0
+an ostrich,663,a finch a robin,0
+an ostrich,663,a chicken a seal,0
+a salmon,664,a finch a seal,0
+a salmon,664,an eagle a seal,0
+a salmon,664,a seal a dolphin,0
+an ostrich,665,a finch a dolphin,0
+an ostrich,665,a chicken a dolphin,1
+a whale,669,a robin a salmon,0
+a whale,669,an ostrich a dolphin,1
+a whale,669,a seal a dolphin,1
+a chicken,670,a finch an eagle,0
+a chicken,670,a robin a seal,0
+a chicken,670,an eagle a whale,0
+a chicken,670,an ostrich a whale,1
+a chicken,670,a seal a whale,0
+a finch,671,a robin a whale,0
+an ostrich,672,a chicken a seal,0
+an ostrich,672,a chicken a dolphin,0
+an ostrich,672,an eagle a whale,0
+an ostrich,672,a penguin a seal,1
+a dolphin,673,a penguin a whale,0
+a finch,674,a robin an ostrich,0
+a finch,674,a robin a whale,0
+a finch,674,a chicken an eagle,1
+a finch,674,an eagle a penguin,0
+a finch,674,an eagle a whale,0
+a chicken,675,an ostrich a salmon,0
+an eagle,676,a robin a chicken,1
+a finch,677,a robin an eagle,0
+a finch,677,a chicken an ostrich,1
+a finch,677,an eagle a seal,1
+a finch,678,a chicken a seal,1
+a finch,678,an eagle an ostrich,1
+a finch,678,an eagle a penguin,0
+a seal,679,a finch a whale,1
+a seal,679,an ostrich a salmon,1
+a seal,679,a penguin a whale,0
+a robin,680,a finch a salmon,0
+a robin,680,an eagle an ostrich,0
+a seal,681,a robin an eagle,1
+a salmon,682,an eagle a whale,0
+a whale,683,a finch an eagle,1
+a whale,683,a chicken a penguin,0
+a whale,683,a chicken a dolphin,0
+a whale,683,an ostrich a dolphin,0
+a whale,684,a robin a chicken,0
+a whale,684,a seal a dolphin,1
+a penguin,686,a finch an ostrich,0
+a penguin,686,an eagle a whale,0
+a penguin,687,an eagle a seal,0
+a robin,689,a finch an eagle,0
+a finch,690,a robin a chicken,0
+a penguin,691,a chicken an eagle,1
+an ostrich,692,a finch a seal,1
+an ostrich,692,a robin an eagle,0
+an ostrich,692,a robin a dolphin,1
+a dolphin,693,a finch a seal,0
+a dolphin,693,a chicken a salmon,0
+a dolphin,693,a chicken a seal,0
+a finch,694,a chicken a penguin,0
+a finch,694,a chicken a salmon,0
+a finch,694,a penguin a salmon,0
+a finch,694,a penguin a whale,0
+a salmon,695,a finch an eagle,0
+a salmon,695,a finch a seal,1
+a salmon,695,a chicken a whale,1
+an ostrich,697,a chicken a dolphin,0
+an ostrich,697,an eagle a whale,0
+a robin,698,an eagle an ostrich,1
+a robin,698,an eagle a salmon,0
+a chicken,699,a finch a robin,0
+a chicken,699,a finch a dolphin,0
+a chicken,699,an ostrich a penguin,1
+a salmon,700,an eagle an ostrich,1
+a salmon,700,an ostrich a dolphin,0
+a salmon,700,a penguin a seal,1
+a penguin,701,an eagle an ostrich,1
+a robin,702,a finch a dolphin,0
+a robin,702,a chicken an eagle,1
+a robin,706,an eagle a salmon,0
+a robin,706,an ostrich a penguin,0
+a robin,706,a salmon a whale,1
+a chicken,707,a robin an ostrich,1
+a chicken,707,an eagle a salmon,0
+a robin,708,a penguin a whale,1
+an eagle,709,a robin a penguin,0
+an eagle,709,a seal a dolphin,0
+a dolphin,710,a finch an eagle,1
+a dolphin,710,an eagle a whale,0
+a penguin,711,a finch a chicken,0
+a penguin,711,a robin a chicken,0
+a penguin,711,a salmon a whale,0
+a finch,712,a chicken a dolphin,1
+a seal,713,a penguin a salmon,0
+a salmon,714,a finch an eagle,0
+a salmon,714,an ostrich a seal,0
+a salmon,714,a seal a dolphin,0
+a chicken,716,a finch a salmon,0
+a chicken,716,an ostrich a penguin,0
+a chicken,716,a salmon a seal,1
+a chicken,716,a salmon a whale,0
+a finch,717,an eagle a seal,1
+a finch,717,a penguin a whale,1
+an ostrich,718,a dolphin a whale,1
+an eagle,719,a robin an ostrich,0
+an eagle,719,a robin a whale,0
+an eagle,719,an ostrich a dolphin,1
+a whale,720,a finch a salmon,1
+a whale,720,a finch a seal,0
+a whale,720,an ostrich a penguin,0
+a whale,720,an ostrich a salmon,1
+a whale,720,an ostrich a seal,1
+a seal,721,a robin an eagle,1
+a seal,721,a salmon a whale,0
+a finch,722,an eagle a seal,0
+a whale,723,a chicken a seal,0
+a whale,723,a chicken a dolphin,0
+a finch,724,an ostrich a seal,1
+a finch,724,a penguin a seal,0
+an eagle,725,an ostrich a seal,0
+a seal,726,a finch a penguin,0
+an ostrich,727,a finch a salmon,1
+an ostrich,727,a robin a seal,0
+an ostrich,727,a chicken a dolphin,0
+a robin,728,a salmon a whale,0
+a penguin,729,a robin a salmon,0
+a penguin,729,a chicken a seal,0
+a robin,731,a penguin a seal,0
+a chicken,732,a finch a robin,0
+a chicken,732,a robin a whale,0
+a dolphin,733,a chicken a salmon,1
+a dolphin,733,an eagle an ostrich,1
+a salmon,734,a finch an ostrich,0
+a salmon,735,a finch a chicken,0
+a salmon,735,an ostrich a dolphin,1
+a penguin,736,an ostrich a whale,0
+a seal,737,an eagle a salmon,0
+an eagle,738,a salmon a dolphin,0
+an eagle,740,a robin a penguin,1
+an eagle,740,a salmon a whale,0
+a seal,741,a chicken a penguin,0
+a seal,741,an ostrich a penguin,1
+a dolphin,742,a finch a penguin,0
+a dolphin,742,an eagle a whale,0
+a dolphin,742,an ostrich a seal,0
+a chicken,743,a finch an ostrich,1
+a chicken,744,a finch an ostrich,0
+a chicken,744,an ostrich a whale,1
+a robin,745,a penguin a seal,1
+a robin,745,a salmon a dolphin,1
+a whale,746,a finch a salmon,1
+a whale,746,a chicken a seal,1
+a whale,746,a salmon a seal,0
+a chicken,747,a finch a salmon,0
+a chicken,747,a robin an eagle,0
+a chicken,747,an eagle a penguin,0
+a chicken,747,a penguin a dolphin,0
+a chicken,747,a salmon a seal,0
+a chicken,747,a seal a dolphin,1
+a chicken,747,a seal a whale,0
+a chicken,748,a finch a dolphin,0
+an ostrich,750,a robin an eagle,0
+an ostrich,750,a chicken a penguin,0
+an ostrich,750,an eagle a whale,1
+a robin,751,an eagle a penguin,0
+a whale,752,a robin a chicken,1
+a penguin,753,an ostrich a seal,1
+an ostrich,754,an eagle a seal,1
+a penguin,755,a robin a seal,0
+a penguin,755,an eagle a dolphin,0
+a penguin,755,an ostrich a dolphin,0
+a finch,756,a robin a penguin,0
+a finch,756,a dolphin a whale,0
+a dolphin,758,a robin an eagle,1
+a whale,759,an ostrich a penguin,0
+a robin,760,a finch a whale,0
+a robin,760,an ostrich a seal,0
+a robin,760,an ostrich a dolphin,0
+a robin,760,a dolphin a whale,0
+a whale,762,a robin an ostrich,1
+a dolphin,763,a robin a chicken,1
+a dolphin,763,a chicken a seal,0
+a dolphin,763,an eagle a whale,0
+a whale,764,a chicken a salmon,0
+a whale,764,an eagle an ostrich,0
+a whale,764,an eagle a dolphin,0
+a dolphin,766,a robin a salmon,0
+a dolphin,766,an eagle a seal,0
+a penguin,767,a chicken a salmon,1
+a penguin,767,an ostrich a seal,0
+a whale,770,an ostrich a dolphin,0
+an eagle,771,a finch a salmon,0
+an eagle,771,a chicken a salmon,0
+an eagle,771,a chicken a seal,0
+an eagle,771,a penguin a seal,1
+a finch,772,a robin a seal,0
+a finch,772,an ostrich a seal,1
+a seal,773,a robin a salmon,1
+a seal,773,a robin a whale,0
+a seal,773,a chicken a dolphin,0
+a finch,774,a robin a dolphin,0
+a finch,774,an eagle an ostrich,0
+a chicken,775,an eagle an ostrich,0
+a penguin,778,a seal a dolphin,1
+a salmon,780,a finch a whale,0
+a salmon,780,an eagle an ostrich,1
+a salmon,780,an eagle a penguin,1
+a seal,781,a finch a chicken,0
+a robin,782,a finch a chicken,0
+a robin,782,a chicken a salmon,1
+a robin,782,an eagle a whale,0
+a whale,783,a chicken an eagle,1
+a whale,783,an ostrich a dolphin,0
+a seal,784,a finch a penguin,0
+a chicken,785,a salmon a dolphin,0
+a salmon,786,a robin a chicken,1
+a salmon,786,an ostrich a dolphin,0
+a chicken,787,an eagle a penguin,0
+a chicken,787,an eagle a salmon,1
+a salmon,788,a robin a seal,1
+a robin,789,a finch a salmon,1
+a robin,789,a chicken a salmon,1
+a robin,789,a chicken a dolphin,1
+a whale,790,a finch a robin,1
+a whale,790,a seal a dolphin,0
+a penguin,791,a finch a chicken,0
+a penguin,791,a robin an eagle,1
+a penguin,791,an eagle a salmon,0
+a chicken,792,a salmon a seal,0
+a chicken,792,a dolphin a whale,0
+a chicken,793,a finch a penguin,1
+a dolphin,794,a finch a salmon,0
+a dolphin,794,an ostrich a penguin,0
+a dolphin,794,an ostrich a whale,1
+a salmon,795,an eagle a penguin,0
+an ostrich,796,an eagle a whale,0
+a whale,797,a chicken a penguin,1
+a whale,797,an eagle a salmon,0
+a salmon,798,a robin an ostrich,0
+a salmon,798,a robin a penguin,0
+a salmon,798,a penguin a seal,0
+a dolphin,799,a finch a penguin,0
+a dolphin,799,a finch a salmon,0
+a dolphin,799,a robin a salmon,0
+a dolphin,799,a chicken an ostrich,1
+a finch,800,a salmon a dolphin,0
+a whale,803,a finch a penguin,0
+a whale,803,a finch a salmon,1
+a whale,803,a penguin a salmon,0
+a dolphin,804,a finch a whale,0
+a dolphin,804,an ostrich a seal,0
+a dolphin,804,an ostrich a whale,1
+a finch,805,a chicken a salmon,1
+a finch,805,an eagle a penguin,0
+a finch,805,a salmon a whale,1
+an eagle,806,a finch a chicken,0
+an eagle,806,a finch a penguin,1
+an eagle,806,a robin a chicken,0
+an eagle,806,a robin a penguin,1
+a dolphin,807,a robin a seal,0
+an eagle,808,a finch a seal,0
+an eagle,808,a chicken an ostrich,0
+an eagle,808,an ostrich a seal,0
+an eagle,808,an ostrich a dolphin,0
+a whale,809,a finch a robin,1
+a whale,809,a chicken a salmon,0
+a chicken,810,a robin an eagle,0
+a chicken,810,a robin an ostrich,1
+a dolphin,811,a finch an eagle,0
+an eagle,813,a finch a salmon,0
+an eagle,813,a finch a whale,0
+an eagle,813,a chicken a penguin,0
+an eagle,813,an ostrich a salmon,0
+a penguin,814,a robin a salmon,1
+a penguin,814,a chicken a salmon,0
+a penguin,814,an ostrich a seal,0
+a robin,815,a chicken a salmon,0
+a seal,817,a robin a whale,1
+a seal,817,a penguin a dolphin,0
+a finch,818,a robin a penguin,0
+a finch,818,a chicken an eagle,0
+a finch,818,an ostrich a whale,0
+a whale,820,a finch an ostrich,1
+a whale,820,a salmon a seal,1
+a dolphin,821,a finch an ostrich,0
+a dolphin,821,an eagle a salmon,0
+an ostrich,822,a robin a salmon,1
+an ostrich,822,an eagle a salmon,0
+an ostrich,822,an eagle a seal,0
+a penguin,823,an eagle a dolphin,0
+an eagle,824,a finch an ostrich,0
+an eagle,824,a finch a whale,0
+an eagle,824,a chicken a seal,1
+an eagle,824,a salmon a seal,0
+a whale,825,a finch an eagle,0
+a whale,825,a robin a dolphin,0
+a robin,826,an ostrich a salmon,0
+a robin,826,a seal a whale,1
+a seal,827,a finch a salmon,1
+a seal,827,a penguin a dolphin,0
+a penguin,828,a finch an eagle,0
+a penguin,828,a chicken a salmon,0
+a penguin,828,a chicken a dolphin,0
+a penguin,828,an ostrich a whale,1
+an ostrich,829,a finch a dolphin,0
+an ostrich,829,a chicken a dolphin,1
+a dolphin,830,a finch a salmon,0
+a dolphin,830,a chicken a seal,0
+a finch,831,a robin a salmon,1
+an ostrich,832,a chicken a salmon,0
+an ostrich,834,a finch a seal,1
+an ostrich,834,a chicken a dolphin,1
+a penguin,835,a finch a salmon,1
+a penguin,835,an eagle a whale,0
+a salmon,837,a robin a chicken,0
+a salmon,837,a robin a dolphin,0
+a salmon,837,a penguin a seal,1
+an eagle,838,a finch a seal,0
+an eagle,838,a robin a dolphin,0
+an eagle,838,a chicken a dolphin,0
+a seal,839,a finch a robin,0
+a seal,839,a robin a whale,1
+a salmon,840,a finch a chicken,1
+a salmon,840,a robin an ostrich,0
+a salmon,840,a chicken an eagle,0
+a dolphin,841,a robin a penguin,1
+a dolphin,841,a penguin a seal,0
+a chicken,843,a robin a whale,0
+a chicken,843,an ostrich a penguin,0
+a chicken,844,a robin an eagle,1
+a chicken,844,an ostrich a salmon,0
+an ostrich,846,an eagle a seal,0
+an eagle,847,a robin a seal,0
+a seal,848,a robin an ostrich,0
+a seal,848,a robin a penguin,1
+a penguin,849,a finch a chicken,0
+a penguin,849,a finch an ostrich,0
+a penguin,849,a finch a seal,1
+a penguin,849,a robin an ostrich,0
+a robin,850,a finch a salmon,0
+a robin,850,a dolphin a whale,0
+an eagle,852,a robin a seal,0
+a penguin,853,a robin a salmon,0
+a penguin,853,a robin a dolphin,0
+a penguin,853,a salmon a seal,1
+a penguin,854,an ostrich a seal,0
+a penguin,854,a salmon a dolphin,1
+a finch,855,an eagle a whale,0
+a seal,856,an eagle a whale,0
+a penguin,857,a finch a robin,0
+a penguin,857,a robin a chicken,0
+a penguin,857,a robin an ostrich,1
+a chicken,858,a robin an eagle,1
+a chicken,858,a robin a salmon,0
+a chicken,858,an eagle a dolphin,1
+a chicken,858,an eagle a whale,0
+a chicken,858,an ostrich a penguin,1
+a dolphin,859,an eagle a penguin,1
+a dolphin,859,a penguin a salmon,0
+a robin,860,a finch a whale,1
+a robin,860,a chicken a whale,1
+a robin,860,an ostrich a salmon,1
+a whale,862,a finch an ostrich,1
+a whale,862,a robin an eagle,1
+a whale,862,a chicken a seal,0
+a chicken,863,a robin an eagle,1
+a chicken,863,a robin a salmon,1
+a chicken,863,an eagle a salmon,0
+a chicken,863,an ostrich a whale,0
+an ostrich,864,a seal a whale,1
+a penguin,865,a chicken a dolphin,0
+a penguin,865,a chicken a whale,1
+a penguin,865,an eagle a salmon,0
+a whale,866,an ostrich a seal,0
+a whale,866,a penguin a seal,1
+a penguin,867,a chicken a salmon,0
+a chicken,869,a robin an eagle,0
+a chicken,869,a robin a penguin,0
+a chicken,869,an ostrich a salmon,0
+an eagle,870,an ostrich a seal,0
+a finch,871,a chicken an ostrich,0
+a finch,871,an eagle a salmon,1
+a finch,871,an ostrich a salmon,0
+a finch,873,a robin a seal,0
+a finch,874,a robin a penguin,0
+a finch,874,a robin a seal,0
+a finch,874,a penguin a whale,0
+a whale,875,a robin a seal,0
+a whale,875,an eagle a salmon,0
+a whale,875,an eagle a seal,1
+a whale,875,an eagle a dolphin,1
+an ostrich,877,a chicken a penguin,1
+an eagle,878,a finch a seal,1
+an eagle,878,a finch a whale,0
+an eagle,878,a seal a whale,0
+a chicken,879,an eagle a whale,0
+a robin,882,an eagle a dolphin,0
+a whale,884,a robin a salmon,0
+an ostrich,885,a finch a chicken,0
+an ostrich,885,a robin a chicken,1
+an ostrich,885,a robin a salmon,0
+an ostrich,885,an eagle a salmon,0
+an ostrich,885,a seal a dolphin,0
+an ostrich,885,a dolphin a whale,0
+a salmon,886,a finch a robin,0
+a salmon,886,an ostrich a whale,0
+a whale,887,a chicken a dolphin,1
+a whale,887,an ostrich a dolphin,0
+a robin,888,a finch an ostrich,0
+a robin,888,a penguin a seal,1
+a robin,888,a penguin a whale,1
+a robin,890,a finch an eagle,1
+a robin,890,a finch a dolphin,0
+a robin,890,an eagle a seal,0
+a robin,890,an eagle a whale,0
+an eagle,891,an ostrich a salmon,1
+an eagle,891,an ostrich a whale,0
+a finch,892,a chicken a salmon,0
+a finch,892,an eagle a salmon,0
+a finch,892,a seal a dolphin,0
+a dolphin,894,a finch a robin,0
+a finch,895,a chicken a salmon,0
+a finch,895,a chicken a whale,0
+a finch,895,a salmon a whale,0
+a dolphin,896,a finch a seal,1
+a seal,897,a finch an ostrich,0
+a seal,897,an eagle an ostrich,0
+a penguin,898,a robin a whale,1
+a penguin,898,a chicken a salmon,1
+a salmon,899,a chicken a whale,0
+a salmon,899,a penguin a seal,0
+a salmon,899,a penguin a whale,1
