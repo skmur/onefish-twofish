@@ -33,6 +33,8 @@ class Model:
             self._initialize_llama(model_path)
         elif model_name.lower() == "gemma-instruct":
             self._initialize_gemma(model_path)
+        elif model_name.lower() in ["tulu", "tulu-dpo"]:
+            self._initialize_tulu(model_path)
         else:
             raise ValueError(f"initialize_model() received unknown model type: {model_name}")
 
@@ -73,11 +75,6 @@ class Model:
                                                           torch_dtype=torch.bfloat16,
                                                           cache_dir=self.cache_dir)
         
-        # self.pipeline = transformers.pipeline("text-generation",
-        #                                       model=model_path, 
-        #                                       torch_dtype=torch.bfloat16, 
-        #                                       device_map="auto", 
-        #                                       batch_size=self.batch_size)
     
     def _initialize_llama(self, model_path):
         self.tokenizer = transformers.LlamaTokenizer.from_pretrained(model_path, 
@@ -88,13 +85,15 @@ class Model:
                                                           torch_dtype=torch.bfloat16,
                                                           cache_dir=self.cache_dir)
 
-        # self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_path,
-        #                                                        cache_dir=self.cache_dir)
-        # self.pipeline = transformers.pipeline("text-generation", 
-        #                      model=model_path, 
-        #                      torch_dtype=torch.bfloat16, 
-        #                      device_map="auto", 
-        #                      batch_size=self.batch_size)
+
+    def _initialize_tulu(self, model_path):
+        self.tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, 
+                                                                     cache_dir=self.cache_dir,
+                                                                     padding_side='left')
+        self.model = transformers.AutoModelForCausalLM.from_pretrained(model_path, 
+                                                          device_map="auto",
+                                                          torch_dtype=torch.bfloat16,
+                                                          cache_dir=self.cache_dir)
     
     def shard_model(self):
         if self.model is not None:
@@ -125,6 +124,8 @@ class Model:
             return self._format_llamaChat_prompt(context, prompt)
         elif model_name.lower() == "gemma-instruct":
             return self._format_gemma_prompt(context, prompt)
+        elif model_name.lower() in ["tulu", "tulu-dpo"]:
+            return self._format_tulu_prompt(context, prompt)
         else:
             raise ValueError(f"format_prompt() received unknown model type: {model_name}")
         
@@ -215,6 +216,12 @@ class Model:
                                                 add_generation_prompt=True,
                                                 )
     
+    def _format_tulu_prompt(self, context, prompt):
+        if context == "":
+            return f"<|user|>\n{prompt}\n<|assistant|>\n"
+        else:
+            return f"<|user|>\n{context} {prompt}\n<|assistant|>\n"
+    
     def generate(self, model_name, messages, temp):
         if model_name.lower() == "openchat":
             return self._generate_openchat(messages, temp)
@@ -231,6 +238,8 @@ class Model:
             return self._generate_llama(messages, temp)
         elif model_name.lower() == "gemma-instruct":
             return self._generate_gemma(messages, temp)
+        elif model_name.lower() in ["tulu", "tulu-dpo"]:
+            return self._generate_tulu(messages, temp)
         else:
             raise ValueError(f"generate() received unknown model type: {model_name}")
     
@@ -409,6 +418,34 @@ class Model:
     def _generate_starling(self, messages, temp):
         # same as openchat
         return self._generate_openchat(messages, temp)
+    
+    def _generate_tulu(self, messages, temp):
+        self.tokenizer.pad_token = self.tokenizer.eos_token
+
+        all_outputs = []
+        for i in tqdm(range(0, len(messages), self.batch_size)):
+            batch = messages[i:i+self.batch_size]
+            inputs = self.tokenizer(batch, 
+                                    return_tensors="pt",
+                                    padding=True,
+                                    truncation=True).to(self.device)
+            
+            input_lengths = inputs.input_ids.shape[1]    
+
+            outputs = self.model.module.generate(**inputs,
+                                            do_sample=True,
+                                            max_new_tokens=self.max_new_tokens, 
+                                            temperature=float(temp) if temp != "default" else None,
+                                            pad_token_id=self.tokenizer.eos_token_id,
+                                            )
+            
+            # Slice off the input tokens
+            generated_tokens = outputs[:, input_lengths:]
+
+            decoded_outputs = self.tokenizer.batch_decode(generated_tokens,skip_special_tokens=True)
+            
+            all_outputs.extend(decoded_outputs)
+        return all_outputs
     
 
 
