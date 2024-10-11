@@ -5,11 +5,53 @@ from sklearn.linear_model import LinearRegression
 from scipy import stats
 import numpy as np
 from tqdm.auto import tqdm
+from scipy.spatial.distance import jensenshannon
+
 
 def load_data(filename):
     with open(filename, 'rb') as f:
         data = pickle.load(f)
     return data
+
+def calculate_multivariate_jsd(dist1_mean, dist1_cov, dist2_mean, dist2_cov, num_samples=10000):
+    """
+    Calculate the multivariate Jensen-Shannon divergence between two multivariate normal distributions.
+    """
+    # Generate samples from both distributions
+    samples1 = np.random.multivariate_normal(dist1_mean, dist1_cov, num_samples)
+    samples2 = np.random.multivariate_normal(dist2_mean, dist2_cov, num_samples)
+    
+    # Combine samples
+    samples = np.vstack((samples1, samples2))
+    
+    # Calculate the empirical probabilities
+    prob1 = np.exp(-0.5 * np.sum(np.linalg.solve(dist1_cov, (samples - dist1_mean).T).T * (samples - dist1_mean), axis=1))
+    prob2 = np.exp(-0.5 * np.sum(np.linalg.solve(dist2_cov, (samples - dist2_mean).T).T * (samples - dist2_mean), axis=1))
+    
+    # Normalize probabilities
+    prob1 /= np.sum(prob1)
+    prob2 /= np.sum(prob2)
+    
+    # Calculate JSD
+    jsd = jensenshannon(prob1, prob2)
+    
+    return jsd
+
+ # Calculate JSD between model and human distributions
+def calculate_jsd_with_human(group):
+    word = group['word'].iloc[0]
+    human_word_stats = human_stats[human_stats['word'] == word]
+    
+    if (len(human_word_stats) == 0) or (group['cov1'].iloc[0] is None) or (human_word_stats['cov1'].iloc[0] is None) or np.isclose(np.linalg.det(human_word_stats['cov1'].iloc[0]), 0) or np.isclose(np.linalg.det(group['cov1'].iloc[0]), 0):
+        return pd.Series({'jsd_with_human': None})
+    
+    model_mean = np.array([group['mean_L1'].iloc[0], group['mean_A1'].iloc[0], group['mean_B1'].iloc[0]])
+    model_cov = group['cov1'].iloc[0]
+    human_mean = np.array([human_word_stats['mean_L1'].iloc[0], human_word_stats['mean_A1'].iloc[0], human_word_stats['mean_B1'].iloc[0]])
+    human_cov = human_word_stats['cov1'].iloc[0]
+    
+    jsd = calculate_multivariate_jsd(model_mean, model_cov, human_mean, human_cov)
+    return pd.Series({'jsd_with_human': jsd})
 
 def fit_multivariate_gaussian(group, block_num):
     # separate lab1 into L, A, B columns
@@ -24,13 +66,13 @@ def fit_multivariate_gaussian(group, block_num):
     mean = np.mean(LAB_values, axis=0)
     cov = np.cov(LAB_values, rowvar=False)
 
-
     # if cov is not 1d or 2d, variance is none (for words where there's only 1 valid response)
     if len(cov.shape) not in [1, 2]:
         return pd.Series({
             f'mean_L{block_num}': mean[0],
             f'mean_A{block_num}': mean[1],
             f'mean_B{block_num}': mean[2],
+            f'cov{block_num}': None,
             f'var_L{block_num}': None,
             f'var_A{block_num}': None,
             f'var_B{block_num}': None
@@ -44,6 +86,7 @@ def fit_multivariate_gaussian(group, block_num):
             f'mean_L{block_num}': mean[0],
             f'mean_A{block_num}': mean[1],
             f'mean_B{block_num}': mean[2],
+            f'cov{block_num}': cov,
             f'var_L{block_num}': variances[0],
             f'var_A{block_num}': variances[1],
             f'var_B{block_num}': variances[2]
@@ -129,13 +172,19 @@ def calculate_diagonal_distances(group, x_label, y_label):
     
 
 task = "color"
-models = ["human", "openchat", "starling", "mistral-instruct", "zephyr-mistral", "gemma-instruct", "zephyr-gemma", "llama2", "llama2-chat"]
+models = ["human", "openchat", "starling", "mistral-instruct", "zephyr-mistral", 
+          "gemma-instruct", "zephyr-gemma", "llama2", "llama2-chat", "tulu", "tulu-dpo"]
 data_dir = f"./output-data/{task}-task/"
 output_dir = f"./output-data/{task}-task/all/"
 
 all_model_level_stats = pd.DataFrame()
 all_word_level_stats = pd.DataFrame()
 valid_response_counts = pd.DataFrame()
+
+# load and compute stats on human data
+human_data = load_data(f"{data_dir}{task}-human.pickle")
+human_stats = human_data.groupby(['word']).apply(fit_multivariate_gaussian, block_num="1").reset_index()
+print(human_stats)
 
 for model in models: 
     filename = f"{data_dir}{task}-{model}.pickle"
@@ -180,15 +229,23 @@ for model in models:
     summary = pd.merge(mean_variance_block1, mean_variance_block2, on=['model_name', 'prompt', 'temperature', 'word'])
     summary = pd.merge(summary, internal_deltaE, on=['model_name', 'temperature', 'word', 'prompt'])
     summary = pd.merge(summary, population_deltaE, on=['model_name', 'temperature', 'word', 'prompt'])
-    
     # - - - - - - - - - - - - - - - - - - - - - -#
 
     # calculate distances between internal and population deltaE values for each word and the diagonal line (y=x) to see how much the model responses deviate from a homogenous population
     tqdm.pandas(desc="Calculating distances from diagonal line")
     distances = summary.groupby(['model_name', 'temperature', 'word', 'prompt']).progress_apply(calculate_diagonal_distances, x_label='mean_populationDeltaE', y_label='mean_internalDeltaE', include_groups=False).reset_index()
+
+    # - - - - - - - - - - - - - - - - - - - - - -#
     # merge distances with summary
     summary = pd.merge(summary, distances, on=['model_name', 'temperature', 'word', 'prompt'])
-    print(summary)
+    # - - - - - - - - - - - - - - - - - - - - - -#
+
+    tqdm.pandas(desc="Calculating JSD with human distribution")
+    jsd_stats = summary.groupby(['model_name', 'temperature', 'word', 'prompt']).progress_apply(calculate_jsd_with_human).reset_index()
+    print(jsd_stats)
+    # - - - - - - - - - - - - - - - - - - - - - -#
+    # Merge JSD stats with the summary
+    summary = pd.merge(summary, jsd_stats, on=['model_name', 'temperature', 'word', 'prompt'])
 
     all_word_level_stats = pd.concat([all_word_level_stats, summary])
     # - - - - - - - - - - - - - - - - - - - - - -#
