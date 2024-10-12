@@ -1,25 +1,128 @@
 import pandas as pd
 import pickle
 import math
-import numpy as np
-from tqdm.auto import tqdm
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 import seaborn as sns
 import argparse
 import os
+import colorsys
 from tqdm import tqdm
-
-from scipy.stats import multivariate_normal
-from scipy.spatial.distance import jensenshannon
-
 
 def load_data(filename):
     with open(filename, 'rb') as f:
         data = pickle.load(f)
     return data
 
+# Step sorting function as defined by:
+# https://www.alanzucconi.com/2015/09/30/colour-sorting/
+def stepSort(r,g,b, repetitions=1):
+    # print types of r,g,b
+    lum = math.sqrt( .241 * r + .691 * g + .068 * b)
+
+    h, s, v = colorsys.rgb_to_hsv(r,g,b)
+
+    h2 = int(h * repetitions)
+    lum2 = int(lum * repetitions)
+    v2 = int(v * repetitions)
+
+    if h2 % 2 == 1:
+        v2 = repetitions - v2
+        lum = repetitions - lum
+
+    return (h2, lum, v2)
+
+def plot_color_bars(df, models, words, figure_dir):
+    temperature = "default"
+
+    for prompt in tqdm(["none", "random", "nonsense", "identity"]):
+        fig, axs = plt.subplots(len(words), len(models), figsize=(5*len(models),3*len(words)), frameon=False)
+        
+        for m_index, model_name in enumerate(models):
+            # Load pickled data
+            filename = f"color-{model_name}.pickle"
+            output_path = "./output-data/color-task/" + filename
+
+            df = pd.read_pickle(output_path)
+
+            if model_name == "human":
+                df_model = df[df['model_name'] == 'human']
+            else:
+                # select data for this model and prompt
+                df_model = df[(df['model_name'] == model_name) & (df['prompt'] == prompt) & (df['temperature'] == temperature)]
+                # remove -1 values
+                df_model = df_model[df_model['rgb1'] != -1]
+
+            # get all unique words
+            model_words = df_model['word'].unique()
+
+            for w_index, word in enumerate(words):
+                axs[w_index][m_index].get_xaxis().set_ticks([])
+                axs[w_index][m_index].get_yaxis().set_ticks([])
+                # axs[w_index][m_index].set_ylabel(word, fontsize='medium', rotation='horizontal', ha='right')
+
+                # get all responses for this word
+                responses = df_model[df_model['word'] == word]
+                rgb = responses['rgb1'].tolist()
+
+                for i in range(len(rgb)):
+                    # if rgb is not in range 0-1, scale it
+                    if any (x > 1 for x in rgb[i]):
+                        rgb[i] = [float(x)/255 for x in rgb[i]]
+                    else:
+                        rgb[i] = [float(x) for x in rgb[i]]
+
+                # step sort the non-greyscale colors
+                rgb.sort(key=lambda rgb: stepSort(rgb[0], rgb[1], rgb[2], 8))
+
+                #--------------------------------------------
+                # make plots
+                x = 0
+                y = 0
+                w = 0.0075
+                h = 1
+                c = 0
+
+                # uncomment for dynamic width based on number of responses
+                num_responses = len(rgb)
+                w = 1.0 / max(num_responses, 1)
+
+                if word not in model_words:
+                    while x < 1:
+                        pos = (x, y)
+                        axs[w_index][m_index].add_patch(patches.Rectangle(pos, w, h, hatch='xx',fill=False, linewidth=0))
+                        x += w
+                    continue
+
+                # iterate over percentage values for this word
+                # X percent of the bar should be of color associated with that button response
+                for color in rgb:
+                    pos = (x, y)
+                    axs[w_index][m_index].add_patch(patches.Rectangle(pos, w, h, color=color, linewidth=0))
+                    # increment to next color in rgb array
+                    c += 1
+
+                    # start next block at previous x + width of rectangle this rectangle
+                    x += w
+
+                # # fill in the rest of the bar with transparent rectangles
+                # while x < 1:
+                #     pos = (x, y)
+                #     axs[w_index][m_index].add_patch(patches.Rectangle(pos, w, h, hatch='xx',fill=False, linewidth=0))
+                #     x += w
+
+                
+        for ax, col in zip(axs[0], models):
+            ax.set_title(col, fontsize=12)
+        for ax, row in zip(axs[:,0], words):
+            ax.set_ylabel(row, rotation=0, size='large', ha='right')
+
+        plt.savefig(f'{figure_dir}/colorbars-{prompt}.png' ,bbox_inches='tight',dpi=300)
+        plt.clf()
+
 def plot_by_prompt(df, metric, plot_type, manipulation):
     df = df[df['model_name'] != 'llama2'] # remove llama2 for both plots
+    df = df[df['model_name'] != 'tulu'] # remove tulu for both plots
 
     # get human value for metric from df
     human_metric = df[df['model_name'] == 'human'][metric].values[0]
@@ -29,8 +132,8 @@ def plot_by_prompt(df, metric, plot_type, manipulation):
     # combine the prompt and temperature columns
     df['combined'] = df['prompt'] + "-" + df['temperature'].astype(str)
 
-    model_order = ["openchat", "starling", "gemma-instruct", "zephyr-gemma", "mistral-instruct", "zephyr-mistral", "llama2-chat"]
-    colors = ['#006400', '#66CDAA', '#003366', '#66B2FF', '#8B0000', '#FF7F7F', '#ffa554']    
+    model_order = ["openchat", "starling", "gemma-instruct", "zephyr-gemma", "mistral-instruct", "zephyr-mistral", "llama2-chat", "tulu-dpo"]
+    colors = ['#006400', '#66CDAA', '#003366', '#66B2FF', '#8B0000', '#FF7F7F', '#ffa554', '#f7cb05']    
 
     if manipulation == "prompt":
         order = ['none', 'identity', 'random', 'nonsense']
@@ -42,25 +145,25 @@ def plot_by_prompt(df, metric, plot_type, manipulation):
 
     sns.set_theme(style="whitegrid")
     if plot_type == "point":
-        plt.figure(figsize=(6, 6))
+        plt.figure(figsize=(2*len(order), 6))
         sns.pointplot(x=manipulation, y=metric, hue="model_name", hue_order=model_order, palette=palette, data=df,  alpha=0.8, order=order)
            
     elif plot_type == "bar":
-        plt.figure(figsize=(10, 6))
-        sns.barplot(x=manipulation, y=metric, hue="model_name", hue_order=model_order, palette=palette, data=df, errorbar=None, order=order)
+        plt.figure(figsize=(2*len(order), 6))
+        sns.barplot(x=manipulation, y=metric, hue="model_name", hue_order=model_order, palette=palette, data=df, errorbar="ci", order=order)
 
-    plt.axhline(y=human_metric, color='k', linestyle='--')
-    # annotate human baseline
-    plt.text(1, human_metric, "human", fontsize=8, ha='right')
+    if metric != "jsd_with_human":
+        plt.axhline(y=human_metric, color='k', linestyle='--')
+        # annotate human baseline
+        plt.text(1, human_metric, "human", fontsize=8, ha='right')
 
     # rotate x-axis labels
     plt.xticks(rotation=45)
-    if metric == "rss":
-        plt.ylim(0, 60000)
-    elif metric == "mse":
-        plt.ylim(0, 300)
-    
+    if metric == "jsd_with_human":
+        plt.ylim(0, 1)
+
     plt.title(f"{metric}")
+    plt.legend(title='model name', bbox_to_anchor=(1.05, 1), loc='center left')
     plt.tight_layout()
     plt.savefig(f"./{figure_dir}/{metric}-{manipulation}-{plot_type}.png")
     plt.clf()
@@ -102,7 +205,7 @@ def plot_deltaE_subplots(models, word_stats, x_var, y_var, manipulation, figure_
         fig, axs = plt.subplots(1, 1, figsize=(5, 5))
     else: 
         # Create a 2x4 grid of subplots
-        fig, axs = plt.subplots(2, 4, figsize=(20, 10))
+        fig, axs = plt.subplots(2, 5, figsize=(20, 10))
         axs = axs.flatten()  # Flatten the 2D array of axes to make it easier to iterate over
     
     lim = 120
@@ -281,7 +384,6 @@ if __name__ == "__main__":
     # merge imageability and concreteness ratings with word_stats
     word_stats = word_stats.merge(word_ratings[['word', 'imageability', 'concreteness']], on='word', how='left')
 
-    print(word_stats.columns)
     # - - - - - - - - - - - - - - - - - - -
     # [DONE] plot number of valid and invalid responses per model, param combo
     if args.plot == "response counts":
@@ -305,8 +407,8 @@ if __name__ == "__main__":
     # plot population vs. internal deltaE for each word
     elif args.plot == "deltaE":
         # make 2x4 plot with all prompt-temperature combinations overlaid
-        models = ["openchat","mistral-instruct", "gemma-instruct", "llama2", 
-                  "starling", "zephyr-mistral", "zephyr-gemma", "llama2-chat"]
+        models = ["openchat","mistral-instruct", "gemma-instruct", "llama2", "tulu", 
+                  "starling", "zephyr-mistral", "zephyr-gemma", "llama2-chat", "tulu-dpo"]
         plot_deltaE_subplots(models, word_stats, "mean_populationDeltaE", "mean_internalDeltaE", "prompt", figure_dir, "models-internal-vs-population-deltaE")
         plot_deltaE_subplots(models, word_stats, "mean_populationDeltaE", "mean_internalDeltaE", "temperature", figure_dir, "models-internal-vs-population-deltaE")
 
@@ -318,7 +420,8 @@ if __name__ == "__main__":
         models = ["openchat", "starling", 
                   "mistral-instruct", "zephyr-mistral", 
                   "gemma-instruct", "zephyr-gemma", 
-                  "llama2", "llama2-chat"]
+                  "llama2", "llama2-chat",
+                  "tulu", "tulu-dpo"]
         plot_deltaE_facetgrid(models, word_stats, "mean_populationDeltaE", "mean_internalDeltaE", "Population ΔE", "Internal ΔE", "models-internal-vs-population-deltaE")
 
     # [DONE] plot representational alignment: internal ΔE as a function of word imageability and concreteness
@@ -332,13 +435,21 @@ if __name__ == "__main__":
         models = ["openchat", "starling", 
                   "mistral-instruct", "zephyr-mistral", 
                   "gemma-instruct", "zephyr-gemma", 
-                  "llama2", "llama2-chat"]
+                  "llama2", "llama2-chat",
+                  "tulu", "tulu-dpo"]
         plot_word_ratings_facetgrid(models, word_stats, "imageability", "mean_internalDeltaE", "Imageability Rating", "Internal ΔE", "models-imageability-vs-internal-deltaE")
         plot_word_ratings_facetgrid(models, word_stats, "concreteness", "mean_internalDeltaE", "Concreteness Rating", "Internal ΔE", "models-concreteness-vs-internal-deltaE")
 
     # plot Jensen-Shannon divergences between human and model responses for each word
     elif args.plot == "JS divergence":
-        pass
+        plot_by_prompt(word_stats, "jsd_with_human", "bar", "prompt")
+        plot_by_prompt(word_stats, "jsd_with_human", "bar", "temperature")
+
+    # plot color bars for each model
+    elif args.plot == "color bars":
+        models = ["human", "openchat", "starling", "gemma-instruct", "zephyr-gemma", "mistral-instruct", "zephyr-mistral", "llama2", "llama2-chat", "tulu", "tulu-dpo"]
+        words = ["skin", "optimism", "freedom", "butterfly", "tomato", "jealousy", "fame"]
+        plot_color_bars(word_stats, models, words, figure_dir)
 
 
 
