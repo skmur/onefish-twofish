@@ -116,7 +116,7 @@ def verify_human_data(path_to_human_data):
     print(f"Mean Reliability: {formattedData['Reliability'].mean()}")
 
 
-model_names = ["openchat", "starling", "mistral-instruct", "zephyr-mistral", "gemma-instruct", "zephyr-gemma", "llama2", "llama2-chat"]
+model_names = ["openchat", "starling", "mistral-instruct", "zephyr-mistral", "gemma-instruct", "zephyr-gemma", "llama2", "llama2-chat", "tulu", "tulu-dpo"]
 param_combos = [["none", "default"], ["none", "1.5"], ["none", "2.0"], ["random", "default"], ["nonsense", "default"], ["identity", "default"]]
 categories = ["animals", "politicians"]
 data_dir = "../../output-data/concept-task/"
@@ -146,7 +146,7 @@ for model in model_names:
         formattedData = format_data_for_CRP(data)
         responses = formattedData.drop_duplicates(subset=['ID', 'Question', 'Concept'])
         responses = responses[['Concept', 'ID', 'Question', 'ChoiceNumber']]
-        # responses.to_csv(f"{model}-prompt={prompt}-temp={temperature}-forCRP.csv", index=False)
+        responses.to_csv(f"{model}-prompt={prompt}-temp={temperature}-forCRP.csv", index=False)
 
         formattedData, participant_reliability = calculate_participant_reliability(formattedData)
         intersubject_reliability = calculate_intersubject_reliability(formattedData)
