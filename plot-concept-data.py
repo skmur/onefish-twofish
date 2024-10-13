@@ -12,14 +12,19 @@ from tqdm import tqdm
 
 def plot_response_counts(df, metric):
     # combine the prompt and temperature columns
-    df['combined'] = df['prompt'] + "-" + df['temperature'].astype(str)
+    df['combined'] = df['prompt'] + ", " + df['temperature'].astype(str)
     # remove human data from response_counts
     df = df[df['model_name'] != 'human']
 
-    prompt_order = ['none-default', 'none-1.5', 'none-2.0', 'identity-default', 'random-default', 'nonsense-default']
+    prompt_order = ['none, default', 'none, 1.5', 'none, 2.0', 'identity, default', 'random, default', 'nonsense, default']
 
     plt.figure(figsize=(10, 6))
+
+    custom_params = {"axes.spines.right": False, "axes.spines.top": False}
+    sns.set_theme(style="ticks", rc=custom_params)
+
     sns.barplot(x='model_name', y=f'{metric}_responses', hue='combined', hue_order=prompt_order, data=df, dodge=True)
+    
     plt.title(f"Number of {metric} responses per model, param combo")
     plt.xticks(rotation=45)
     # plot number of responses as horizontal line
@@ -27,7 +32,7 @@ def plot_response_counts(df, metric):
     # put legend outside of plot
     plt.legend(title='Prompt-Temperature', bbox_to_anchor=(1.05, 1), loc='center left')
     plt.tight_layout()
-    plt.savefig(f"./{figure_dir}/{metric}-response-counts.png")
+    plt.savefig(f"./{figure_dir}/{metric}-response-counts.pdf")
     plt.clf()
 
 
@@ -50,7 +55,7 @@ def plot_facetgrid_regplot(df, x_var, y_var, x_label, y_label, title):
 
 
     plt.tight_layout()
-    plt.savefig(f"{figure_dir}/{title}.png")
+    plt.savefig(f"{figure_dir}/{title}.pdf")
     plt.clf()
 
 
@@ -99,7 +104,7 @@ def plot_subplots(models, df, x_var, y_var, figure_dir, title, prompt, temperatu
         ax.set_title(model, fontsize=10)
 
     plt.tight_layout()
-    plt.savefig(f"{figure_dir}/{title}-{prompt}-{temperature}.png", dpi=300, bbox_inches='tight')
+    plt.savefig(f"{figure_dir}/{title}-{prompt}-{temperature}.pdf", dpi=300, bbox_inches='tight')
     plt.close()
 
 # Main execution
@@ -190,7 +195,21 @@ if __name__ == "__main__":
                         figure_dir, "P(1 concept)", prompt, temperature)
         
     elif args.plot == "response counts":
+        # group by model_name, prompt, temperature, and count number of responses
+        group = all_data.groupby(['model_name', 'prompt', 'temperature'])
+        all_data['total_responses'] = group['answer1'].transform('count')
+        
+        # create a mask for invalid responses where either answer1 or answer2 is -1
+        mask = (all_data['answer1'] != -1) & (all_data['answer2'] != -1)
+        all_data['valid_responses'] = mask
+        # group by model_name, prompt, temperature, and count number of valid responses
+        group = all_data.groupby(['model_name', 'prompt', 'temperature'])
+        all_data['valid_responses'] = group['valid_responses'].transform('sum')
+        all_data['invalid_responses'] = all_data['total_responses'] - all_data['valid_responses']
+        
         print(all_data.columns)
+
+        plot_response_counts(all_data, "valid")
         
 
 

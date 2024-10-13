@@ -117,67 +117,100 @@ def plot_color_bars(df, models, words, figure_dir):
         for ax, row in zip(axs[:,0], words):
             ax.set_ylabel(row, rotation=0, size='large', ha='right')
 
-        plt.savefig(f'{figure_dir}/colorbars-{prompt}.png' ,bbox_inches='tight',dpi=300)
+        plt.savefig(f'{figure_dir}/colorbars-{prompt}.pdf' ,bbox_inches='tight',dpi=300)
         plt.clf()
 
-def plot_by_prompt(df, metric, plot_type, manipulation):
-    df = df[df['model_name'] != 'llama2'] # remove llama2 for both plots
-    df = df[df['model_name'] != 'tulu'] # remove tulu for both plots
+def plot_by_prompt(df, metric, plot_type):
+    df = df[~df['model_name'].isin(['llama2', 'tulu'])]  # remove llama2 and tulu for both plots
 
     # get human value for metric from df
     human_metric = df[df['model_name'] == 'human'][metric].values[0]
     # remove human data from df for plotting
     df = df[df['model_name'] != 'human']
 
-    # combine the prompt and temperature columns
-    df['combined'] = df['prompt'] + "-" + df['temperature'].astype(str)
-
     model_order = ["openchat", "starling", "gemma-instruct", "zephyr-gemma", "mistral-instruct", "zephyr-mistral", "llama2-chat", "tulu-dpo"]
-    colors = ['#006400', '#66CDAA', '#003366', '#66B2FF', '#8B0000', '#FF7F7F', '#ffa554', '#f7cb05']    
-
-    if manipulation == "prompt":
-        order = ['none', 'identity', 'random', 'nonsense']
-    elif manipulation == "temperature":
-        order = ['default', '1.5', '2.0']
-
+    colors = ["#A500B5", "#E41A1A", "#4DAF4A", "#FF7F00", "#377EB8", "#F781BF", "#A65628", "#999999", "#984EA3", "#FF7F00"]
+   
     # map model names to colors
     palette = dict(zip(model_order, colors))
 
-    sns.set_theme(style="whitegrid")
+    custom_params = {"axes.spines.right": False, "axes.spines.top": False}
+    sns.set_theme(style="ticks", rc=custom_params)
+
+    # Create a figure with two subplots side by side
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
+
+    # Plot for prompt manipulation
+    df_prompt = df[df['temperature'] == 'default']
+    order_prompt = ['none', 'identity', 'random', 'nonsense']
+    
     if plot_type == "point":
-        plt.figure(figsize=(2*len(order), 6))
-        sns.pointplot(x=manipulation, y=metric, hue="model_name", hue_order=model_order, palette=palette, data=df,  alpha=0.8, order=order)
-           
+        sns.pointplot(x="prompt", y=metric, hue="model_name", hue_order=model_order, palette=palette, data=df_prompt, alpha=0.8, order=order_prompt, ax=ax1)
     elif plot_type == "bar":
-        plt.figure(figsize=(2*len(order), 6))
-        sns.barplot(x=manipulation, y=metric, hue="model_name", hue_order=model_order, palette=palette, data=df, errorbar="ci", order=order)
+        sns.barplot(x="prompt", y=metric, hue="model_name", hue_order=model_order, palette=palette, data=df_prompt, errorbar="ci", order=order_prompt, ax=ax1)
 
+    ax1.set_title(f"{metric} by Prompt")
+    ax1.set_xlabel("Prompt")
+    ax1.set_ylabel(metric)
+    ax1.set_xlim(-0.5, len(order_prompt) - 0.5)
+    ax1.set_xticks(range(len(order_prompt)))
+    ax1.tick_params(axis='x', rotation=45)
+
+    # Plot for temperature manipulation
+    df_temp = df[df['prompt'] == 'none']
+    order_temp = ['default', '1.5', '2.0']
+    
+    if plot_type == "point":
+        sns.pointplot(x="temperature", y=metric, hue="model_name", hue_order=model_order, palette=palette, data=df_temp, alpha=0.8, order=order_temp, ax=ax2)
+    elif plot_type == "bar":
+        sns.barplot(x="temperature", y=metric, hue="model_name", hue_order=model_order, palette=palette, data=df_temp, errorbar="ci", order=order_temp, ax=ax2)
+
+    ax2.set_title(f"{metric} by Temperature")
+    ax2.set_xlabel("Temperature")
+    ax2.set_ylabel(metric)
+    ax2.set_xlim(-0.5, len(order_temp) - 0.5)
+    ax2.set_xticks(range(len(order_temp)))
+    ax2.tick_params(axis='x', rotation=45)
+
+    # Add human baseline if applicable
     if metric != "jsd_with_human":
-        plt.axhline(y=human_metric, color='k', linestyle='--')
-        # annotate human baseline
-        plt.text(1, human_metric, "human", fontsize=8, ha='right')
+        ax1.axhline(y=human_metric, color='k', linestyle='--')
+        ax1.text(1, human_metric, "human", fontsize=8, ha='right')
+        ax2.axhline(y=human_metric, color='k', linestyle='--')
+        ax2.text(1, human_metric, "human", fontsize=8, ha='right')
 
-    # rotate x-axis labels
-    plt.xticks(rotation=45)
     if metric == "jsd_with_human":
-        plt.ylim(0, 1)
+        ax1.set_ylim(0, 1)
+        ax2.set_ylim(0, 1)
 
-    plt.title(f"{metric}")
-    plt.legend(title='model name', bbox_to_anchor=(1.05, 1), loc='center left')
+    # Add a single legend for the entire figure
+    handles, labels = ax1.get_legend_handles_labels()
+    fig.legend(handles, labels, title='Model Name', bbox_to_anchor=(1.05, 0.5), loc='center left')
+
+    # Remove individual subplot legends
+    ax1.get_legend().remove()
+    ax2.get_legend().remove()
+
     plt.tight_layout()
-    plt.savefig(f"./{figure_dir}/{metric}-{manipulation}-{plot_type}.png")
-    plt.clf()
+    plt.savefig(f"{figure_dir}/{metric}-{plot_type}.pdf", bbox_inches='tight')
+    plt.close()
+
 
 def plot_response_counts(df, metric):
     # combine the prompt and temperature columns
-    df['combined'] = df['prompt'] + "-" + df['temperature'].astype(str)
+    df['combined'] = df['prompt'] + ", " + df['temperature'].astype(str)
     # remove human data from response_counts
     df = df[df['model_name'] != 'human']
 
-    prompt_order = ['none-default', 'none-1.5', 'none-2.0', 'identity-default', 'random-default', 'nonsense-default']
+    prompt_order = ['none, default', 'none, 1.5', 'none, 2.0', 'identity, default', 'random, default', 'nonsense, default']
 
     plt.figure(figsize=(10, 6))
+
+    custom_params = {"axes.spines.right": False, "axes.spines.top": False}
+    sns.set_theme(style="ticks", rc=custom_params)
+
     sns.barplot(x='model_name', y=f'{metric}_responses', hue='combined', hue_order=prompt_order, data=df, dodge=True)
+    
     plt.title(f"Number of {metric} responses per model, param combo")
     plt.xticks(rotation=45)
     # plot number of responses as horizontal line
@@ -185,7 +218,7 @@ def plot_response_counts(df, metric):
     # put legend outside of plot
     plt.legend(title='Prompt-Temperature', bbox_to_anchor=(1.05, 1), loc='center left')
     plt.tight_layout()
-    plt.savefig(f"./{figure_dir}/{metric}-response-counts.png")
+    plt.savefig(f"./{figure_dir}/{metric}-response-counts.pdf")
     plt.clf()
 
 def plot_deltaE_subplots(models, word_stats, x_var, y_var, manipulation, figure_dir, title):
@@ -257,7 +290,7 @@ def plot_deltaE_subplots(models, word_stats, x_var, y_var, manipulation, figure_
         fig.legend(handles, labels, loc='center right', title=manipulation, bbox_to_anchor=(1.05, 0.5))
 
     plt.tight_layout()
-    plt.savefig(f"{figure_dir}/{title}-{manipulation}.png", dpi=300, bbox_inches='tight')
+    plt.savefig(f"{figure_dir}/{title}-{manipulation}.pdf", dpi=300, bbox_inches='tight')
     plt.close()
 
 def plot_deltaE_facetgrid(models, word_stats, x_var, y_var, x_label, y_label, title):
@@ -299,7 +332,7 @@ def plot_deltaE_facetgrid(models, word_stats, x_var, y_var, x_label, y_label, ti
     g.set(xscale='linear')
 
     plt.tight_layout()
-    plt.savefig(f"{figure_dir}/{title}.png")
+    plt.savefig(f"{figure_dir}/{title}.pdf")
     plt.clf()
 
 # DOESN'T GIVE A SQUARE PLOT
@@ -313,7 +346,7 @@ def plot_word_ratings_subplots(models, word_stats, x_var, y_var, manipulation, f
     # set aspect ratio to be equal
     ax.set_aspect('equal')
     plt.tight_layout()
-    plt.savefig(f"{figure_dir}/{title}-{manipulation}.png", dpi=300, bbox_inches='tight')
+    plt.savefig(f"{figure_dir}/{title}-{manipulation}.pdf", dpi=300, bbox_inches='tight')
     plt.clf()
 
 def plot_word_ratings_facetgrid(models, word_stats, x_var, y_var, x_label, y_label, title):
@@ -352,7 +385,7 @@ def plot_word_ratings_facetgrid(models, word_stats, x_var, y_var, x_label, y_lab
     g.set(xscale='linear')
     
     plt.tight_layout()
-    plt.savefig(f"{figure_dir}/{title}.png")
+    plt.savefig(f"{figure_dir}/{title}.pdf")
     plt.clf()
 
 
@@ -393,16 +426,9 @@ if __name__ == "__main__":
     # [DONE] how much the model responses deviate from a homogenous population 
     # (i.e. where internal variability = population variability)
     elif args.plot == "population homogeneity":
-        plot_by_prompt(word_stats, "dist_from_diagonal", "point", "prompt")
-        plot_by_prompt(word_stats, "dist_from_diagonal", "bar", "prompt")
-        plot_by_prompt(word_stats, "dist_from_diagonal", "point", "temperature")
-        plot_by_prompt(word_stats, "dist_from_diagonal", "bar", "temperature")
+        plot_by_prompt(word_stats, "dist_from_diagonal", "point")
+        plot_by_prompt(word_stats, "dist_from_diagonal", "bar")
 
-        # sum of distances from diagonal line
-        plot_by_prompt(dists, "sum", "bar", "prompt")
-        plot_by_prompt(dists, "sum", "point", "prompt")
-        plot_by_prompt(dists, "sum", "bar", "temperature")
-        plot_by_prompt(dists, "sum", "point", "temperature")
 
     # plot population vs. internal deltaE for each word
     elif args.plot == "deltaE":
