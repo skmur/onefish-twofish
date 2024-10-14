@@ -3,13 +3,14 @@ import scipy.special
 import scipy.misc
 import csv
 import math
+from tqdm import tqdm
 
 from collections import defaultdict
 
 # Responsible for running a single Concept / Restaurant
 def parallel(parameters):
     iterations = 500 # originally 500
-    burnIn = 0
+    burnIn = 100
     maxTrials = 36
 
     uniformPrior = parameters[0]
@@ -19,7 +20,7 @@ def parallel(parameters):
 
     result = ([], [])
 
-    print(concept[0], "Trials", maxTrials, "Participants", len(concept[1]), "Alpha", alpha, "Chain", chain, "Uniform Prior", uniformPrior)
+    # print(concept[0], "Trials", maxTrials, "Participants", len(concept[1]), "Alpha", alpha, "Chain", chain, "Uniform Prior", uniformPrior)
     sampler = Gibbs(concept[1], iterations, burnIn, uniformPrior, maxTrials, alpha, chain)
     sampler.run(concept[0], result)
 
@@ -264,7 +265,7 @@ class Gibbs:
         MAPPopulation = []
 
         # For each iteration, each restaurant, and each person...
-        for iteration in range(self.iterations):
+        for iteration in tqdm(range(self.iterations)):
             for r in self.restaurants:
                 for person in r.population:
                     scores = []

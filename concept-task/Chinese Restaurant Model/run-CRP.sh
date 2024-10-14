@@ -23,7 +23,7 @@ conda deactivate
 conda activate jennlms
 
 # Define prompt conditions in an array
-MODEL_NAMES=("openchat" "starling" "gemma-instruct" "zephyr-gemma" "mistral-instruct" "zephyr-mistral" "llama2" "llama2-chat")
+MODEL_NAMES=("openchat" "starling" "gemma-instruct" "zephyr-gemma" "mistral-instruct" "zephyr-mistral" "llama2" "llama2-chat", "tulu", "tulu-dpo")
 
 # Run the job based on the array index
 python Main.py\
