@@ -8,6 +8,7 @@ import argparse
 import os
 import colorsys
 from tqdm import tqdm
+from brokenaxes import brokenaxes
 
 def load_data(filename):
     with open(filename, 'rb') as f:
@@ -31,6 +32,122 @@ def stepSort(r,g,b, repetitions=1):
         lum = repetitions - lum
 
     return (h2, lum, v2)
+
+
+
+def add_model_meta_data(df):
+    family_map = {
+        "openchat": "openchat_starling",
+        "starling": "openchat_starling",
+        "gemma-instruct": "gemma",
+        "zephyr-gemma": "gemma",
+        "mistral-instruct": "mistral",
+        "zephyr-mistral": "mistral",
+        "llama2": "llama",
+        "llama2-chat": "llama",
+        "tulu": "llama",
+        "tulu-dpo": "llama",
+        "human": "human"
+    }
+    align_map = {
+        "openchat": False,
+        "starling": True,
+        "gemma-instruct": False,
+        "zephyr-gemma": True,
+        "mistral-instruct": False,
+        "zephyr-mistral": True,
+        "llama2": False,
+        "llama2-chat": True,
+        "tulu": False,
+        "tulu-dpo": True,
+        "human": None
+    }
+    df["model_family"] = df.model_name.map(family_map)
+    df["aligned"] = df.model_name.map(align_map)
+    return df
+
+
+def plot_dist_from_diag_model_pairs(df, figure_dir, human_means=None):
+    plt.rcParams['font.family'] = 'Arial' 
+
+    sns.set_theme(style="ticks", font="Arial", font_scale=1.2)
+
+    paired = sns.color_palette("Paired")
+    lg, dg = paired[2], paired[3] # light green, dark green
+    bar_colors = [lg, dg]
+    
+    prompts = ["none", "identity", "random", "nonsense"]
+    pretty_prompts = ["none", "persona", "random", "nonsense"]
+    
+    families = ["openchat_starling", "mistral", "gemma", "llama"]
+    titles = [
+        "Openchat vs\nStarling",
+        "Mistral-Instruct vs\nZephyr-Mistral",
+        "Gemma-Instruct vs\nZephyr-Gemma",
+        "Tulu vs\nLlama-Chat/Tulu-DPO"
+    ]
+    fig, axes = plt.subplots(
+        nrows=len(prompts), ncols=len(families), 
+        sharey=True, sharex=True,
+        figsize=(10,8)
+    )
+    
+    for i, prompt in enumerate(prompts):
+        for j, family in enumerate(families):
+            ax = axes[i][j]
+            ax = sns.barplot(
+                data=df[df.model_family==family],
+                x="aligned",
+                order=[False, True],
+                y="dist_from_diagonal",
+                err_kws={"linewidth": 1.5},
+                ax=ax
+            )
+            if i == 0:
+                ax.set_title(titles[j])
+            ax.set_xlabel("")
+    
+            if j == len(families)-1:
+                ax2 = ax.twinx()
+                ax2.set_ylabel(pretty_prompts[i], rotation=-90, labelpad=16)
+                ax2.set_yticks([])
+                
+            for bar_idx, bar in enumerate(ax.patches):
+                if bar.get_height() != 0:
+                    bar.set_color(bar_colors[bar_idx])
+
+            if j == 0:
+                ax.set_ylabel("Distance from line of unity")
+                
+            # if human_means is not None:
+            #     ax.axhline(
+            #             human_means,
+            #             linestyle="--",
+            #             color=dg,
+            #             label="Human baseline",
+            #             lw=2.5
+            #         )
+                
+            
+
+    
+    # # Custom legend.
+    # handles, labels = axes[-1][1].get_legend_handles_labels()
+    # handles[0].set_color("lightgrey")
+    # handles[1].set_color("black")
+    # axes[-1][1].legend(
+    #     handles, 
+    #     ["Non-aligned model", "Aligned model"] + labels[2:],
+    #     bbox_to_anchor=(1,-0.53), loc="upper center",
+    #     ncols=4,
+    #     frameon=False
+    # )
+    sns.despine()
+
+    plt.savefig(f"{figure_dir}dist_from_diagonal-modelpairs-nobaseline.pdf", bbox_inches="tight")
+
+
+
 
 def plot_color_bars(df, models, words, figure_dir):
     temperature = "default"
@@ -123,14 +240,15 @@ def plot_color_bars(df, models, words, figure_dir):
 def plot_by_prompt(df, metric, plot_type):
     df = df[~df['model_name'].isin(['llama2', 'tulu'])]  # remove llama2 and tulu for both plots
 
-    # get human value for metric from df
-    human_metric = df[df['model_name'] == 'human'][metric].values[0]
+    # get the average human value for metric from df
+    human_metric = df[df['model_name'] == 'human'][metric].mean()
+    print(human_metric)
     # remove human data from df for plotting
     df = df[df['model_name'] != 'human']
 
     model_order = ["openchat", "starling", "gemma-instruct", "zephyr-gemma", "mistral-instruct", "zephyr-mistral", "llama2-chat", "tulu-dpo"]
-    colors = ["#A500B5", "#E41A1A", "#4DAF4A", "#FF7F00", "#377EB8", "#F781BF", "#A65628", "#999999", "#984EA3", "#FF7F00"]
-   
+    colors = ['#006400', '#66CDAA', '#003366', '#66B2FF', '#8B0000', '#FF7F7F', '#ffa554', '#f7cb05']    
+    
     # map model names to colors
     palette = dict(zip(model_order, colors))
 
@@ -156,9 +274,9 @@ def plot_by_prompt(df, metric, plot_type):
     ax1.set_xticks(range(len(order_prompt)))
     ax1.tick_params(axis='x', rotation=45)
 
-    # Plot for temperature manipulation
-    df_temp = df[df['prompt'] == 'none']
-    order_temp = ['default', '1.5', '2.0']
+    # Select temperature = 1.5 and 2.0
+    df_temp = df[df['temperature'].isin(['1.5', '2.0'])]
+    order_temp = ['1.5', '2.0']
     
     if plot_type == "point":
         sns.pointplot(x="temperature", y=metric, hue="model_name", hue_order=model_order, palette=palette, data=df_temp, alpha=0.8, order=order_temp, ax=ax2)
@@ -196,7 +314,7 @@ def plot_by_prompt(df, metric, plot_type):
     plt.close()
 
 
-def plot_response_counts(df, metric):
+def plot_response_counts(models, df, metric):
     # combine the prompt and temperature columns
     df['combined'] = df['prompt'] + ", " + df['temperature'].astype(str)
     # remove human data from response_counts
@@ -209,7 +327,7 @@ def plot_response_counts(df, metric):
     custom_params = {"axes.spines.right": False, "axes.spines.top": False}
     sns.set_theme(style="ticks", rc=custom_params)
 
-    sns.barplot(x='model_name', y=f'{metric}_responses', hue='combined', hue_order=prompt_order, data=df, dodge=True)
+    sns.barplot(x='model_name', y=f'{metric}_responses', hue='combined', hue_order=prompt_order, data=df, dodge=True, order=models)
     
     plt.title(f"Number of {metric} responses per model, param combo")
     plt.xticks(rotation=45)
@@ -226,8 +344,8 @@ def plot_deltaE_subplots(models, word_stats, x_var, y_var, manipulation, figure_
 
     if manipulation == "prompt":
         word_stats = word_stats[word_stats['temperature'] == 'default']
-        order = ['none', 'nonsense', 'random', 'identity']
-        color_list = ["#87CEEB", "#1E90FF", "#4169E1", "#000080"]
+        order = ['none', 'identity', 'nonsense', 'random']
+        color_list = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1"]
         palette = dict(zip(order, color_list))
     elif manipulation == "temperature":
         order = ['default', '1.5', '2.0']
@@ -238,7 +356,7 @@ def plot_deltaE_subplots(models, word_stats, x_var, y_var, manipulation, figure_
         fig, axs = plt.subplots(1, 1, figsize=(5, 5))
     else: 
         # Create a 2x4 grid of subplots
-        fig, axs = plt.subplots(2, 5, figsize=(20, 10))
+        fig, axs = plt.subplots(2, 4, figsize=(16, 8))
         axs = axs.flatten()  # Flatten the 2D array of axes to make it easier to iterate over
     
     lim = 120
@@ -420,21 +538,34 @@ if __name__ == "__main__":
     # - - - - - - - - - - - - - - - - - - -
     # [DONE] plot number of valid and invalid responses per model, param combo
     if args.plot == "response counts":
-        plot_response_counts(response_counts, "invalid")
-        plot_response_counts(response_counts, "valid")
+        models = ["openchat", "starling", 
+                  "mistral-instruct", "zephyr-mistral", 
+                  "gemma-instruct", "zephyr-gemma", 
+                  "llama2", "llama2-chat",
+                  "tulu", "tulu-dpo"]
+        plot_response_counts(models, response_counts, "invalid")
+        plot_response_counts(models, response_counts, "valid")
 
     # [DONE] how much the model responses deviate from a homogenous population 
     # (i.e. where internal variability = population variability)
     elif args.plot == "population homogeneity":
-        plot_by_prompt(word_stats, "dist_from_diagonal", "point")
-        plot_by_prompt(word_stats, "dist_from_diagonal", "bar")
+        # plot_by_prompt(word_stats, "dist_from_diagonal", "point")
+        # plot_by_prompt(word_stats, "dist_from_diagonal", "bar")
 
+        # alternate plotting method: comparison between aligned and non-aligned models
+        word_stats = add_model_meta_data(word_stats)
+        word_stats.head()
+        human_mean = word_stats[word_stats.model_name == "human"].dist_from_diagonal.mean()
+
+        model_data = word_stats[word_stats.model_name != "human"]
+        plot_dist_from_diag_model_pairs(model_data, figure_dir, human_means=human_mean)
+        
 
     # plot population vs. internal deltaE for each word
     elif args.plot == "deltaE":
         # make 2x4 plot with all prompt-temperature combinations overlaid
-        models = ["openchat","mistral-instruct", "gemma-instruct", "llama2", "tulu", 
-                  "starling", "zephyr-mistral", "zephyr-gemma", "llama2-chat", "tulu-dpo"]
+        models = ["openchat","mistral-instruct", "gemma-instruct", "llama2-chat", 
+                  "starling", "zephyr-mistral", "zephyr-gemma", "tulu-dpo"]
         plot_deltaE_subplots(models, word_stats, "mean_populationDeltaE", "mean_internalDeltaE", "prompt", figure_dir, "models-internal-vs-population-deltaE")
         plot_deltaE_subplots(models, word_stats, "mean_populationDeltaE", "mean_internalDeltaE", "temperature", figure_dir, "models-internal-vs-population-deltaE")
 
@@ -468,8 +599,7 @@ if __name__ == "__main__":
 
     # plot Jensen-Shannon divergences between human and model responses for each word
     elif args.plot == "JS divergence":
-        plot_by_prompt(word_stats, "jsd_with_human", "bar", "prompt")
-        plot_by_prompt(word_stats, "jsd_with_human", "bar", "temperature")
+        plot_by_prompt(word_stats, "jsd_with_human", "bar",)
 
     # plot color bars for each model
     elif args.plot == "color bars":
