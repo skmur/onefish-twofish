@@ -153,7 +153,7 @@ def plot_color_bars(df, models, words, figure_dir):
     temperature = "default"
 
     for prompt in tqdm(["none", "random", "nonsense", "identity"]):
-        fig, axs = plt.subplots(len(words), len(models), figsize=(5*len(models),3*len(words)), frameon=False)
+        fig, axs = plt.subplots(len(models), len(words), figsize=(5*len(models),3*len(words)), frameon=False)
         
         for m_index, model_name in enumerate(models):
             # Load pickled data
@@ -174,8 +174,8 @@ def plot_color_bars(df, models, words, figure_dir):
             model_words = df_model['word'].unique()
 
             for w_index, word in enumerate(words):
-                axs[w_index][m_index].get_xaxis().set_ticks([])
-                axs[w_index][m_index].get_yaxis().set_ticks([])
+                axs[m_index][w_index].get_xaxis().set_ticks([])
+                axs[m_index][w_index].get_yaxis().set_ticks([])
                 # axs[w_index][m_index].set_ylabel(word, fontsize='medium', rotation='horizontal', ha='right')
 
                 # get all responses for this word
@@ -207,7 +207,7 @@ def plot_color_bars(df, models, words, figure_dir):
                 if word not in model_words:
                     while x < 1:
                         pos = (x, y)
-                        axs[w_index][m_index].add_patch(patches.Rectangle(pos, w, h, hatch='xx',fill=False, linewidth=0))
+                        axs[m_index][w_index].add_patch(patches.Rectangle(pos, w, h, hatch='xx',fill=False, linewidth=0))
                         x += w
                     continue
 
@@ -215,7 +215,7 @@ def plot_color_bars(df, models, words, figure_dir):
                 # X percent of the bar should be of color associated with that button response
                 for color in rgb:
                     pos = (x, y)
-                    axs[w_index][m_index].add_patch(patches.Rectangle(pos, w, h, color=color, linewidth=0))
+                    axs[m_index][w_index].add_patch(patches.Rectangle(pos, w, h, color=color, linewidth=0))
                     # increment to next color in rgb array
                     c += 1
 
@@ -229,9 +229,9 @@ def plot_color_bars(df, models, words, figure_dir):
                 #     x += w
 
                 
-        for ax, col in zip(axs[0], models):
+        for ax, col in zip(axs[0], words):
             ax.set_title(col, fontsize=12)
-        for ax, row in zip(axs[:,0], words):
+        for ax, row in zip(axs[:,0], models):
             ax.set_ylabel(row, rotation=0, size='large', ha='right')
 
         plt.savefig(f'{figure_dir}/colorbars-{prompt}.pdf' ,bbox_inches='tight',dpi=300)
@@ -604,7 +604,7 @@ if __name__ == "__main__":
     # plot color bars for each model
     elif args.plot == "color bars":
         models = ["human", "openchat", "starling", "gemma-instruct", "zephyr-gemma", "mistral-instruct", "zephyr-mistral", "llama2", "llama2-chat", "tulu", "tulu-dpo"]
-        words = ["skin", "optimism", "freedom", "butterfly", "tomato", "jealousy", "fame"]
+        words = ["tomato", "skin", "freedom", "jealousy", "fame"]
         plot_color_bars(word_stats, models, words, figure_dir)
 
 
