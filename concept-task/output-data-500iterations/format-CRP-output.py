@@ -45,6 +45,8 @@ human_ClusteringResults['prompt'] = "na"
 human_ClusteringResults['temperature'] = "na"
 # select where iteration is 499
 human_ClusteringResults = human_ClusteringResults[human_ClusteringResults["Iteration"] == 499]
+# select where prior = "Simplicity"
+human_ClusteringResults = human_ClusteringResults[human_ClusteringResults["Prior"] == "Simplicity"]
 # replace the humandata concept names with the original concept names
 human_ClusteringResults["Concept"] = human_ClusteringResults["Concept"].map(concept_map)
 # check if concept is in animals or politicians and add column to df for concept type
