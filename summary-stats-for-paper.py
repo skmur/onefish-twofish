@@ -56,24 +56,59 @@ def add_model_meta_data(df):
     df["aligned"] = df.model_name.map(align_map)
     return df
 
-def mixed_effects_model(df, task, x1, x2, y, random_effect):
+def mixed_effects_model(df, task, x_values, y, random_effect):
     """ Compute mixed effects model for task results """
     # remove human data
     df = df[df.model_name != 'human']
 
-    # make all columns categorical
-    df[x1] = pd.Categorical(df[x1]).codes
-    df[x2] = pd.Categorical(df[x2]).codes
+    # if task == color, remove data for llama and tulu 
+    if task == "color":
+        df = df[(df.model_name != 'llama2') & (df.model_name != 'tulu')]
+    # if task == concept, remove data for llama
+    if task == "concept":
+        df = df[df.model_name != 'llama2']
+
+    formula = f"{y} ~"
+
+    # if x1 is prompt or temperature, select appropriate data
+    if x_values == ["prompt"]:
+        # select where temperature is default
+        df = df[df.temperature == "default"]
+    
+    for x in x_values:
+        # make all columns categorical
+        df[x] = pd.Categorical(df[x]).codes
+        # add to formula
+        formula += f" + {x}"
+
     df[random_effect] = pd.Categorical(df[random_effect]).codes
 
-    model = sm.MixedLM.from_formula(f"{y} ~ {x1} * {x2}", data=df, groups=random_effect, missing="drop")
+    print(formula)
+
+    model = sm.MixedLM.from_formula(formula, data=df, groups=random_effect, missing="drop")
     result = model.fit()
 
-    print(f"[{task} task, predicting: {y}, fixed effects: {x1}, {x2}, random effect: {random_effect}]")
+    print(f"[{task} task, predicting: {y}, fixed effects: {x_values}, random effect: {random_effect}]")
     # Print the summary
     print(result.summary())
 
+def valid_responses(df, task):
+    """ Compute valid responses for model data """
+    print(len(df))
+    print(df.columns)
+    
+    # group by model_name, prompt, temperature and divide valid_responses by total_responses
+    df = df.groupby(['model_name', 'prompt', 'temperature']).sum()
+    df['percent_valid'] = df['valid_responses'] / df['total_responses'] * 100
+    df['percent_invalid'] = 100 - df['percent_valid']
+    df = df.reset_index()
 
+    print(f"[{task} task] valid responses for model data")
+    print(df)
+
+
+
+        
 
 
 #-------------------------------------------------------------
@@ -82,6 +117,9 @@ df_color = pd.read_pickle("./output-data/color-task/all/word-stats.pickle")
 df_color = add_model_meta_data(df_color)
 df_concept = pd.read_pickle("./output-data/concept-task/all/all-ClusteringResults.pickle")
 df_concept = add_model_meta_data(df_concept)
+
+color_responsecounts = pd.read_pickle("./output-data/color-task/all/valid-response-counts.pickle")
+concept_responsecounts = pd.read_pickle("./output-data/concept-task/all/model-data.pickle")
 
 # in paper we report P(multiple concepts), so create column for 1-P(single concept)
 df_concept["p_multiple_concepts"] = 1 - df_concept["ProbabilityOfSameTable"]
@@ -93,12 +131,44 @@ compute_human_baseline(df_concept, "concept", "p_multiple_concepts", "animals")
 compute_human_baseline(df_concept, "concept", "p_multiple_concepts", "politicians")
 
 print("-----------------")
-
-# compute mixed effects model for color and concept tasks
-mixed_effects_model(df_color, "color", "aligned", "prompt", "dist_from_diagonal", "model_family")
-mixed_effects_model(df_concept, "concept", "aligned", "prompt", "p_multiple_concepts", "model_family")
-
-mixed_effects_model(df_color, "color", "aligned", "temperature", "dist_from_diagonal", "model_family")
-mixed_effects_model(df_concept, "concept", "aligned", "temperature", "p_multiple_concepts", "model_family")
+print("Color task")
+print("-----------------")
 
 
+# compute mixed effects model for effect of alignment with random effect of model_family:
+print("metric ~ aligned[boolean] + (1|model_family)")
+mixed_effects_model(df_color, "color", ["aligned"], "dist_from_diagonal", "model_family")
+
+# # compute mixed effects model for effect of prompt with random effect of model_name: 
+# print("metric ~ prompt[none, persona, random, nonsense] + (1|model_name)")
+# mixed_effects_model(df_color, "color", ["prompt"], "dist_from_diagonal", "model_name")
+
+# # compute mixed effects model for effect of temperature with random effect of model_name: 
+# print("metric ~ temperature[default, 1.5, 2.0] + (1|model_name)")
+# mixed_effects_model(df_color, "color", ["temperature"], "dist_from_diagonal", "model_name")
+
+# combined model for prompt and temperature
+print("metric ~ temperature[default, 1.5, 2.0] +  prompt[none, persona, random, nonsense] + (1|model_name)")
+mixed_effects_model(df_color, "color", ["temperature", "prompt"], "dist_from_diagonal", "model_name")
+
+print("-----------------")
+print("Concept task")
+print("-----------------")
+
+# compute mixed effects model for effect of alignment with random effect of model_family:
+print("metric ~ aligned[boolean] + (1|model_family)")
+mixed_effects_model(df_concept, "concept", ["aligned"],"p_multiple_concepts", "model_family")
+
+# # compute mixed effects model for effect of prompt with random effect of model_name: 
+# print("metric ~ prompt[none, persona, random, nonsense] + (1|model_name)")
+# mixed_effects_model(df_concept, "concept", ["prompt"],"p_multiple_concepts", "model_name")
+
+# # compute mixed effects model for effect of temperature with random effect of model_name: 
+# print("metric ~ temperature[default, 1.5, 2.0] + (1|model_name)")
+# mixed_effects_model(df_concept, "concept",["temperature"],"p_multiple_concepts", "model_name")
+
+# combined model for prompt and temperature
+print("metric ~ temperature[default, 1.5, 2.0] +  prompt[none, persona, random, nonsense] + (1|model_name)")
+mixed_effects_model(df_concept, "concept", ["temperature", "prompt"], "p_multiple_concepts", "model_name")
+
+print("-----------------")
