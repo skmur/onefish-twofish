@@ -67,29 +67,39 @@ def add_model_meta_data(df):
     return df
 
 
-def plot_dist_from_diag_model_pairs(df, figure_dir, human_means=None):
-    plt.rcParams['font.family'] = 'Arial' 
+def plot_dist_from_diag_model_pairs(df, figure_dir, manipulation, human_means=None):
+    # remove tulu and llama from the data
+    df = df[~df['model_name'].isin(['llama2', 'tulu'])]
 
+    plt.rcParams['font.family'] = 'Arial' 
     sns.set_theme(style="ticks", font="Arial", font_scale=1.2)
 
     paired = sns.color_palette("Paired")
     lg, dg = paired[2], paired[3] # light green, dark green
     bar_colors = [lg, dg]
     
-    prompts = ["none", "identity", "random", "nonsense"]
-    pretty_prompts = ["none", "persona", "random", "nonsense"]
+    if manipulation == "prompt":
+        df = df[df.temperature == "default"]
+        prompts = ["none", "identity", "random", "nonsense"]
+        pretty_prompts = ["none", "persona", "random", "nonsense"]
+        height = 8
+    elif manipulation == "temperature":
+        df = df[df.prompt == "none"]
+        prompts = ["default", "1.5", "2.0"]
+        pretty_prompts = ["default", "1.5", "2.0"]
+        height = 6
     
     families = ["openchat_starling", "mistral", "gemma", "llama"]
     titles = [
         "Openchat vs\nStarling",
         "Mistral-Instruct vs\nZephyr-Mistral",
         "Gemma-Instruct vs\nZephyr-Gemma",
-        "Tulu vs\nLlama-Chat/Tulu-DPO"
+        "Llama/Tulu vs\nLlama-Chat/Tulu-DPO"
     ]
     fig, axes = plt.subplots(
         nrows=len(prompts), ncols=len(families), 
         sharey=True, sharex=True,
-        figsize=(10,8)
+        figsize=(10,height)
     )
     
     for i, prompt in enumerate(prompts):
@@ -106,6 +116,7 @@ def plot_dist_from_diag_model_pairs(df, figure_dir, human_means=None):
             if i == 0:
                 ax.set_title(titles[j])
             ax.set_xlabel("")
+            ax.set_ylim(0, 5)
     
             if j == len(families)-1:
                 ax2 = ax.twinx()
@@ -128,9 +139,6 @@ def plot_dist_from_diag_model_pairs(df, figure_dir, human_means=None):
             #             lw=2.5
             #         )
                 
-            
-
-    
     # # Custom legend.
     # handles, labels = axes[-1][1].get_legend_handles_labels()
     # handles[0].set_color("lightgrey")
@@ -144,7 +152,7 @@ def plot_dist_from_diag_model_pairs(df, figure_dir, human_means=None):
     # )
     sns.despine()
 
-    plt.savefig(f"{figure_dir}dist_from_diagonal-modelpairs-nobaseline.pdf", bbox_inches="tight")
+    plt.savefig(f"{figure_dir}dist_from_diagonal-modelpairs-{manipulation}.pdf", bbox_inches="tight")
 
 
 
@@ -315,6 +323,11 @@ def plot_by_prompt(df, metric, plot_type):
 
 
 def plot_response_counts(models, df, metric):
+    df = df.groupby(['model_name', 'prompt', 'temperature']).sum()
+    df['percent_valid'] = df['valid_responses'] / df['total_responses'] * 100
+    df['percent_invalid'] = 100 - df['percent_valid']
+    df = df.reset_index()
+
     # combine the prompt and temperature columns
     df['combined'] = df['prompt'] + ", " + df['temperature'].astype(str)
     # remove human data from response_counts
@@ -327,16 +340,16 @@ def plot_response_counts(models, df, metric):
     custom_params = {"axes.spines.right": False, "axes.spines.top": False}
     sns.set_theme(style="ticks", rc=custom_params)
 
-    sns.barplot(x='model_name', y=f'{metric}_responses', hue='combined', hue_order=prompt_order, data=df, dodge=True, order=models)
+    sns.barplot(x='model_name', y=f'percent_{metric}', hue='combined', hue_order=prompt_order, data=df, dodge=True, order=models)
     
-    plt.title(f"Number of {metric} responses per model, param combo")
+    plt.title(f"Percent of {metric} responses per model, param combo")
     plt.xticks(rotation=45)
-    # plot number of responses as horizontal line
-    plt.axhline(y=df['total_responses'].values[0], color='k', linestyle='--')
+    # # plot number of responses as horizontal line
+    # plt.axhline(y=df['total_responses'].values[0], color='k', linestyle='--')
     # put legend outside of plot
     plt.legend(title='Prompt-Temperature', bbox_to_anchor=(1.05, 1), loc='center left')
     plt.tight_layout()
-    plt.savefig(f"./{figure_dir}/{metric}-response-counts.pdf")
+    plt.savefig(f"./{figure_dir}/{metric}-response-counts-percentage.pdf")
     plt.clf()
 
 def plot_deltaE_subplots(models, word_stats, x_var, y_var, manipulation, figure_dir, title):
@@ -558,7 +571,8 @@ if __name__ == "__main__":
         human_mean = word_stats[word_stats.model_name == "human"].dist_from_diagonal.mean()
 
         model_data = word_stats[word_stats.model_name != "human"]
-        plot_dist_from_diag_model_pairs(model_data, figure_dir, human_means=human_mean)
+        plot_dist_from_diag_model_pairs(model_data, figure_dir, "prompt", human_means=human_mean)
+        plot_dist_from_diag_model_pairs(model_data, figure_dir, "temperature", human_means=human_mean)
         
 
     # plot population vs. internal deltaE for each word
