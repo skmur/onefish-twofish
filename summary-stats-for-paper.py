@@ -93,18 +93,12 @@ def mixed_effects_model(df, task, x_values, y, random_effect):
     print(result.summary())
 
 def valid_responses(df, task):
-    """ Compute valid responses for model data """
-    print(len(df))
-    print(df.columns)
-    
-    # group by model_name, prompt, temperature and divide valid_responses by total_responses
-    df = df.groupby(['model_name', 'prompt', 'temperature']).sum()
-    df['percent_valid'] = df['valid_responses'] / df['total_responses'] * 100
-    df['percent_invalid'] = 100 - df['percent_valid']
-    df = df.reset_index()
-
-    print(f"[{task} task] valid responses for model data")
-    print(df)
+    """ Compute average percentage of valid responses for each model """
+    valid_responses = df.groupby("model_name")["percent_invalid"].mean()
+    # sort by average percentage of invalid responses
+    valid_responses = valid_responses.sort_values(ascending=False)
+    print(f"[{task} task] Average percentage of invalid responses")
+    print(valid_responses)
 
 
 
@@ -172,3 +166,6 @@ print("metric ~ temperature[default, 1.5, 2.0] +  prompt[none, persona, random, 
 mixed_effects_model(df_concept, "concept", ["temperature", "prompt"], "p_multiple_concepts", "model_name")
 
 print("-----------------")
+
+valid_responses(color_responsecounts, "color")
+valid_responses(concept_responsecounts, "concept")

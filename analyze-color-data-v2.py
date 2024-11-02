@@ -200,7 +200,10 @@ for model in models:
     # add column for invalid responses
     valid_responses['invalid_responses'] = valid_responses['total_responses'] - valid_responses['valid_responses']
     print(valid_responses)
-
+    # add percentages for valid and invalid responses
+    valid_responses['percent_valid'] = valid_responses['valid_responses'] / valid_responses['total_responses'] * 100
+    valid_responses['percent_invalid'] = 100 - valid_responses['percent_valid']
+    
     valid_response_counts = pd.concat([valid_response_counts, valid_responses])
     # - - - - - - - - - - - - - - - - - - - - - -#
 
@@ -234,6 +237,7 @@ for model in models:
     # calculate distances between internal and population deltaE values for each word and the diagonal line (y=x) to see how much the model responses deviate from a homogenous population
     tqdm.pandas(desc="Calculating distances from diagonal line")
     distances = summary.groupby(['model_name', 'temperature', 'word', 'prompt']).progress_apply(calculate_diagonal_distances, x_label='mean_populationDeltaE', y_label='mean_internalDeltaE', include_groups=False).reset_index()
+    print(distances)
 
     # - - - - - - - - - - - - - - - - - - - - - -#
     # merge distances with summary
@@ -263,6 +267,10 @@ for model in models:
 all_word_level_stats.to_pickle(f"{output_dir}word-stats.pickle")
 all_model_level_stats.to_pickle(f"{output_dir}model-stats.pickle")
 valid_response_counts.to_pickle(f"{output_dir}valid-response-counts.pickle")
+# save them to csvs
+all_word_level_stats.to_csv(f"{output_dir}word-stats.csv", index=False)
+all_model_level_stats.to_csv(f"{output_dir}model-stats.csv", index=False)
+valid_response_counts.to_csv(f"{output_dir}valid-response-counts.csv", index=False)
 
 print("Done!")
 

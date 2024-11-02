@@ -15,12 +15,6 @@ CONCEPT_CATEGORY_PAL = {"animals": sns.color_palette()[1], "politicians": sns.co
 
 
 def plot_response_counts(models, df, metric):
-    df = df.groupby(['model_name', 'prompt', 'temperature']).sum()
-    df['percent_valid'] = df['valid_responses'] / df['total_responses'] * 100
-    df['percent_invalid'] = 100 - df['percent_valid']
-    df = df.reset_index()
-    print("calculated percent valid and invalid")
-
     # combine the prompt and temperature columns
     df['combined'] = df['prompt'] + ", " + df['temperature'].astype(str)
     # remove human data from response_counts
@@ -37,6 +31,7 @@ def plot_response_counts(models, df, metric):
     
     plt.title(f"Percent of {metric} responses per model, param combo")
     plt.xticks(rotation=45)
+    plt.ylim(0, 100)
     # # plot number of responses as horizontal line
     # plt.axhline(y=df['total_responses'].values[0], color='k', linestyle='--')
     # put legend outside of plot
@@ -177,6 +172,7 @@ def plot_concept_diversity_category_means(df, manipulation, human_means=None):
             if i == 0:
                 ax.set_title(titles[j])
             ax.set_xlabel("")
+            ax.set_ylim(0, 5)
     
             if j == len(families)-1:
                 ax2 = ax.twinx()
