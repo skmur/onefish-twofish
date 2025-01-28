@@ -1,13 +1,13 @@
 # 🐟 One fish, two fish, but not the whole sea: Alignment reduces language models' conceptual diversity
 
-This repository contains code and data for the paper ["One fish, two fish, but not the whole sea: Alignment reduces language models' conceptual diversity"](https://arxiv.org/abs/2411.04427) by Sonia K. Murthy, Tomer Ullman, and Jennifer Hu.
+This repository contains code and data for the paper ["One fish, two fish, but not the whole sea: Alignment reduces language models' conceptual diversity"](https://arxiv.org/abs/2411.04427) by Sonia K. Murthy, Tomer Ullman, and Jennifer Hu (NAACL 2025)
 
 ## 0. Code structure
 
 The repository is structured with the following main folders:
 
 - `concept-task`: Chinese Restaurant Process model and related files for Conceptual similarity judgements domain
-- `figures`: rendered figures used in the paper
+- `figures`: intermediate plots and rendered figures used in the paper
 - `input-data`: human baseline data for both tasks, plus code to generate the prompt conditions used in our experiments
 - `analysis`: Python scripts for processing experiment outputs, analyses, reproducing figures, and summary statistics found in paper
 - `src`: Python scripts for implementing the experiments
@@ -21,11 +21,11 @@ The packages used in our experiments can be found in the `requirements.txt` file
 To create a new environment based on these requirements, please run:
 
 ```bash
-conda create --name taskdemands --file requirements.txt
+conda create --name onefishtwofish --file requirements.txt
 ```
 Then activate the environment with:
 ```bash
-conda activate taskdemands
+conda activate onefishtwofish
 ```
 
 ### a. Running experiments
@@ -69,12 +69,12 @@ python ./src/run-experiments.py
 - Run with flag for "concept" or "color" task to concatenate all prompt and temperature versions of the model output into a single file
 - Outputs data to `./output-data/[TASK]/`
 
-#### ii. __Word-color association__ task-specific processing
+#### ii. Word-color association task-specific processing
 1. `./analysis/analyze-color-data.py`: Computes the mean and variance of word response distributions, Jensen-Shannon divergence, population ΔE based off block1 and block2 associations, distance of internal and population deltaE points from diagonal (line of unity) and corresponding regression, number of valid and invalid responses
     - Outputs compiled statistics to `./output-data/color-task/all/`
 2. `./analysis/plot-color-data.py`: Plots response counts, population homogeneity (i.e., distance from diagonal), ΔE, word ratings, JS divergence, and color response bars figures using flag for plot type 
 
-#### iii. __Conceptual similarity judgements__ task-specific processing
+#### iii. Conceptual similarity judgements task-specific processing
 1. Data Formatting for CRP Model: `./concept-task/input-data/format-CRP-input.py`
     - Takes in model responses from the previous step and reformats it for the Chinese Restaurant Process (CRP) model.
     - Outputs data to `./concept-task/input-data/` in the format:
