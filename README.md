@@ -1,80 +1,97 @@
-## 🐟 One fish, two fish, or the whole sea: Do LLM judgements capture population variability? 
+# 🐟 One fish, two fish, but not the whole sea: Alignment reduces language models' conceptual diversity
 
-RQ: Is there a difference between simulating multiple unique individuals by: increasing temperature vs. prompting to elicit different distributions vs. using different models?
-- H1: One LLM = one individual
-    - Sampling from a model’s distribution (with sufficiently high temperature OR prompting) is like sampling responses from an individual.
-- H2: One LLM = one population
-    - Sampling from a model’s distribution (with sufficiently high temperature OR prompting) is like sampling responses across individuals in a population.
+This repository contains code and data for the paper ["One fish, two fish, but not the whole sea: Alignment reduces language models' conceptual diversity"](https://arxiv.org/abs/2411.04427) by Sonia K. Murthy, Tomer Ullman, and Jennifer Hu.
 
-### key files
+## 0. Code structure
 
-- [experiment tracking](https://docs.google.com/spreadsheets/d/1iNdMq4soYBgeUVpqwTTH2vFBYybOZfNAQBCxXVBrQJA/edit?usp=sharing)
-- [master doc](https://docs.google.com/document/d/12nD7cuF-pl3CeRP1UV-OZrv-aQK0_BCJoISCVaiKv1E/edit?usp=sharing)
+The repository is structured with the following main folders:
 
-Results logs:
-- [update 1](https://docs.google.com/presentation/d/1aUmKyZmHWkECU8u3egIrzLDMrOuMDG2zY1ycc1KQL8Y/edit?usp=sharing)
-- [update 2](https://docs.google.com/presentation/d/1c_mrbb26wBy3QlQUV7bZioZxWlghNOP8g9OUW2B5iYI/edit?usp=sharing)
+- `concept-task`: Chinese Restaurant Process model and related files for Conceptual similarity judgements domain
+- `figures`: rendered figures used in the paper
+- `input-data`: human baseline data for both tasks, plus code to generate the prompt conditions used in our experiments
+- `analysis`: Python scripts for processing experiment outputs, analyses, reproducing figures, and summary statistics found in paper
+- `src`: Python scripts for implementing the experiments
+- `output`: CSV files with outputs from model runs
 
-### replication
+## 1. Reproducing results
 
-To reproduce, run files in this order:
-1. `get-prompts.py`: filters English Wikipedia to remove people and disambiguation pages, outputs 150 prompts (color task) or 1800 prompts (concept task) for each prompting strategy
-- Outputs prompts to task directory `./input-data/`
+### a. Depedencies
 
-## 2. Color Task
+The packages used in our experiments can be found in the `requirements.txt` file.
+To create a new environment based on these requirements, please run:
 
-### a. `run-experiments.py`
-- Queries model for two color associations for each word in `./input-data/colorref.csv`
-- Computes internal deltaE for these responses
-- Queries model for expected population agreement for 2nd sample of association
-- Outputs data to lab storage directory
+```bash
+conda create --name taskdemands --file requirements.txt
+```
+Then activate the environment with:
+```bash
+conda activate taskdemands
+```
 
-### b. `process-data.py`
-- Run this with flag for "concept" or "color" task to concatenate all prompt and temperature versions of the model output into a single file
-- Outputs data to `./output-data/color-task/`
+### a. Running experiments
+To reproduce results, run files in this order:
 
-### c. `analyze-color-data-v2.py`
-- Computes:
-    - mean and variance of word response distributions
-    - Jensen-Shannon divergence, population deltaE based off block1 and block2 associations
-    - distance of internal and population deltaE points from the diagonal
-    - number of valid and invalid responses
-- Outputs compiled stats to `./output-data/color-task/all/`
+#### i. Obtaining prompting conditions for simulating unique human subjects: `./input-data/get-prompts.py`:
+- Filters English Wikipedia to remove people and disambiguation pages
+- Outputs 150 prompts (color task) or 1800 prompts (concept task) for each prompting strategy to task-specific directory in `./input-data/`
 
-### d. `plot-color-data-v2.py`
-- Plots figures using flag for plot type (response counts, population homogeneity (i.e., distance from diagonal), deltaE, word ratings, and JS divergence)
+#### ii. Main experiment script for both tasks: `./src/run-experiments.py`
+- __Word-color association task__: queries model for two color associations for each word in `./input-data/colorref.csv` and computes internal ΔE for these responses
+Example with command-line arguments:
+```bash
+python ./src/run_experiments.py 
+    --task="colors" 
+    --model_name="starling" 
+    --model_path="berkeley-nest/Starling-LM-7B-alpha" 
+    --prompt_condition="random" 
+    --hf_token="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" 
+    --num_words=199 
+    --num_subjects=100 
+    --batch_size=64
+```
+- ___Conceptual similarity judgements task__: queries model for which one of two word choices is more similar to a target
+Example with command-line arguments:
+```bash
+python ./src/run-experiments.py
+    --task="concepts" 
+    --concept_category="politicians" 
+    --model_name="tulu" 
+    --model_path="allenai/tulu-2-7b" 
+    --prompt_condition="random" 
+    --hf_token="YOUR_TOKEN" 
+    --batch_size=64
+```
+- Outputs data to task-specific directory in user-specified storage directory
 
-## 3. Concept Task
+### b. Processing and analyzing experiment results
 
-### a. Data Generation: `run_experiments.py`
-- Queries model for which one of two word choices is more similar to a target
-- Outputs data to `./output-data/concept-task/` in the format of: ['model_name', 'temperature', 'subject_num', 'concept_category', 'target', 'choice1', 'choice2', 'generation1', 'answer1', 'generation2', 'answer2', 'prompt']
+#### i. Compiling results of all prompt and temperature experiments: `./analysis/process-data.py`
+- Run with flag for "concept" or "color" task to concatenate all prompt and temperature versions of the model output into a single file
+- Outputs data to `./output-data/[TASK]/`
 
-### b. [SKIPPED] Determining Selected Answer Choice for Model Generations: `gpt4o.py`
-- Some of the models' generations do not match either choice1 or choice2, so we use gpt-4o to process these generations to determine the model's choice.
-- If there's a mismatch between previously determined 'answer1' or 'answer2' values:
-- Impute with gpt-4o response
-- Set 'gpt_response1', 'gpt_response2' to TRUE accordingly
-- Outputs data to `./output-data/concept-task/` as `[gpt-imputed]{filename}`
+#### ii. __Word-color association__ task-specific processing
+1. `./analysis/analyze-color-data.py`: 
+- Computes the mean and variance of word response distributions, Jensen-Shannon divergence, population ΔE based off block1 and block2 associations, distance of internal and population deltaE points from diagonal (line of unity) and corresponding regression, number of valid and invalid responses
+- Outputs compiled statistics to `./output-data/color-task/all/`
+2. `./analysis/plot-color-data.py`: 
+- Plots figures using flag for plot type: response counts, population homogeneity (i.e., distance from diagonal), ΔE, word ratings, JS divergence, and color response bars
 
-### c. Data Formatting for CRP Model: `./concept-task/input-data/format-CRP-input.py`
+#### iii. __Conceptual similarity judgements__ task-specific processing
+1. Data Formatting for CRP Model: `./concept-task/input-data/format-CRP-input.py`
 - Takes in model responses from the previous step and reformats it for the Chinese Restaurant Process (CRP) model.
 - Outputs data to `./concept-task/input-data/` in the format:
     - Concept = target
     - ID = subject
     - Question = choice1 + " " + choice2
     - ChoiceNumber = binary representation of subject's response as either choice1 (0) or choice2 (1)
-
-### d. Running Model: `./concept-task/Chinese Restaurant Model/Main.py`
+2. Running Model: `./concept-task/Chinese Restaurant Model/Main.py`
 - Takes in formatted response data from the previous step and runs CRP (importing Model.py)
 - Outputs main clustering results in the format: ["Concept", "Iteration", "S_Chao1", "NumberOfPeople", "NumberOfTrials", "Prior", "Tables", "Alpha", "Posterior", "Chain", "ProbabilityOfSameTable"] to `./concept-task/Chinese Restaurant Model/output-data-{num_interations}iterations/`
 - Outputs each participant's MAP Table (for use in TSNE visualization) in format ["ID", "Table", "Concept"] to `./concept-task/Chinese Restaurant Model/output-data-{num_interations}iterations/` under some conditions (see line 338 of `Model.py`)
-
-### e. Compiling output of CRP model and human data for analysis: `./concept-task/output-data-500iterations/format-CRP-output.py`
+3. Compiling output of CRP model and human data for analysis: `./concept-task/output-data-500iterations/format-CRP-output.py`
 - Selects relevant parameters from human baseline data: prior="Simplicity", Iteration=499
 - Compiles all prompt and temperature manipulation data files for LLMs CRP clustering results from previous step
 - Computes number of valid responses for the model data
 - Outputs compiled results for all models and human baseline to `../../output-data/concept-task/all/`
-
-### d. `plot-concept-data.py`
-- Plots figures using flag for plot type (response counts, P(multiple concepts))
+4. `plot-concept-data.py`
+- Plots figures using flag for plot type: response counts, P(multiple concepts)
