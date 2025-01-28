@@ -93,6 +93,7 @@ def process_file(filename, model, task):
         and model in filename
         and filename.endswith(".pickle")
         and not (model == "llama2" and "chat" in filename)
+        and not (model == "tulu" and "dpo" in filename)
         and (task != "color" or "subjects=150" in filename)
     )
 
@@ -100,6 +101,7 @@ def load_and_process_file(lab_storage_dir, filename, task):
     with open(os.path.join(lab_storage_dir, filename), 'rb') as f:
         data = pickle.load(f)
 
+    print(data)
     filename_tmp = filename.split(".pickle")[0]
     params = filename_tmp.split("-")
     prompt, category, temperature = extract_params(params)
@@ -144,6 +146,9 @@ def print_summary(concat, num_files, model, task):
         print(concat['temperature'].unique())
         if task == "concept":
             print(concat['concept_category'].unique())
+        if task == "color":
+            # group by prompt, temperature, and print percentage of -1 deltaE values 
+            print(concat.groupby(['prompt', 'temperature'])['deltaE'].apply(lambda x: (x == -1).sum()))
 
     print("-" * 50)
 
@@ -153,19 +158,20 @@ def main():
     parser.add_argument('--task', type=str, choices=['color', 'concept'], help='Task to process (color or concept)')
     args = parser.parse_args()
 
-    models = ["starling", "openchat", "gemma-instruct", "zephyr-gemma", "mistral-instruct", "zephyr-mistral", "llama2", "llama2-chat"]
+    models = ["starling", "openchat", "gemma-instruct", "zephyr-gemma", "mistral-instruct", "zephyr-mistral", "llama2", "llama2-chat", "tulu", "tulu-dpo"]
+    models = ["rlcd"]
     lab_storage_dir = f"/n/holylabs/LABS/ullman_lab/Users/smurthy/onefish-twofish/output-data/{args.task}-task/"
     output_dir = f"./output-data/{args.task}-task/"
 
     process_model_data(models, lab_storage_dir, output_dir, args.task)
 
-    # additionally process human data for color task
-    if args.task == "color":
-        df_human = process_human_data()
+    # # additionally process human data for color task
+    # if args.task == "color":
+    #     df_human = process_human_data()
 
-        with open(f"{output_dir}{args.task}-human.pickle", 'wb') as f:
-            pickle.dump(df_human, f)
-            print(f"Saved to {output_dir}color-human.pickle")
+    #     with open(f"{output_dir}{args.task}-human.pickle", 'wb') as f:
+    #         pickle.dump(df_human, f)
+    #         print(f"Saved to {output_dir}color-human.pickle")
 
 if __name__ == "__main__":
     main()

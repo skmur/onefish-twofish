@@ -13,6 +13,20 @@ from tqdm import tqdm
 CONCEPTS = ["a finch", "a robin", "a chicken", "an eagle", "an ostrich", "a penguin", "a salmon", "a seal", "a dolphin", "a whale", "Abraham Lincoln", "Barack Obama", "Bernie Sanders", "Donald Trump", "Elizabeth Warren", "George W. Bush", "Hillary Clinton", "Joe Biden", "Richard Nixon", "Ronald Reagan"]
 CONCEPT_CATEGORY_PAL = {"animals": sns.color_palette()[1], "politicians": sns.color_palette()[0]}
 
+def fill_missing_data(df, models, param_combos):
+    for model in models:
+        for param_combo in param_combos:
+            prompt, temperature = param_combo
+            if not df[(df["model_name"]==model) & (df["prompt"]==prompt) & (df["temperature"]==temperature)].empty:
+                continue
+            else:
+                print(f"Adding missing data for {model}, {prompt}, {temperature}")
+                new_row1 = pd.DataFrame([[model, prompt, temperature, "animals", 0]], columns=df.columns)
+                new_row2 = pd.DataFrame([[model, prompt, temperature, "politicians", 0]], columns=df.columns)
+                df = pd.concat([df, new_row1], ignore_index=True)
+                df = pd.concat([df, new_row2], ignore_index=True)
+
+    return df
 
 def plot_response_counts(models, df, metric):
     # combine the prompt and temperature columns
@@ -71,7 +85,6 @@ def add_model_meta_data(df):
     df["aligned"] = df.model_name.map(align_map)
     return df
 
-
 def plot_concept_diversity_human(df):
     human_data = df[df.model_name=="human"]
     paired = sns.color_palette("Paired")
@@ -126,18 +139,21 @@ def plot_concept_diversity_human(df):
     return category_means
 
 def plot_concept_diversity_category_means(df, manipulation, human_means=None):
+    # remove tulu 
+    # df = df[df.model_name != "llama"]
+
     paired = sns.color_palette("Paired")
     lb, db = paired[0], paired[1] # light blue, dark blue
     lo, do = paired[6], paired[7] # light orange, dark orange
     bar_colors = [lo, lb, do, db]
     
     if manipulation == "prompt":
-        df = df[df.temperature == "default"]
+        df = df[df["temperature"] == "default"]
         prompts = ["none", "identity", "random", "nonsense"]
         pretty_prompts = ["none", "persona", "random", "nonsense"]
         height = 8
     elif manipulation == "temperature":
-        df = df[df.prompt == "none"]
+        df = df[df["prompt"] == "none"]
         prompts = ["default", "1.5", "2.0"]
         pretty_prompts = ["default", "1.5", "2.0"]
         height = 6
@@ -158,9 +174,17 @@ def plot_concept_diversity_category_means(df, manipulation, human_means=None):
     category_order = ["animals", "politicians"]
     for i, prompt in enumerate(prompts):
         for j, family in enumerate(families):
+            if prompt in ["none", "identity", "random", "nonsense"]:
+                df_family = df[(df["model_family"]==family) & (df["prompt"]==prompt)]
+            else:
+                df_family = df[(df["model_family"]==family) & (df["temperature"]==prompt)]
+            
+            # print(f"Plotting {prompt} {family}= {len(df_family)}")
+            # print(df_family["model_name"].unique())
+
             ax = axes[i][j]
             ax = sns.barplot(
-                data=df[df.model_family==family],
+                data=df_family,
                 x="concept_category",
                 order=category_order,
                 y="p_multiple_concepts",
@@ -172,7 +196,7 @@ def plot_concept_diversity_category_means(df, manipulation, human_means=None):
             if i == 0:
                 ax.set_title(titles[j])
             ax.set_xlabel("")
-            ax.set_ylim(0, 5)
+            ax.set_ylim(0, 1)
     
             if j == len(families)-1:
                 ax2 = ax.twinx()
@@ -183,8 +207,8 @@ def plot_concept_diversity_category_means(df, manipulation, human_means=None):
                 if bar.get_height() != 0:
                     bar.set_color(bar_colors[bar_idx])
 
-#             if j == 0:
-#                 ax.set_ylabel("P(>1 concepts)")
+            # if j == 0:
+            #     ax.set_ylabel("P(>1 concepts)")
             ax.set_ylabel("")
                 
             # Add dashed lines corresponding to human category-level means.
@@ -222,84 +246,39 @@ def plot_concept_diversity_category_means(df, manipulation, human_means=None):
 
     plt.savefig(f"./{figure_dir}/{manipulation}.pdf", bbox_inches="tight")
 
+def plot_reliability(df, models):
+    # combine the prompt and temperature columns
+    df['combined'] = df['prompt'] + ", " + df['temperature'].astype(str)
 
-# def plot_facetgrid_regplot(df, x_var, y_var, x_label, y_label, title):
-#     g = sns.FacetGrid(df, col="prompt",  row="model_name",  hue="concept_category", margin_titles=True, despine=False, 
-#                       col_order=["none", "identity", "random", "nonsense"])
-#     g.map(sns.catplot, x_var, y_var,  kind='bar')
+    print(df.columns)
+    print(models)
 
-#     # # annotate points with concept name
-#     # for ax in tqdm(g.axes.flat):
-#     #     for i, txt in enumerate(df["Concept"]):
-#     #         ax.annotate(txt, (df[x_var].iloc[i], df[y_var].iloc[i]), fontsize=6)
+    prompt_order = ['none, default', 'none, 1.5', 'none, 2.0', 'identity, default', 'random, default', 'nonsense, default', 'na, na']
 
-#     g.set_axis_labels(x_label, y_label)
-#     g.set(yscale='linear')
-#     g.set(xscale='linear')
-#     #show legend
-#     g.add_legend()
+    plt.figure(figsize=(12, 6))
 
+    custom_params = {"axes.spines.right": False, "axes.spines.top": False}
+    sns.set_theme(style="ticks", rc=custom_params)
 
-#     plt.tight_layout()
-#     plt.savefig(f"{figure_dir}/{title}.pdf")
-#     plt.clf()
-
-# def plot_subplots(models, df, x_var, y_var, figure_dir, title, prompt, temperature):
-#     if models == ['human']:
-#         fig, axs = plt.subplots(1, 1, figsize=(5, 5))
-#     else: 
-#         # Create a 2x5 grid of subplots
-#         fig, axs = plt.subplots(2, 5, figsize=(20, 10))
-#         axs = axs.flatten()  # Flatten the 2D array of axes to make it easier to iterate over
+    sns.boxplot(x='model', y='ConceptReliability', hue='combined', data=df, legend=False, order=models, hue_order=prompt_order, flierprops={"marker": "."})
     
-#     # Find the global y-axis limits
-#     y_min = df[y_var].min()
-#     y_max = df[y_var].max()
-#     y_range = y_max - y_min
-#     y_padding = y_range * 0.1  # Add 10% padding
-#     global_y_min = max(0, y_min - y_padding)  # Ensure it doesn't go below 0
-#     global_y_max = y_max
+    plt.title(f"Inter-subject reliability per model, param combo")
+    plt.xticks(rotation=45)
+    plt.ylim(0, 1)
+    # # plot human intersubject reliability as horizontal line
+    # plt.axhline(y=df[df['model']=='human']['intersubject_reliability'].values[0], color='k', linestyle='--')
 
-#     order = ["a finch", "a robin", "a chicken", "an eagle", "an ostrich", "a penguin", "a salmon", "a seal", "a dolphin", "a whale", "Abraham Lincoln", "Barack Obama", "Bernie Sanders", "Donald Trump", "Elizabeth Warren", "George W. Bush", "Hillary Clinton", "Joe Biden", "Richard Nixon", "Ronald Reagan"]
+    plt.tight_layout()
+    plt.savefig(f"./{figure_dir}/intersubject-reliability.pdf")
+    plt.clf()
 
-#     for i, model in enumerate(models):
-#         print(f"Plotting {model}...")
-#         model_data = df[df['model_name'] == model]
-
-#         if models == ['human']:
-#             ax = axs
-#             print(model_data["Concept"])
-#             # sns.barplot(data=model_data, x=x_var, y=y_var, ax=ax, order=order, hue="concept_category", hue_order=["animals", "politicians"], legend=False, dodge=True)        
-#         else: 
-#             ax = axs[i]
-
-#         sns.barplot(data=model_data, x=x_var, y=y_var, ax=ax, err_kws={'linewidth': 0.7}, order=order,  hue="concept_category", hue_order=["animals", "politicians"], dodge=True, legend=False)
-
-#         ax.set_xlabel("Concept", fontsize=8)
-#         ax.set_ylabel("P(1 concept)", fontsize=8)
-#         ax.tick_params(labelsize=8)
-#         # ax.legend().set_visible(False)
-
-#         # Set consistent y-axis limits
-#         ax.set_ylim(global_y_min, global_y_max)
-
-#         # Make the plot square
-#         ax.set_box_aspect(1)
-
-#         # Rotate x-axis labels for better readability
-#         ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right')
-#         ax.set_title(model, fontsize=10)
-
-#     plt.tight_layout()
-#     plt.savefig(f"{figure_dir}/{title}-{prompt}-{temperature}.pdf", dpi=300, bbox_inches='tight')
-#     plt.close()
 
 
 # Main execution
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Plot data from color task")
 
-    parser.add_argument("--plot", type=str, choices=["P(multiple concepts)", "response counts"], required=True, help="Which set of plots to generate")
+    parser.add_argument("--plot", type=str, choices=["P(multiple concepts)", "response counts", "reliability"], required=True, help="Which set of plots to generate")
 
     args = parser.parse_args()
 
@@ -313,16 +292,25 @@ if __name__ == "__main__":
     all_ClusteringResults = pd.read_pickle(f"{data_dir}all-ClusteringResults.pickle")
     all_MAPTables = pd.read_pickle(f"{data_dir}all-MAPTables.pickle")
     stats = pd.read_pickle(f"{data_dir}model-data.pickle")
+    reliability_metrics = pd.read_pickle(f"{data_dir}reliability-metrics.pickle")
 
     param_combos = [["none", "default"], ["none", "1.5"], ["none", "2.0"], ["random", "default"], ["nonsense", "default"], ["identity", "default"]]
+    models = ["openchat", "starling", "mistral-instruct", "zephyr-mistral", "gemma-instruct", "zephyr-gemma", "llama2", "llama2-chat", "tulu", "tulu-dpo"]
 
     if args.plot == "P(multiple concepts)":
         print("Plotting P(multiple concepts)...")
-        all_ClusteringResults = add_model_meta_data(all_ClusteringResults)
         all_ClusteringResults["p_multiple_concepts"] = 1 - all_ClusteringResults["ProbabilityOfSameTable"]
-        
+
         human_means = plot_concept_diversity_human(all_ClusteringResults)
+
         model_data = all_ClusteringResults[all_ClusteringResults.model_name != "human"]
+        # remove tulu from model_data
+        model_data = model_data[model_data.model_name != "tulu"]
+        # select columns we need from model_data
+        model_data = model_data[["model_name", "prompt", "temperature", "concept_category", "p_multiple_concepts"]]
+        model_data = fill_missing_data(model_data, models, param_combos)
+        model_data = add_model_meta_data(model_data)
+        print(model_data)
         plot_concept_diversity_category_means(model_data, "prompt", human_means=human_means)
         plot_concept_diversity_category_means(model_data, "temperature", human_means=human_means)
         
@@ -335,6 +323,15 @@ if __name__ == "__main__":
                   "tulu", "tulu-dpo"]
         plot_response_counts(models, stats, "valid")
         plot_response_counts(models, stats, "invalid")
+
+    elif args.plot == "reliability":
+        print("Plotting reliability...")
+        models = ["human", "openchat", "starling", 
+                  "mistral-instruct", "zephyr-mistral", 
+                  "gemma-instruct", "zephyr-gemma", 
+                  "llama2", "llama2-chat",
+                  "tulu", "tulu-dpo"]
+        plot_reliability(reliability_metrics, models)
         
 
 

@@ -33,7 +33,20 @@ def stepSort(r,g,b, repetitions=1):
 
     return (h2, lum, v2)
 
+def fill_missing_data(df, models, param_combos):
+    for model in models:
+        for param_combo in param_combos:
+            prompt, temperature = param_combo
+            if not df[(df["model_name"]==model) & (df["prompt"]==prompt) & (df["temperature"]==temperature)].empty:
+                continue
+            else:
+                print(f"Adding missing data for {model}, {prompt}, {temperature}")
+                new_row1 = pd.DataFrame([[model, prompt, temperature, 0]], columns=df.columns)
+                new_row2 = pd.DataFrame([[model, prompt, temperature, 0]], columns=df.columns)
+                df = pd.concat([df, new_row1], ignore_index=True)
+                df = pd.concat([df, new_row2], ignore_index=True)
 
+    return df
 
 def add_model_meta_data(df):
     family_map = {
@@ -68,23 +81,20 @@ def add_model_meta_data(df):
 
 
 def plot_dist_from_diag_model_pairs(df, figure_dir, manipulation, human_means=None):
-    # remove tulu and llama from the data
-    df = df[~df['model_name'].isin(['llama2', 'tulu'])]
-
-    plt.rcParams['font.family'] = 'Arial' 
-    sns.set_theme(style="ticks", font="Arial", font_scale=1.2)
+    # plt.rcParams['font.family'] = 'Arial' 
+    sns.set_theme(style="ticks", font_scale=1.2)
 
     paired = sns.color_palette("Paired")
     lg, dg = paired[2], paired[3] # light green, dark green
     bar_colors = [lg, dg]
     
     if manipulation == "prompt":
-        df = df[df.temperature == "default"]
+        df = df[df["temperature"] == "default"]
         prompts = ["none", "identity", "random", "nonsense"]
         pretty_prompts = ["none", "persona", "random", "nonsense"]
         height = 8
     elif manipulation == "temperature":
-        df = df[df.prompt == "none"]
+        df = df[df["prompt"] == "none"]
         prompts = ["default", "1.5", "2.0"]
         pretty_prompts = ["default", "1.5", "2.0"]
         height = 6
@@ -104,9 +114,15 @@ def plot_dist_from_diag_model_pairs(df, figure_dir, manipulation, human_means=No
     
     for i, prompt in enumerate(prompts):
         for j, family in enumerate(families):
+            # select data for this family and prompt/temperature
+            if prompt in ["none", "identity", "random", "nonsense"]:
+                df_family = df[(df["model_family"]==family) & (df["prompt"]==prompt)]
+            else:
+                df_family = df[(df["model_family"]==family) & (df["temperature"]==prompt)]
+
             ax = axes[i][j]
             ax = sns.barplot(
-                data=df[df.model_family==family],
+                data=df_family,
                 x="aligned",
                 order=[False, True],
                 y="dist_from_diagonal",
@@ -153,7 +169,6 @@ def plot_dist_from_diag_model_pairs(df, figure_dir, manipulation, human_means=No
     sns.despine()
 
     plt.savefig(f"{figure_dir}dist_from_diagonal-modelpairs-{manipulation}.pdf", bbox_inches="tight")
-
 
 
 
@@ -544,6 +559,9 @@ if __name__ == "__main__":
     # merge imageability and concreteness ratings with word_stats
     word_stats = word_stats.merge(word_ratings[['word', 'imageability', 'concreteness']], on='word', how='left')
 
+    param_combos = [["none", "default"], ["none", "1.5"], ["none", "2.0"], ["random", "default"], ["nonsense", "default"], ["identity", "default"]]
+    models = ["openchat", "starling", "mistral-instruct", "zephyr-mistral", "gemma-instruct", "zephyr-gemma", "llama2", "llama2-chat", "tulu", "tulu-dpo"]
+
     # - - - - - - - - - - - - - - - - - - -
     # [DONE] plot number of valid and invalid responses per model, param combo
     if args.plot == "response counts":
@@ -562,11 +580,16 @@ if __name__ == "__main__":
         # plot_by_prompt(word_stats, "dist_from_diagonal", "bar")
 
         # alternate plotting method: comparison between aligned and non-aligned models
-        word_stats = add_model_meta_data(word_stats)
-        word_stats.head()
         human_mean = word_stats[word_stats.model_name == "human"].dist_from_diagonal.mean()
 
         model_data = word_stats[word_stats.model_name != "human"]
+        # remove tulu and llama from the data
+        model_data = model_data[~model_data['model_name'].isin(['llama2', 'tulu'])]
+        # select columns we need from model_data
+        model_data = model_data[["model_name", "prompt", "temperature", "dist_from_diagonal"]]
+        model_data = fill_missing_data(model_data, models, param_combos)
+        model_data = add_model_meta_data(model_data)
+        
         plot_dist_from_diag_model_pairs(model_data, figure_dir, "prompt", human_means=human_mean)
         plot_dist_from_diag_model_pairs(model_data, figure_dir, "temperature", human_means=human_mean)
         
