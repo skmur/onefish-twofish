@@ -231,11 +231,11 @@ def save_output(output_df, args, subject=None):
         subject_str = f"-subjects={subject}" if subject is not None else f"-subjects={args.num_subjects}"
         filename = f"{args.task}-{args.model_name}-prompt={args.prompt_condition}{subject_str}-temp={args.temperature}.pickle"
         # add "color-task" folder to output path
-        output_path = Path(args.lab_storage_dir) / Path(args.output) / "color-task" / filename
+        output_path = Path(args.storage_dir) / Path(args.output) / "color-task" / filename
 
     elif args.task == "concepts":
         filename = f"{args.task}-{args.model_name}-category={args.concept_category}-prompt={args.prompt_condition}-temp={args.temperature}.pickle"
-        output_path = Path(args.lab_storage_dir) / Path(args.output) / "concept-task" / filename
+        output_path = Path(args.storage_dir) / Path(args.output) / "concept-task" / filename
 
     print(output_df)
 
@@ -246,15 +246,12 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Run experiments on LMs.")
 
     # file-related parameters
-    parser.add_argument("--output", type=str, default="./output-data/", 
+    parser.add_argument("--output", type=str, default="../output-data/", 
                         help="Directory for output data")
     # REMOVE THIS LATER
-    parser.add_argument("--hf_token", 
-                        default="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", type=str, 
+    parser.add_argument("--hf_token", type=str, 
                         help="Huggingface token.")
-    parser.add_argument("--lab_storage_dir", type=str,
-                        default="/n/holylabs/LABS/ullman_lab/Users/smurthy/onefish-twofish", 
-                        help="Directory for lab storage")
+    parser.add_argument("--storage_dir", type=str, help="Directory for storage")
 
     # model-related parameters
     parser.add_argument("--model_name", type=str, 
@@ -295,7 +292,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    model = Model(args.lab_storage_dir, args.hf_token, args.batch_size)
+    model = Model(args.storage_dir, args.hf_token, args.batch_size)
     model.initialize_model(args.model_name, args.model_path)
     model.shard_model()
 

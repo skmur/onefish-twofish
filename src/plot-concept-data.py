@@ -282,9 +282,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    data_dir = "./output-data/concept-task/all/"
+    data_dir = "../output-data/concept-task/all/"
     # add subfolder for this plot type if it doesn't exist
-    figure_dir = "./figures/concept-task/" + args.plot + "/"
+    figure_dir = "../figures/concept-task/" + args.plot + "/"
     if not os.path.exists(figure_dir):
         os.makedirs(figure_dir)
 

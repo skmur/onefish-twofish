@@ -181,7 +181,7 @@ def plot_color_bars(df, models, words, figure_dir):
         for m_index, model_name in enumerate(models):
             # Load pickled data
             filename = f"color-{model_name}.pickle"
-            output_path = "./output-data/color-task/" + filename
+            output_path = "../output-data/color-task/" + filename
 
             df = pd.read_pickle(output_path)
 
@@ -540,9 +540,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # - - - - - - - - - - - - - - - - - - -
-    data_dir = "./output-data/color-task/all"
+    data_dir = "../output-data/color-task/all"
     # add subfolder for this plot type if it doesn't exist
-    figure_dir = "./figures/color-task/" + args.plot + "/"
+    figure_dir = "../figures/color-task/" + args.plot + "/"
     if not os.path.exists(figure_dir):
         os.makedirs(figure_dir)
 
@@ -555,7 +555,7 @@ if __name__ == "__main__":
     dists = word_stats.groupby(['model_name', 'prompt', 'temperature']).apply(lambda x: x['dist_from_diagonal'].agg(['sum', 'mean', 'std', 'count']), include_groups=False).reset_index()
 
     # load word ratings data
-    word_ratings = pd.read_csv("./input-data/color-task/compiled-variance-entropy-glasgowRatings.csv")
+    word_ratings = pd.read_csv("../input-data/color-task/compiled-variance-entropy-glasgowRatings.csv")
     # merge imageability and concreteness ratings with word_stats
     word_stats = word_stats.merge(word_ratings[['word', 'imageability', 'concreteness']], on='word', how='left')
 

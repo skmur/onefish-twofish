@@ -174,8 +174,8 @@ def calculate_diagonal_distances(group, x_label, y_label):
 task = "color"
 models = ["human", "openchat", "starling", "mistral-instruct", "zephyr-mistral", 
           "gemma-instruct", "zephyr-gemma", "llama2", "llama2-chat", "tulu", "tulu-dpo"]
-data_dir = f"./output-data/{task}-task/"
-output_dir = f"./output-data/{task}-task/all/"
+data_dir = f"../output-data/{task}-task/"
+output_dir = f"../output-data/{task}-task/all/"
 
 all_model_level_stats = pd.DataFrame()
 all_word_level_stats = pd.DataFrame()

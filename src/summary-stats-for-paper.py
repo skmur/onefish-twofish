@@ -107,13 +107,13 @@ def valid_responses(df, task):
 
 #-------------------------------------------------------------
 
-df_color = pd.read_pickle("./output-data/color-task/all/word-stats.pickle")
+df_color = pd.read_pickle("../output-data/color-task/all/word-stats.pickle")
 df_color = add_model_meta_data(df_color)
-df_concept = pd.read_pickle("./output-data/concept-task/all/all-ClusteringResults.pickle")
+df_concept = pd.read_pickle("../output-data/concept-task/all/all-ClusteringResults.pickle")
 df_concept = add_model_meta_data(df_concept)
 
-color_responsecounts = pd.read_pickle("./output-data/color-task/all/valid-response-counts.pickle")
-concept_responsecounts = pd.read_pickle("./output-data/concept-task/all/model-data.pickle")
+color_responsecounts = pd.read_pickle("../output-data/color-task/all/valid-response-counts.pickle")
+concept_responsecounts = pd.read_pickle("../output-data/concept-task/all/model-data.pickle")
 
 # in paper we report P(multiple concepts), so create column for 1-P(single concept)
 df_concept["p_multiple_concepts"] = 1 - df_concept["ProbabilityOfSameTable"]

@@ -7,6 +7,9 @@ import argparse
 from colormath.color_conversions import convert_color
 from colormath.color_objects import LabColor, sRGBColor
 
+"""
+Helper function for Word-color association task
+"""
 def computeDeltaE(lab1, lab2):
     # compute delta L
     deltaL = lab1[0] - lab2[0]
@@ -19,6 +22,9 @@ def computeDeltaE(lab1, lab2):
 
     return deltaE
 
+"""
+Helper function for Word-color association task
+"""
 def rgbToLab(rgb):
     # convert to [0,1] scaled rgb values
     scaled_rgb = (float(rgb[0])/255, float(rgb[1])/255, float(rgb[2])/255)
@@ -31,6 +37,9 @@ def rgbToLab(rgb):
 
     return labTuple
 
+"""
+Helper function for Word-color association task
+"""
 def process_human_data():
     # process human data
     human_data = "./input-data/color-task/colorref.csv"
@@ -68,14 +77,15 @@ def process_human_data():
 
     return df_human
 
-def process_model_data(models, lab_storage_dir, output_dir, task):
+
+def process_model_data(models, storage_dir, output_dir, task):
     for model in models:
         concat = pd.DataFrame()
         print(f"Processing model: {model}")
         num_files = 0
-        for filename in os.listdir(lab_storage_dir):
+        for filename in os.listdir(storage_dir):
             if process_file(filename, model, task):
-                data = load_and_process_file(lab_storage_dir, filename, task)
+                data = load_and_process_file(storage_dir, filename, task)
                 num_files += 1
                 concat = pd.concat([concat, data]) if not concat.empty else data
 
@@ -97,8 +107,8 @@ def process_file(filename, model, task):
         and (task != "color" or "subjects=150" in filename)
     )
 
-def load_and_process_file(lab_storage_dir, filename, task):
-    with open(os.path.join(lab_storage_dir, filename), 'rb') as f:
+def load_and_process_file(storage_dir, filename, task):
+    with open(os.path.join(storage_dir, filename), 'rb') as f:
         data = pickle.load(f)
 
     print(data)
@@ -108,15 +118,8 @@ def load_and_process_file(lab_storage_dir, filename, task):
     
     print("-->", category, prompt, temperature, len(data))
 
-    # # OLD: add and rename columns to deal with naming inconsistencies in run_experiment.py: 
-    # # FIXED in run_experiment.py and lab storage files 10/1
-    # if task == "color":
-    #     data = data.rename(columns={"condition": "prompt"})
-    # elif task == "concept":
-    #     data['prompt'] = prompt
-
     # # save data with updated column names to lab storage
-    # with open(os.path.join(lab_storage_dir, filename), 'wb') as f:
+    # with open(os.path.join(storage_dir, filename), 'wb') as f:
     #     pickle.dump(data, f)
 
     return data
@@ -156,22 +159,21 @@ def print_summary(concat, num_files, model, task):
 def main():
     parser = argparse.ArgumentParser(description="Process task data")
     parser.add_argument('--task', type=str, choices=['color', 'concept'], help='Task to process (color or concept)')
+    parser.add_argument('--storage_dir', type=str, help='Directory to store data')
     args = parser.parse_args()
 
     models = ["starling", "openchat", "gemma-instruct", "zephyr-gemma", "mistral-instruct", "zephyr-mistral", "llama2", "llama2-chat", "tulu", "tulu-dpo"]
-    models = ["rlcd"]
-    lab_storage_dir = f"/n/holylabs/LABS/ullman_lab/Users/smurthy/onefish-twofish/output-data/{args.task}-task/"
-    output_dir = f"./output-data/{args.task}-task/"
+    output_dir = f"../output-data/{args.task}-task/"
 
-    process_model_data(models, lab_storage_dir, output_dir, args.task)
+    process_model_data(models, args.storage_dir, output_dir, args.task)
 
-    # # additionally process human data for color task
-    # if args.task == "color":
-    #     df_human = process_human_data()
+    # additionally process human data for color task
+    if args.task == "color":
+        df_human = process_human_data()
 
-    #     with open(f"{output_dir}{args.task}-human.pickle", 'wb') as f:
-    #         pickle.dump(df_human, f)
-    #         print(f"Saved to {output_dir}color-human.pickle")
+        with open(f"{output_dir}{args.task}-human.pickle", 'wb') as f:
+            pickle.dump(df_human, f)
+            print(f"Saved to {output_dir}color-human.pickle")
 
 if __name__ == "__main__":
     main()
