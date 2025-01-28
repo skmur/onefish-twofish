@@ -44,7 +44,7 @@ python ./src/run_experiments.py
     --model_name="starling" 
     --model_path="berkeley-nest/Starling-LM-7B-alpha" 
     --prompt_condition="random" 
-    --hf_token="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" 
+    --hf_token="{YOUR_TOKEN}" 
     --num_words=199 
     --num_subjects=100 
     --batch_size=64
@@ -58,7 +58,7 @@ python ./src/run-experiments.py
     --model_name="tulu" 
     --model_path="allenai/tulu-2-7b" 
     --prompt_condition="random" 
-    --hf_token="YOUR_TOKEN" 
+    --hf_token="{YOUR_TOKEN}" 
     --batch_size=64
 ```
 - Outputs data to task-specific directory in user-specified storage directory
@@ -84,11 +84,10 @@ python ./src/run-experiments.py
         - ChoiceNumber = binary representation of subject's response as either choice1 (0) or choice2 (1)
 2. Running Model: `./concept-task/Chinese Restaurant Model/Main.py`
     - Takes in formatted response data from the previous step and runs CRP (importing Model.py)
-    - Outputs main clustering results in the format: ["Concept", "Iteration", "S_Chao1", "NumberOfPeople", "NumberOfTrials", "Prior", "Tables", "Alpha", "Posterior", "Chain", "ProbabilityOfSameTable"] to `./concept-task/Chinese Restaurant Model/output-data-{num_interations}iterations/`
+    - Outputs main clustering results to `./concept-task/Chinese Restaurant Model/output-data-{num_interations}iterations/`
     <!-- - Outputs each participant's MAP Table in format ["ID", "Table", "Concept"] to `./concept-task/Chinese Restaurant Model/output-data-{num_interations}iterations/` under some conditions (see line 338 of `Model.py`) -->
 3. Compiling output of CRP model and human data for analysis: `./concept-task/output-data-500iterations/format-CRP-output.py`
     - Selects relevant parameters from human baseline data: prior="Simplicity", Iteration=499
-    - Compiles all prompt and temperature manipulation data files for LLMs CRP clustering results from previous step
-    - Computes number of valid responses for the model data
+    - Compiles all prompt and temperature manipulation data files for LLMs CRP clustering results from previous step and computes number of valid responses for the model data
     - Outputs compiled results for all models and human baseline to `../../output-data/concept-task/all/`
 4. `plot-concept-data.py`: Plots response counts, P(multiple concepts) figures using flag for plot type
