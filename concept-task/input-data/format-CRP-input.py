@@ -11,7 +11,6 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 """REPLICATION OF DATA FORMATTING SECTION OF ANALYSIS.R"""
 
-
 def format_data_for_CRP(data):
     # rename columns via mapping dictionary
     column_mapping = {
@@ -53,6 +52,8 @@ def calculate_participant_reliability(data):
 
     data = pd.merge(data, tmp[['ID', 'Question', 'Concept', 'Reliability']], on=['ID', 'Question', 'Concept'])
 
+    print(f"Mean Subject Reliability: {data['Reliability'].mean()}")
+
     # Create reliability dataframe
     reliability = pd.DataFrame({'data_Reliability': data['Reliability'], 'ID': data['ID']})
 
@@ -82,28 +83,25 @@ def calculate_participant_reliability(data):
 
     reliability['data_Reliability'] = reliability['data_Reliability'].map({False: "Not Reliable", True: "Reliable"})
 
-    return data, reliability
+    return data, reliability, data['Reliability'].mean()
 
 
 """Takes in formatted data for CRP model and calculates intersubject reliability metrics"""
 def calculate_intersubject_reliability(data):
     tmp = data.groupby(['Question', 'Concept']).agg({'ChoiceNumber': 'mean'}).reset_index()
     tmp.columns = ['Question', 'Concept', 'QuestionReliability']
-
     tmp['ConceptReliability'] = tmp.groupby('Concept')['QuestionReliability'].transform('mean')
     print(f"Mean Question Reliability: {tmp['QuestionReliability'].mean().round(4)}")
+    print(f"Mean Concept Reliability: {tmp['ConceptReliability'].mean().round(4)}")
 
-    return tmp
+    return tmp, tmp['ConceptReliability'].mean(), tmp['QuestionReliability'].mean()
 
 def verify_human_data(path_to_human_data):
     # load human data
     formattedData = pd.read_csv(path_to_human_data)
 
-    formattedData, participant_reliability = calculate_participant_reliability(formattedData)
-    intersubject_reliability = calculate_intersubject_reliability(formattedData)
-
-    # print(participant_reliability)
-    # print(intersubject_reliability)
+    formattedData, participant_reliability, subj_reliability_mean = calculate_participant_reliability(formattedData)
+    intersubject_reliability, concept_mean, question_mean = calculate_intersubject_reliability(formattedData)
 
     # Calculate agreement
     alpha = 0.16
@@ -111,18 +109,26 @@ def verify_human_data(path_to_human_data):
     agree = 1 != np.random.binomial(2, probs)
     print(f"Agreement proportion: {np.mean(agree)}")
 
-    # count number of each value in the Reliability column
-    print(formattedData['Reliability'].value_counts())
-    print(f"Mean Reliability: {formattedData['Reliability'].mean()}")
+    return participant_reliability, intersubject_reliability
 
 
 model_names = ["openchat", "starling", "mistral-instruct", "zephyr-mistral", "gemma-instruct", "zephyr-gemma", "llama2", "llama2-chat", "tulu", "tulu-dpo"]
 param_combos = [["none", "default"], ["none", "1.5"], ["none", "2.0"], ["random", "default"], ["nonsense", "default"], ["identity", "default"]]
 categories = ["animals", "politicians"]
 data_dir = "../../output-data/concept-task/"
+output_dir = "../../output-data/concept-task/all/"
+
+# save reliability metrics for each model, category, and parameter combination
+reliability_metrics = pd.DataFrame()
 
 # first, verify code on human data
-verify_human_data("../../input-data/concept-task/Responses.csv")
+human_participant_reliability, human_intersubj_reliability = verify_human_data("../../input-data/concept-task/Responses.csv")
+human_intersubj_reliability = human_intersubj_reliability.groupby('Concept')['ConceptReliability'].mean().reset_index()
+# add columns for model, prompt, and temperature to human_intersubj_reliability
+human_intersubj_reliability['model'] = "human"
+human_intersubj_reliability['prompt'] = "na"
+human_intersubj_reliability['temperature'] = "na"
+reliability_metrics = pd.concat([reliability_metrics, human_intersubj_reliability])
 
 for model in model_names:
     for param_combo in param_combos:
@@ -146,22 +152,20 @@ for model in model_names:
         formattedData = format_data_for_CRP(data)
         responses = formattedData.drop_duplicates(subset=['ID', 'Question', 'Concept'])
         responses = responses[['Concept', 'ID', 'Question', 'ChoiceNumber']]
-        responses.to_csv(f"{model}-prompt={prompt}-temp={temperature}-forCRP.csv", index=False)
+        # responses.to_csv(f"{model}-prompt={prompt}-temp={temperature}-forCRP.csv", index=False)
 
-        formattedData, participant_reliability = calculate_participant_reliability(formattedData)
-        intersubject_reliability = calculate_intersubject_reliability(formattedData)
+        formattedData, participant_reliability, subj_reliability_mean = calculate_participant_reliability(formattedData)
+        intersubject_reliability, concept_mean, question_mean = calculate_intersubject_reliability(formattedData)
 
-        print(intersubject_reliability)
+        intersubject_reliability = intersubject_reliability.groupby('Concept')['ConceptReliability'].mean().reset_index()
+        # add columns for model, prompt, and temperature to intersubject_reliability
+        intersubject_reliability['model'] = model
+        intersubject_reliability['prompt'] = prompt
+        intersubject_reliability['temperature'] = temperature
 
-        # Calculate agreement
-        alpha = 0.16
-        probs = np.random.beta(alpha, alpha, 1000000)
-        agree = 1 != np.random.binomial(2, probs)
-        print(f"Agreement proportion: {np.mean(agree)}")
+        reliability_metrics = pd.concat([reliability_metrics, intersubject_reliability])
+        
+    print("-" * 50)
 
-        print(f"Mean Reliability: {formattedData['Reliability'].mean()}")
-        print(f"Mean Reliability (Animals): {formattedData[formattedData['Experiment'] == 'animals']['Reliability'].mean()}")
-        print(f"Mean Reliability (Politicians): {formattedData[formattedData['Experiment'] == 'politicians']['Reliability'].mean()}")
-
-        print("-" * 50)
-
+print(reliability_metrics)
+reliability_metrics.to_pickle(f"{output_dir}reliability-metrics.pickle")
