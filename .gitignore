@@ -1,2 +1,6 @@
 # ignore all files that start with [old]
 \[old\]*
+
+# ignore pickle files
+.pickle
+.pkl

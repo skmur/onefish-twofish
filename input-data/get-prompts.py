@@ -5,7 +5,17 @@ import pandas as pd
 import os
 import argparse
 
-# filter out people and articles where first sentence is too short
+
+"""
+Filters the English Wikipedia corpus to remove articles about people (to avoid reduplicating persona prompting), disambiguation pages, and articles with short first sentences.
+
+Args:
+    dataset: the Wikipedia dataset
+    prompt_length: the minimum length of the first sentence of an article
+
+Returns:
+    filtered: a dictionary of articles that pass the filtering criteria
+"""
 def filterWikipediaText(dataset, prompt_length):
     filtered = {}
     num_valid_articles = 0
@@ -46,7 +56,20 @@ def filterWikipediaText(dataset, prompt_length):
 
     return filtered
 
+"""
+Produces three types of prompts for each subject:
+2. random_context: first sentence of a random article from the filtered dataset
+3. nonsense_context: shuffled word order version of random_context -> sentence cased
+4. identity: create a random persona by selecting a random value from a predefined set of identity categories, in the following format:
+    "You are a [race] [gender] from [hometown] in [state] who is [age] and works as a [occupation]."
 
+Args:
+    args: command line arguments
+    num_subjects: number of subjects to generate prompts for
+
+Returns:    
+    None (saves and pickles the prompts in the specified data directory)
+"""
 def processPrompts(args, num_subjects):
     prompt_dict = {}
     prompt_length = 25
@@ -102,16 +125,20 @@ def processPrompts(args, num_subjects):
             "identity": identity
         }
 
+    # pickle the dictionary
+    with open(f'{data_dir}/prompts.pkl', 'wb') as f:
+        pickle.dump(prompt_dict, f)
 
-    # # pickle the dictionary
-    # with open(f'{data_dir}/prompts.pkl', 'wb') as f:
-    #     pickle.dump(prompt_dict, f)
-
-    # # convert to df and save as csv
-    # df = pd.DataFrame.from_dict(prompt_dict, orient='index')
-    # df.to_csv(f'{data_dir}/prompts.pkl', index=False)
+    # convert to df and save as csv
+    df = pd.DataFrame.from_dict(prompt_dict, orient='index')
+    df.to_csv(f'{data_dir}/prompts.pkl', index=False)
 
 
+"""
+This script outputs the following files in the user-specified data directory:
+./[TASK FOLDER]/prompts.pkl
+./[TASK FOLDER]/prompts.csv
+"""
 def main():
     parser = argparse.ArgumentParser(description="Get prompts for experiment conditions")
 
@@ -143,7 +170,6 @@ def main():
     else:
         processPrompts(args, num_subjects)
 
-    
 
 if __name__ == "__main__":
     main()
