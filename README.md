@@ -70,28 +70,25 @@ python ./src/run-experiments.py
 - Outputs data to `./output-data/[TASK]/`
 
 #### ii. __Word-color association__ task-specific processing
-1. `./analysis/analyze-color-data.py`: 
-- Computes the mean and variance of word response distributions, Jensen-Shannon divergence, population ΔE based off block1 and block2 associations, distance of internal and population deltaE points from diagonal (line of unity) and corresponding regression, number of valid and invalid responses
-- Outputs compiled statistics to `./output-data/color-task/all/`
-2. `./analysis/plot-color-data.py`: 
-- Plots figures using flag for plot type: response counts, population homogeneity (i.e., distance from diagonal), ΔE, word ratings, JS divergence, and color response bars
+1. `./analysis/analyze-color-data.py`: Computes the mean and variance of word response distributions, Jensen-Shannon divergence, population ΔE based off block1 and block2 associations, distance of internal and population deltaE points from diagonal (line of unity) and corresponding regression, number of valid and invalid responses
+    - Outputs compiled statistics to `./output-data/color-task/all/`
+2. `./analysis/plot-color-data.py`: Plots response counts, population homogeneity (i.e., distance from diagonal), ΔE, word ratings, JS divergence, and color response bars figures using flag for plot type 
 
 #### iii. __Conceptual similarity judgements__ task-specific processing
 1. Data Formatting for CRP Model: `./concept-task/input-data/format-CRP-input.py`
-- Takes in model responses from the previous step and reformats it for the Chinese Restaurant Process (CRP) model.
-- Outputs data to `./concept-task/input-data/` in the format:
-    - Concept = target
-    - ID = subject
-    - Question = choice1 + " " + choice2
-    - ChoiceNumber = binary representation of subject's response as either choice1 (0) or choice2 (1)
+    - Takes in model responses from the previous step and reformats it for the Chinese Restaurant Process (CRP) model.
+    - Outputs data to `./concept-task/input-data/` in the format:
+        - Concept = target
+        - ID = subject
+        - Question = choice1 + " " + choice2
+        - ChoiceNumber = binary representation of subject's response as either choice1 (0) or choice2 (1)
 2. Running Model: `./concept-task/Chinese Restaurant Model/Main.py`
-- Takes in formatted response data from the previous step and runs CRP (importing Model.py)
-- Outputs main clustering results in the format: ["Concept", "Iteration", "S_Chao1", "NumberOfPeople", "NumberOfTrials", "Prior", "Tables", "Alpha", "Posterior", "Chain", "ProbabilityOfSameTable"] to `./concept-task/Chinese Restaurant Model/output-data-{num_interations}iterations/`
-- Outputs each participant's MAP Table (for use in TSNE visualization) in format ["ID", "Table", "Concept"] to `./concept-task/Chinese Restaurant Model/output-data-{num_interations}iterations/` under some conditions (see line 338 of `Model.py`)
+    - Takes in formatted response data from the previous step and runs CRP (importing Model.py)
+    - Outputs main clustering results in the format: ["Concept", "Iteration", "S_Chao1", "NumberOfPeople", "NumberOfTrials", "Prior", "Tables", "Alpha", "Posterior", "Chain", "ProbabilityOfSameTable"] to `./concept-task/Chinese Restaurant Model/output-data-{num_interations}iterations/`
+    <!-- - Outputs each participant's MAP Table in format ["ID", "Table", "Concept"] to `./concept-task/Chinese Restaurant Model/output-data-{num_interations}iterations/` under some conditions (see line 338 of `Model.py`) -->
 3. Compiling output of CRP model and human data for analysis: `./concept-task/output-data-500iterations/format-CRP-output.py`
-- Selects relevant parameters from human baseline data: prior="Simplicity", Iteration=499
-- Compiles all prompt and temperature manipulation data files for LLMs CRP clustering results from previous step
-- Computes number of valid responses for the model data
-- Outputs compiled results for all models and human baseline to `../../output-data/concept-task/all/`
-4. `plot-concept-data.py`
-- Plots figures using flag for plot type: response counts, P(multiple concepts)
+    - Selects relevant parameters from human baseline data: prior="Simplicity", Iteration=499
+    - Compiles all prompt and temperature manipulation data files for LLMs CRP clustering results from previous step
+    - Computes number of valid responses for the model data
+    - Outputs compiled results for all models and human baseline to `../../output-data/concept-task/all/`
+4. `plot-concept-data.py`: Plots response counts, P(multiple concepts) figures using flag for plot type
