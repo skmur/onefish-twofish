@@ -28,7 +28,7 @@ Then activate the environment with:
 conda activate onefishtwofish
 ```
 
-### a. Running experiments
+### b. Running experiments
 To reproduce results, run files in this order:
 
 #### i. Obtaining prompting conditions for simulating unique human subjects: `./input-data/get-prompts.py`:
@@ -63,7 +63,7 @@ python ./src/run-experiments.py
 ```
 - Outputs data to task-specific directory in user-specified storage directory
 
-### b. Processing and analyzing experiment results
+### c. Processing and analyzing experiment results
 
 #### i. Compiling results of all prompt and temperature experiments: `./analysis/process-data.py`
 - Run with flag for "concept" or "color" task to concatenate all prompt and temperature versions of the model output into a single file
